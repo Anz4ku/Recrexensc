@@ -661,18 +661,22 @@ body::after{
   body{cursor:auto}
 
   /* Hero */
-  #hero{flex-direction:column;justify-content:center;align-items:center;padding:4rem var(--pad) 3rem;height:auto;min-height:100vh}
+  #hero{flex-direction:column;justify-content:center;align-items:center;padding:5rem var(--pad) 4rem;height:auto;min-height:100vh}
   #hero-content{width:100%;text-align:center;order:1}
-  #hero-title{font-size:clamp(2.2rem,9vw,4.5rem)}
-  #hero-title .liaga{font-size:clamp(.85rem,3.2vw,2.4rem)}
-  #hero-flower{
-    display:block;position:relative;order:2;
-    width:clamp(140px,60vw,280px);
-    right:auto;top:auto;transform:none;
-    margin-top:1.5rem;opacity:.4
+  #hero-title{font-size:clamp(2rem,11vw,4rem);word-break:break-word}
+  #hero-title .liaga{font-size:clamp(.8rem,3.5vw,1.6rem)}
+  #hero-flower{display:none}
+  #hero-tagline{
+    position:relative;bottom:auto;left:auto;transform:none;
+    font-size:.95rem;max-width:none;margin-top:2rem;white-space:normal;text-align:center
   }
-  #hero-tagline{font-size:1rem;max-width:none}
-  .hero-lexicon{gap:1.8rem;justify-content:center}
+  #scroll-hint{display:none}
+
+  /* Nav dropdown — ancho completo en móvil */
+  .tnav-menu{
+    position:fixed;top:52px;left:1rem;right:1rem;
+    transform:none;min-width:unset;width:auto
+  }
 
 
   /* Nav dropdown — touch toggle */

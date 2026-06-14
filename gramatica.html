@@ -1201,7 +1201,7 @@ body.cursor-active * { cursor: none !important; }
 }
 
 /* ── MOBILE ─────────────────────────────────────────────────────── */
-@media(max-width:768px){
+@media(max-width:1024px){
   html, body { height: auto; overflow: auto; }
 
   /* Nav: wrap tabs to a second row */
@@ -3003,7 +3003,7 @@ function initNav() {
 
     let navDrop = null;
     btn.addEventListener('click', () => {
-      const isMobile = window.matchMedia('(max-width:768px)').matches;
+      const isMobile = window.matchMedia('(max-width:1024px)').matches;
       if (navDrop && isMobile) {
         const isOpen = navDrop.classList.contains('open');
         document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
@@ -3033,7 +3033,7 @@ function initNav() {
         a.textContent = heading.textContent;
         a.addEventListener('click', () => {
           drop.classList.remove('open');
-          if (window.matchMedia('(max-width:768px)').matches) {
+          if (window.matchMedia('(max-width:1024px)').matches) {
             const navH = document.getElementById('topnav').offsetHeight;
             window.scrollTo({ top: sub.getBoundingClientRect().top + window.scrollY - navH - 8, behavior: 'smooth' });
           } else {
