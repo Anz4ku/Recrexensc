@@ -1201,10 +1201,8 @@ body.cursor-active * { cursor: none !important; }
 }
 
 /* ── MOBILE ─────────────────────────────────────────────────────── */
-@media(max-width:1024px){
-  html, body { height: auto; overflow: auto; }
-
-  /* Nav: wrap tabs to a second row */
+@media(max-width:768px){
+  /* Nav: 2 filas — brand arriba, tabs deslizables abajo */
   #topnav {
     height: auto;
     min-height: var(--nav-h);
@@ -1236,64 +1234,48 @@ body.cursor-active * { cursor: none !important; }
   }
   .nav-actions { margin-left: auto; }
 
-  /* Canvas: switch from horizontal fixed to vertical scroll */
-  #canvas {
-    position: relative;
-    top: auto; left: auto; right: auto; bottom: auto;
-    width: 100%;
-    height: auto;
-    display: block;
-    overflow: visible;
-    scroll-snap-type: none;
-    margin-top: calc(var(--nav-h) + 40px);
-  }
+  /* Canvas top: ajustado por JS dinámicamente */
 
-  /* Panels: full-width vertical blocks */
-  .panel {
-    width: 100%;
-    min-width: unset;
-    height: auto;
-    overflow: visible;
-    scroll-snap-align: none;
-    grid-template-columns: 1fr;
-    border-right: none;
-    border-bottom: 2px solid var(--border);
-  }
+  /* Sidebar izquierda: ocultar en pantallas estrechas */
   .panel-index { display: none; }
-  .panel-inner {
-    padding: 1.5rem 1rem 4rem;
-    height: auto;
-    overflow: visible;
-  }
-
-  /* Tables: horizontal scroll on mobile */
-  .tbl-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    max-width: 100%;
-  }
-  table { font-size: .8rem; }
-  td, th { padding: .35rem .5rem; }
-
-  /* Left fixed sidebar */
+  .panel { grid-template-columns: 1fr; }
+  .panel-inner { padding: 1.5rem 1rem 4rem; }
   #left-index { display: none; }
 
   /* Dropdown: keep above content */
   .nav-dropdown, .nav-action-menu { position: fixed; top: calc(var(--nav-h) + 40px); }
 
-  /* Vowel/consonant chart: scale to fit */
-  #vow-chart { max-width: 100%; height: auto; }
+  /* Tables: horizontal scroll */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+  table { font-size: .8rem; }
+  td, th { padding: .35rem .5rem; }
 
-  /* Conjugation grid: narrower */
+  /* Charts */
+  #vow-chart { max-width: 100%; height: auto; }
   .cj { max-width: 100%; }
   .cj-col { min-width: 90px; }
-
-  /* IPA card: keep accessible */
   #ipa-card { max-width: calc(100vw - 2rem); }
 
   /* Custom cursor: ocultar en touch */
   #cv-cursor { display: none !important; }
   body.cursor-active, body.cursor-active * { cursor: auto !important; }
+}
+
+/* ── LANDSCAPE MOBILE: fix nav overflow sin romper paneles horizontales ── */
+@media(max-height:500px) and (orientation:landscape){
+  .nav-sections{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    flex-wrap:nowrap;
+  }
+  .nav-sections::-webkit-scrollbar{display:none}
+  .nav-btn{
+    white-space:nowrap;
+    flex-shrink:0;
+    font-size:.58rem;
+    padding:0 .6rem;
+  }
 }
 
 /* ── VIEW TRANSITIONS API ── */
@@ -3003,13 +2985,14 @@ function initNav() {
 
     let navDrop = null;
     btn.addEventListener('click', () => {
-      const isMobile = window.matchMedia('(max-width:1024px)').matches;
+      const isMobile = window.matchMedia('(max-width:768px)').matches;
       if (navDrop && isMobile) {
         const isOpen = navDrop.classList.contains('open');
         document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
         if (!isOpen) {
           const rect = btn.getBoundingClientRect();
           navDrop.style.left = Math.max(0, rect.left + rect.width / 2 - 95) + 'px';
+          navDrop.style.top = document.getElementById('topnav').getBoundingClientRect().bottom + 'px';
           navDrop.classList.add('open');
         }
         return;
@@ -3033,13 +3016,8 @@ function initNav() {
         a.textContent = heading.textContent;
         a.addEventListener('click', () => {
           drop.classList.remove('open');
-          if (window.matchMedia('(max-width:1024px)').matches) {
-            const navH = document.getElementById('topnav').offsetHeight;
-            window.scrollTo({ top: sub.getBoundingClientRect().top + window.scrollY - navH - 8, behavior: 'smooth' });
-          } else {
-            scrollToPanel(idx);
-            setTimeout(() => panel.scrollTo({ top: sub.offsetTop - 24, behavior: 'smooth' }), 380);
-          }
+          scrollToPanel(idx);
+          setTimeout(() => panel.scrollTo({ top: sub.offsetTop - 24, behavior: 'smooth' }), 380);
         });
         drop.appendChild(a);
       });
@@ -3050,6 +3028,7 @@ function initNav() {
         const rect = btn.getBoundingClientRect();
         const dropW = 190;
         drop.style.left = Math.max(0, rect.left + rect.width / 2 - dropW / 2) + 'px';
+        drop.style.top = document.getElementById('topnav').getBoundingClientRect().bottom + 'px';
         drop.style.minWidth = dropW + 'px';
         drop.classList.add('open');
       };
@@ -3065,6 +3044,15 @@ function initNav() {
   navBtns = [...navEl.querySelectorAll('.nav-btn')];
 }
 initNav();
+
+// ── AJUSTE GLOBAL DE NAV HEIGHT ────────────────────────────────────
+// Calcula el alto real del nav y lo aplica al canvas en cualquier dispositivo
+function adjustNavHeight() {
+  const navH = document.getElementById('topnav').getBoundingClientRect().bottom;
+  canvas.style.top = navH + 'px';
+}
+adjustNavHeight();
+window.addEventListener('resize', adjustNavHeight);
 
 // Cerrar dropdowns al tocar fuera (mobile)
 document.addEventListener('click', e => {
@@ -3292,12 +3280,7 @@ document.addEventListener('keydown', e => {
     if (idx < 0) return;
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        // En móvil portrait los paneles se apilan verticalmente — usar scrollIntoView
-        if (window.innerWidth <= 768) {
-          panels[idx].scrollIntoView({ behavior: 'instant' });
-        } else {
-          scrollToPanel(idx, true);
-        }
+        scrollToPanel(idx, true);
       });
     });
   })();
