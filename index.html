@@ -666,15 +666,16 @@ body::after{
   #hero-title{font-size:clamp(2rem,11vw,4rem);word-break:break-word}
   #hero-title .liaga{font-size:clamp(.8rem,3.5vw,1.6rem)}
   #hero-flower{
-    position:absolute;right:-10vw;bottom:0;top:auto;
-    transform:none;
-    width:clamp(180px,70vw,320px);
-    opacity:.15;z-index:0
+    position:relative;right:auto;top:auto;
+    transform:none;order:2;
+    width:clamp(160px,55vw,260px);
+    opacity:.35;z-index:1;
+    margin-top:2rem
   }
   #hero-tagline{
     position:relative;bottom:auto;left:auto;transform:none;
     font-size:.95rem;max-width:none;margin-top:1.5rem;white-space:normal;text-align:center;
-    order:2
+    order:3
   }
   #scroll-hint{display:none}
 
