@@ -3291,7 +3291,14 @@ document.addEventListener('keydown', e => {
     var idx = panels.findIndex(function(p){ return p.dataset.section === hash; });
     if (idx < 0) return;
     requestAnimationFrame(function(){
-      requestAnimationFrame(function(){ scrollToPanel(idx, true); });
+      requestAnimationFrame(function(){
+        // En móvil portrait los paneles se apilan verticalmente — usar scrollIntoView
+        if (window.innerWidth <= 768) {
+          panels[idx].scrollIntoView({ behavior: 'instant' });
+        } else {
+          scrollToPanel(idx, true);
+        }
+      });
     });
   })();
 })();
