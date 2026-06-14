@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liega Recrexensca — Una lengua romance salpicada de antiguos ecos eslavos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+:root{
+  --red:#c0392b;
+  --red2:#e8473a;
+  --ink:#f2ece4;
+  --soft:#c9968e;
+  --dark:#060101;
+  --pad:clamp(2rem,8vw,9rem);
+}
+
+body{
+  background:var(--dark);color:var(--ink);
+  font-family:'Barlow Condensed',sans-serif;
+  overflow-x:hidden;
+  cursor:url('mythistle.png') 12 12,auto
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:.04
+}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(2rem);transition:opacity .9s,transform .9s}
+.rv.in{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-2rem);transition:opacity .9s,transform .9s}
+.rv-l.in{opacity:1;transform:none}
+
+/* ── TOP NAV ── */
+#topnav{
+  position:absolute;top:0;left:0;right:0;height:52px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 var(--pad);z-index:200
+}
+.tnav-drop{position:relative}
+.tnav-drop-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.78rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--soft);background:none;border:none;
+  padding:.55rem 1.8rem;cursor:pointer;
+  transition:color .22s
+}
+.tnav-drop:hover .tnav-drop-btn{
+  color:var(--ink)
+}
+.tnav-drop-arrow{color:var(--red);font-size:.55rem;transition:transform .2s}
+.tnav-drop:hover .tnav-drop-arrow{transform:rotate(180deg)}
+/* padding-top = puente invisible que mantiene el hover al pasar al menú */
+.tnav-menu{
+  position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);
+  padding-top:.5rem;
+  min-width:240px;
+  background:transparent;border:none;
+  opacity:0;pointer-events:none;
+  transition:opacity .18s;
+  z-index:300
+}
+.tnav-drop:hover .tnav-menu{opacity:1;pointer-events:auto}
+/* fondo visual dentro del puente */
+.tnav-menu::before{
+  content:'';position:absolute;
+  top:.5rem;left:0;right:0;bottom:0;
+  background:rgba(6,1,1,.97);
+  border:1px solid rgba(192,57,43,.2);
+  border-top:2px solid var(--red);
+  z-index:-1
+}
+.tnav-menu-item{
+  position:relative;display:block;width:100%;
+  padding:.7rem 1.4rem;
+  font-family:'Barlow',sans-serif;
+  font-size:.88rem;font-weight:300;letter-spacing:.01em;
+  color:rgba(201,150,142,.65);text-decoration:none;
+  border-bottom:1px solid rgba(192,57,43,.1);
+  transition:color .15s,background .15s
+}
+.tnav-menu-item:last-child{border-bottom:none}
+.tnav-menu-item:hover{color:var(--ink);background:rgba(192,57,43,.07)}
+
+/* ── NAV DOTS ── */
+#nav{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:.6rem}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(240,235,227,.2);cursor:pointer;transition:background .3s,transform .3s}
+.dot.on{background:var(--red);transform:scale(1.7)}
+
+/* ══ HERO ══ */
+#hero{
+  position:relative;height:100vh;min-height:580px;overflow:hidden;
+  display:flex;align-items:center;
+  padding:0 var(--pad)
+}
+#hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 80% at 50% 40%,#2a0808 0%,#0a0101 55%,#060101 100%);
+  z-index:0
+}
+#hero-flower{
+  position:absolute;right:-4vw;top:50%;
+  transform:translateY(-50%);
+  width:clamp(220px,42vw,560px);
+  opacity:.3;filter:drop-shadow(0 0 70px rgba(192,57,43,.45));
+  z-index:1;pointer-events:none;will-change:transform
+}
+#hero-content{position:relative;z-index:2}
+.hero-eyebrow{
+  display:block;font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--soft);margin-bottom:1.8rem
+}
+#hero-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;
+  text-transform:uppercase;color:var(--red);
+  font-size:clamp(4.5rem,11vw,11rem);line-height:.86;letter-spacing:.02em;
+  margin-bottom:2.4rem
+}
+#hero-title .liaga{
+  display:block;font-weight:300;
+  font-size:clamp(1.4rem,2.5vw,2.4rem);
+  letter-spacing:.55em;color:var(--ink);margin-bottom:.2rem;
+  font-family:'Barlow Condensed',sans-serif;text-transform:uppercase
+}
+#hero-tagline{
+  position:absolute;bottom:5.2rem;left:50%;transform:translateX(-50%);
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;
+  font-size:clamp(1rem,1.5vw,1.5rem);color:var(--soft);
+  text-align:center;white-space:nowrap;z-index:3
+}
+.hero-lexicon{
+  display:flex;gap:2.5rem;padding-top:1.5rem;
+  border-top:1px solid rgba(192,57,43,.2)
+}
+.hl-item{display:flex;flex-direction:column;gap:.3rem}
+.hl-item em{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+  font-size:1.55rem;color:var(--ink)
+}
+.hl-item span{
+  font-family:'Barlow Condensed',sans-serif;font-size:.6rem;
+  letter-spacing:.32em;text-transform:uppercase;color:var(--soft)
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.85rem 2.4rem;border:1px solid var(--red);
+  background:transparent;color:var(--ink);
+  font-family:'Barlow Condensed',sans-serif;font-size:.88rem;
+  font-weight:400;letter-spacing:.22em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;
+  transition:background .22s,color .22s
+}
+.btn:hover{background:var(--red)}
+.btn-ghost{border-color:rgba(242,236,228,.18);color:var(--soft)}
+.btn-ghost:hover{border-color:var(--red);background:transparent;color:var(--ink)}
+#scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(240,235,227,.18);animation:bob 2.5s ease-in-out infinite
+}
+#scroll-hint span{width:1px;height:2.2rem;background:linear-gradient(to bottom,rgba(192,57,43,.5),transparent)}
+@keyframes bob{
+  0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}
+  50%{opacity:.7;transform:translateX(-50%) translateY(.5rem)}
+}
+@media(max-width:680px){
+  #hero-content{max-width:100%}
+}
+
+/* ══ WORD STRIPS ══ */
+#s-words{position:relative;padding:8vh 0;overflow:hidden}
+#s-words-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 80% at 50% 50%,rgba(90,12,8,.35) 0%,transparent 70%)
+}
+.word-strip{
+  display:flex;width:max-content;padding:1.2rem 0;
+  border-top:1px solid rgba(192,57,43,.18);border-bottom:1px solid rgba(192,57,43,.18);
+  will-change:transform
+}
+.word-strip+.word-strip{margin-top:1rem;border-top:none}
+.word-item{
+  display:flex;align-items:baseline;gap:.8rem;
+  padding:0 2.5rem;border-right:1px solid rgba(192,57,43,.1)
+}
+.word-item em{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;
+  font-size:clamp(1.8rem,2.8vw,2.8rem);color:var(--ink)
+}
+.word-item span{
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)
+}
+
+/* ══ AUDIO ══ */
+#s-audio{padding:12vh 0 6vh;border-top:1px solid rgba(192,57,43,.1)}
+
+.sec-header{
+  padding:0 var(--pad) 5vh;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  border-bottom:1px solid rgba(192,57,43,.2)
+}
+.sec-header h2{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(3rem,6.5vw,6rem);font-weight:700;font-style:normal;
+  text-transform:none;line-height:.9;letter-spacing:-.01em
+}
+.sec-header .sh-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--red2);margin-bottom:.7rem;display:block;font-weight:400
+}
+.sec-header .sh-note{
+  font-family:'Barlow',sans-serif;
+  font-size:.88rem;font-weight:300;letter-spacing:.02em;
+  color:var(--soft);max-width:24ch;text-align:right;padding-bottom:.3rem;line-height:1.5
+}
+
+.audio-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-left:1px solid rgba(192,57,43,.12)
+}
+@media(max-width:680px){.audio-grid{grid-template-columns:repeat(2,1fr)}}
+
+.sound-tile{
+  position:relative;overflow:hidden;
+  padding:2.8rem 2.5rem 2.2rem;
+  border-right:1px solid rgba(192,57,43,.12);
+  border-bottom:1px solid rgba(192,57,43,.12);
+  background:transparent;cursor:pointer;text-align:left;
+  transition:background .25s;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:150px
+}
+.sound-tile:hover{background:rgba(192,57,43,.07)}
+.sound-tile.playing{background:rgba(192,57,43,.12)}
+.st-word{
+  display:block;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-weight:600;font-size:clamp(2.2rem,3.8vw,3.5rem);color:var(--ink);
+  line-height:1.05;margin-bottom:.4rem
+}
+.st-tr{
+  display:block;font-family:'Barlow Condensed',sans-serif;
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--soft);margin-bottom:1.4rem;font-weight:400
+}
+.st-bottom{display:flex;align-items:center;justify-content:space-between}
+.st-play{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(192,57,43,.4);transition:color .2s;font-weight:400}
+.sound-tile:hover .st-play{color:var(--red2)}
+.sound-tile.playing .st-play{color:var(--red)}
+
+.wave{display:flex;align-items:flex-end;gap:3px;height:20px}
+.wave b{display:block;width:3px;border-radius:2px;background:rgba(192,57,43,.3);transition:background .2s}
+.sound-tile:hover .wave b,.phrase-tile:hover .wave b{background:rgba(192,57,43,.55)}
+.sound-tile.playing .wave b,.phrase-tile.playing .wave b{background:var(--red)}
+.wave b:nth-child(1){height:5px;animation:wi 2.1s .0s ease-in-out infinite}
+.wave b:nth-child(2){height:10px;animation:wi 2.1s .1s ease-in-out infinite}
+.wave b:nth-child(3){height:16px;animation:wi 2.1s .2s ease-in-out infinite}
+.wave b:nth-child(4){height:9px;animation:wi 2.1s .3s ease-in-out infinite}
+.wave b:nth-child(5){height:13px;animation:wi 2.1s .4s ease-in-out infinite}
+.wave b:nth-child(6){height:5px;animation:wi 2.1s .5s ease-in-out infinite}
+.wave b:nth-child(7){height:11px;animation:wi 2.1s .6s ease-in-out infinite}
+.wave b:nth-child(8){height:7px;animation:wi 2.1s .7s ease-in-out infinite}
+.wave b:nth-child(9){height:14px;animation:wi 2.1s .8s ease-in-out infinite}
+.wave b:nth-child(10){height:4px;animation:wi 2.1s .9s ease-in-out infinite}
+@keyframes wi{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.4)}}
+.sound-tile.playing .wave b,.phrase-tile.playing .wave b{animation:wp .35s ease-in-out infinite}
+@keyframes wp{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1.9)}}
+.sound-tile.playing .wave b:nth-child(odd){animation-delay:.08s}
+
+.audio-phrases{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  border-left:1px solid rgba(192,57,43,.12)
+}
+@media(max-width:560px){.audio-phrases{grid-template-columns:1fr}}
+
+.phrase-tile{
+  padding:2.5rem 3rem;
+  border-right:1px solid rgba(192,57,43,.12);
+  border-bottom:1px solid rgba(192,57,43,.12);
+  background:transparent;cursor:pointer;text-align:left;
+  transition:background .25s;display:flex;flex-direction:column;gap:.45rem
+}
+.phrase-tile:hover{background:rgba(192,57,43,.07)}
+.phrase-tile.playing{background:rgba(192,57,43,.12)}
+.pt-num{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(192,57,43,.35);font-weight:400}
+.pt-phrase{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;
+  font-size:clamp(1.5rem,2.5vw,2.3rem);color:var(--ink);line-height:1.2
+}
+.pt-tr{font-family:'Barlow',sans-serif;font-size:.82rem;font-weight:300;letter-spacing:.05em;color:var(--soft)}
+
+/* ══ TRANSLATE ══ */
+#s-translate{
+  padding:14vh var(--pad);
+  background:linear-gradient(to bottom,var(--dark) 0%,rgba(22,3,3,.7) 50%,var(--dark) 100%)
+}
+.tr-inner{max-width:660px;margin:0 auto;text-align:center}
+.tr-inner .eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--red2);display:block;margin-bottom:.8rem;font-weight:400
+}
+.tr-inner h2{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(3rem,6vw,5.5rem);font-weight:700;font-style:normal;
+  text-transform:none;line-height:.9;margin-bottom:.8rem;letter-spacing:-.01em
+}
+.tr-desc{
+  font-family:'Barlow',sans-serif;
+  font-size:.95rem;font-weight:300;letter-spacing:.03em;
+  color:var(--soft);margin-bottom:3.5rem
+}
+.tr-wrap{position:relative;margin-bottom:3.5rem}
+#tr-input{
+  width:100%;background:transparent;border:none;
+  border-bottom:1px solid rgba(192,57,43,.35);
+  color:var(--ink);font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:400;letter-spacing:.05em;
+  padding:.7rem 0;outline:none;text-align:center;transition:border-color .3s
+}
+#tr-input::placeholder{color:rgba(242,236,228,.18)}
+#tr-input:focus{border-bottom-color:var(--red2)}
+.tr-result{min-height:9rem;transition:opacity .35s,transform .35s}
+.tr-result.out{opacity:0;transform:translateY(1rem);pointer-events:none}
+.tr-result.in{opacity:1;transform:none}
+.tr-big{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:700;
+  font-size:clamp(3.5rem,7.5vw,6.5rem);color:var(--ink);line-height:1;margin-bottom:.5rem
+}
+.tr-phone{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--red2);margin-bottom:.55rem;font-weight:400
+}
+.tr-gloss{
+  font-family:'Barlow',sans-serif;
+  font-size:.82rem;font-weight:300;letter-spacing:.05em;color:var(--soft)
+}
+.tr-miss{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;
+  font-size:clamp(1.3rem,2.5vw,1.9rem);color:var(--soft);line-height:1.6
+}
+.tr-miss em{color:var(--ink);font-style:normal}
+
+/* ══ SPECIAL — INTERACTIVE SCROLL PRESENTATION v4 ══ */
+#s-special{position:relative}
+
+.sp-stage{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  background:var(--dark)
+}
+
+/* ── scene ── */
+.sp-scene{
+  position:absolute;inset:0;
+  opacity:0;
+  transition:opacity .6s ease;
+  pointer-events:none
+}
+.sp-scene.active{opacity:1;pointer-events:auto}
+.sp-scene.past{opacity:0}
+
+/* radial backgrounds per block */
+.sp-scene[data-block="intro"]  {background:radial-gradient(ellipse 80% 60% at 18% 50%,#200505 0%,#060101 65%)}
+.sp-scene[data-block="grammar"]{background:radial-gradient(ellipse 70% 60% at 28% 55%,#180404 0%,#060101 60%)}
+.sp-scene[data-block="slavic"] {background:radial-gradient(ellipse 65% 60% at 72% 42%,#020610 0%,#060101 58%)}
+.sp-scene[data-block="romance"]{background:radial-gradient(ellipse 65% 65% at 50% 80%,#08030e 0%,#060101 60%)}
+
+/* ── CENTER LAYER: big title, visible at intra=0 ── */
+.sp-center{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:0 var(--pad);
+  opacity:1;
+  transition:opacity .4s ease, transform .55s cubic-bezier(.16,1,.3,1)
+}
+.sp-scene.has-content .sp-center{
+  opacity:0;transform:translateX(-6vw);pointer-events:none
+}
+
+/* ── SPREAD LAYER: title LEFT half + items RIGHT half ── */
+.sp-spread{
+  position:absolute;inset:0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:0 var(--pad);
+  gap:5vw;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s .05s ease
+}
+.sp-scene.has-content .sp-spread{opacity:1;pointer-events:auto}
+
+/* title column — LEFT half, centrado */
+.sp-title-col{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  transform:translateX(-1.5rem);
+  transition:transform .6s .1s cubic-bezier(.16,1,.3,1)
+}
+.sp-scene.has-content .sp-title-col{transform:none}
+
+/* items column — RIGHT half */
+.sp-items-col{
+  display:flex;
+  align-items:center;
+}
+
+/* ── TITLES ── */
+/* Full-screen centered title */
+.sp-center .sp-ttl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(5rem,13vw,14rem);
+  text-transform:uppercase;line-height:.84;letter-spacing:-.025em;
+  color:var(--ink)
+}
+.sp-scene.sep .sp-center .sp-ttl{font-size:clamp(5.5rem,14vw,15rem)}
+.sp-ttl .accent{color:var(--red)}
+
+/* Title in left column (smaller, fully legible) */
+.sp-title-col .sp-ttl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:clamp(3.5rem,7vw,8rem);
+  text-transform:uppercase;line-height:.84;letter-spacing:-.025em;
+  color:var(--ink);
+  text-align:center;
+}
+.sp-title-col .sp-ttl .accent{color:var(--red)}
+
+/* ── ANIMATED ELEMENTS ── */
+.sp-el{
+  opacity:0;transform:translateY(1.4rem);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)
+}
+.sp-el.vis{opacity:1;transform:none}
+.sp-el:nth-child(2){transition-delay:.09s}
+.sp-el:nth-child(3){transition-delay:.18s}
+.sp-el:nth-child(4){transition-delay:.27s}
+
+/* ── GENDER LABELS (no word examples) ── */
+.sp-gender-list{display:flex;flex-direction:column;gap:.6rem}
+.sp-gender-item{display:flex;flex-direction:column;gap:.15rem}
+.sp-g-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:clamp(3.2rem,6vw,7rem);
+  text-transform:uppercase;
+  letter-spacing:-.025em;
+  color:var(--ink);
+  line-height:.9
+}
+.sp-gender-item.red .sp-g-name{color:var(--red2)}
+.sp-g-note{
+  font-family:'Barlow',sans-serif;
+  font-size:.82rem;font-weight:300;font-style:italic;
+  color:rgba(232,71,58,.5);margin-top:.05rem;letter-spacing:.02em
+}
+
+/* ── CASE ROWS ── */
+.sp-case-list{display:flex;flex-direction:column;gap:0}
+.sp-case-item{
+  display:flex;align-items:baseline;gap:1.8rem;
+  padding:.75rem 0;border-bottom:1px solid rgba(192,57,43,.1)
+}
+.sp-case-item:first-child{border-top:1px solid rgba(192,57,43,.1)}
+.sp-c-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.82rem,1vw,.95rem);letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(201,150,142,.55);
+  min-width:8rem;font-weight:400
+}
+.sp-c-word{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;font-weight:700;
+  font-size:clamp(2.4rem,3.8vw,4rem);color:var(--ink);line-height:1
+}
+.sp-hi{color:var(--red2)}
+.sp-c-note{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.78rem,.9vw,.88rem);font-weight:300;
+  color:rgba(201,150,142,.45);letter-spacing:.04em
+}
+
+/* ── ARTICLE ROWS ── */
+.sp-art-list{display:flex;flex-direction:column;gap:0;width:100%}
+.sp-art-row{
+  display:flex;align-items:baseline;gap:1.5rem;
+  padding:.65rem 0;border-bottom:1px solid rgba(192,57,43,.1)
+}
+.sp-art-row:first-child{border-top:1px solid rgba(192,57,43,.1)}
+.sp-art-gender{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(.78rem,.9vw,.9rem);letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(201,150,142,.55);
+  min-width:4.5rem;font-weight:400
+}
+.sp-art-word{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;font-weight:700;
+  font-size:clamp(1.9rem,3vw,3.2rem);color:var(--ink);line-height:1
+}
+.sp-art-gloss{
+  font-family:'Barlow',sans-serif;
+  font-size:clamp(.72rem,.82vw,.82rem);font-weight:300;font-style:italic;
+  color:rgba(201,150,142,.38)
+}
+
+/* ── OVERVIEW (separator scenes expanded) ── */
+.sp-overview{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:4vh var(--pad) 3vh;
+  gap:3.5vh;
+  opacity:0;pointer-events:none;
+  transition:opacity .55s .1s ease
+}
+.sp-scene.has-content .sp-overview{opacity:1;pointer-events:auto}
+
+.sp-ov-hd{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:clamp(1.5rem,2.2vw,2.5rem);
+  text-transform:uppercase;letter-spacing:-.02em;line-height:.9;
+  color:rgba(242,236,228,.25);
+  text-align:center
+}
+.sp-ov-hd .accent{color:rgba(192,57,43,.4)}
+
+.sp-ov-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3vw;
+  width:100%;
+  max-width:78rem
+}
+
+.sp-ov-card{
+  padding:1.3rem 0 0;
+  border-top:1px solid rgba(192,57,43,.3)
+}
+.sp-ov-ct{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:clamp(1rem,1.5vw,1.4rem);
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink);margin-bottom:.4rem;line-height:1.1
+}
+.sp-ov-cd{
+  font-family:'Barlow',sans-serif;
+  font-weight:300;font-size:.86rem;
+  color:var(--soft);line-height:1.75;margin:0 0 .5rem
+}
+.sp-ov-ce{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:400;font-size:.85rem;
+  letter-spacing:.1em;
+  color:rgba(201,150,142,.42)
+}
+.sp-ov-ce .sp-hi{color:var(--red2);opacity:.85}
+
+/* ── EVOLUTION VISUAL ── */
+.sp-ev{
+  display:flex;align-items:center;gap:.8rem;
+  margin:.8rem 0 .4rem;padding-bottom:.7rem;
+  border-bottom:1px solid rgba(192,57,43,.12)
+}
+.sp-ev-src{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.15rem;font-weight:500;letter-spacing:.06em;
+  color:rgba(242,236,228,.2);line-height:1
+}
+.sp-ev-ch{
+  color:rgba(242,236,228,.55);
+  text-decoration:underline;
+  text-decoration-color:rgba(192,57,43,.4);
+  text-underline-offset:4px
+}
+.sp-ev-arr{color:var(--red);font-size:.85rem;flex-shrink:0;opacity:.7}
+.sp-ev-dst{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.65rem;font-style:italic;font-weight:600;line-height:1
+}
+.sp-ev .sp-hi{color:var(--red2)}
+
+/* ── PROGRESS BAR ── */
+#sp-bar{
+  position:absolute;bottom:0;left:0;height:1px;
+  background:var(--red);width:0%;z-index:10;
+  transition:width .15s ease
+}
+
+/* ══ SAMPLE ══ */
+#s-sample{
+  padding:12vh var(--pad);
+  border-top:2px solid rgba(192,57,43,.2);
+  border-bottom:2px solid rgba(192,57,43,.2)
+}
+.sample-wrap{max-width:780px}
+.s-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--red2);display:block;margin-bottom:1.8rem;font-weight:400
+}
+.s-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;font-style:normal;
+  text-transform:none;line-height:.9;margin-bottom:4rem;letter-spacing:-.01em
+}
+.s-text{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;
+  font-size:clamp(1.5rem,2.5vw,2.1rem);color:var(--ink);line-height:1.75;
+  margin-bottom:2.5rem
+}
+.s-tr{
+  font-family:'Barlow',sans-serif;
+  font-size:1rem;font-weight:300;line-height:1.9;
+  color:var(--soft);letter-spacing:.02em;
+  border-left:2px solid var(--red);padding-left:1.5rem
+}
+
+/* ══ CLOSE ══ */
+#s-close{
+  position:relative;overflow:hidden;
+  padding:10vh var(--pad) 12vh
+}
+#close-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 50% at 75% 50%,#190303 0%,transparent 70%)
+}
+.cl-inner{position:relative;z-index:1}
+.cl-q{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:clamp(3rem,6.5vw,6rem);font-weight:700;color:var(--ink);
+  line-height:1.0;margin-bottom:1rem
+}
+.cl-line{width:3rem;height:2px;background:var(--red);margin:1.5rem 0}
+.cl-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.72rem;font-weight:400;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--red2);margin-bottom:2.8rem
+}
+.cl-btns{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* ── MOBILE ─────────────────────────────────────────────────────── */
+@media(max-width:760px){
+  :root{--pad:1.5rem}
+  body{cursor:auto}
+
+  /* Hero */
+  #hero{flex-direction:column;justify-content:center;align-items:center;padding:4rem var(--pad) 3rem;height:auto;min-height:100vh}
+  #hero-content{width:100%;text-align:center;order:1}
+  #hero-title{font-size:clamp(2.2rem,9vw,4.5rem)}
+  #hero-title .liaga{font-size:clamp(.85rem,3.2vw,2.4rem)}
+  #hero-flower{
+    display:block;position:relative;order:2;
+    width:clamp(140px,60vw,280px);
+    right:auto;top:auto;transform:none;
+    margin-top:1.5rem;opacity:.4
+  }
+  #hero-tagline{font-size:1rem;max-width:none}
+  .hero-lexicon{gap:1.8rem;justify-content:center}
+
+  /* Hero landscape móvil */
+  @media(max-height:500px) and (orientation:landscape){
+    #hero{flex-direction:row;justify-content:space-between;align-items:center;padding:1rem var(--pad);min-height:100vh;height:auto}
+    #hero-content{width:60%;text-align:left;order:1}
+    #hero-title{font-size:clamp(2rem,7vw,3.5rem)}
+    #hero-flower{order:2;width:clamp(100px,22vw,160px);margin-top:0;opacity:.35;flex-shrink:0}
+  }
+
+  /* Nav dropdown — touch toggle */
+  .tnav-drop.open .tnav-menu{opacity:1;pointer-events:auto}
+  .tnav-drop.open .tnav-drop-arrow{transform:rotate(180deg)}
+
+  /* Nav dots */
+  #nav{right:.6rem}
+  .dot{width:5px;height:5px}
+
+  /* Section headers */
+  .sec-header{flex-direction:column;align-items:flex-start;gap:.8rem;padding:0 var(--pad) 3vh}
+  .sec-header h2{font-size:clamp(2.2rem,8vw,4rem);line-height:1}
+  .sec-header .sh-note{text-align:left;max-width:none}
+
+  /* s-special: center titles shrink */
+  .sp-center .sp-ttl{font-size:clamp(2.8rem,13vw,6rem)}
+  .sp-scene.sep .sp-center .sp-ttl{font-size:clamp(3rem,14vw,7rem)}
+
+  /* sp-spread: single column, hide left title */
+  .sp-spread{grid-template-columns:1fr;padding:0 var(--pad)}
+  .sp-title-col{display:none}
+  .sp-items-col{padding:2vh 0;width:100%}
+
+  /* Gender names: scale down */
+  .sp-g-name{font-size:clamp(2.2rem,9vw,4.5rem)}
+
+  /* Cases: tighten */
+  .sp-c-label{min-width:5.5rem;font-size:.72rem}
+  .sp-c-word{font-size:clamp(1.7rem,6vw,3rem)}
+
+  /* sp-overview: single column */
+  .sp-overview{padding:2.5vh var(--pad)}
+  .sp-ov-cards{grid-template-columns:1fr;gap:1.5rem;max-width:100%}
+  .sp-ov-hd{font-size:.85rem}
+
+  /* Audio grid */
+  .audio-grid{grid-template-columns:repeat(2,1fr)}
+  .audio-phrases{grid-template-columns:1fr}
+
+  /* Phrase tiles */
+  .phrase-tile{padding:1.6rem 1.5rem}
+  .pt-phrase{font-size:clamp(1.3rem,4vw,2rem)}
+
+  /* Translator */
+  #s-translate{padding:10vh var(--pad)}
+  .tr-inner{max-width:none}
+
+  /* Sample */
+  #s-sample{padding-left:var(--pad);padding-right:var(--pad)}
+  .sample-wrap{max-width:none}
+  .s-text{font-size:clamp(1.1rem,4.5vw,1.8rem)}
+
+  /* Close */
+  .cl-q{font-size:clamp(1.8rem,6vw,3rem)}
+  .cl-btns{flex-direction:column;gap:.7rem;align-items:flex-start}
+}
+
+/* ── VIEW TRANSITIONS API ── */
+@view-transition { navigation: auto; }
+@keyframes vt-out { to   { transform:translateX(-40px); opacity:0  } }
+@keyframes vt-in  { from { transform:translateX( 40px); opacity:0  } }
+::view-transition-old(root) { animation: vt-out .28s cubic-bezier(.4,0,.2,1) both; }
+::view-transition-new(root) { animation: vt-in  .38s cubic-bezier(.16,1,.3,1) both; }
+/* Fallback para navegadores sin soporte */
+@keyframes pg-exit{to{transform:translateX(-32px);opacity:0}}
+body.pg-exit{animation:pg-exit .28s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none;overflow:hidden}
+</style>
+</head>
+<body>
+
+<header id="topnav">
+  <div class="tnav-drop">
+    <button class="tnav-drop-btn">Gramática <span class="tnav-drop-arrow">▾</span></button>
+    <div class="tnav-menu">
+      <a class="tnav-menu-item" href="gramatica.html#fonologia">Fonología</a>
+      <a class="tnav-menu-item" href="gramatica.html#ortografia">Ortografía y pronunciación</a>
+      <a class="tnav-menu-item" href="gramatica.html#sustantivos">Sustantivos</a>
+      <a class="tnav-menu-item" href="gramatica.html#adjetivos">Adjetivos</a>
+      <a class="tnav-menu-item" href="gramatica.html#determinantes">Determinantes</a>
+      <a class="tnav-menu-item" href="gramatica.html#pronombres">Pronombres</a>
+      <a class="tnav-menu-item" href="gramatica.html#verbos">Verbos</a>
+      <a class="tnav-menu-item" href="gramatica.html#numerales">Numerales</a>
+      <a class="tnav-menu-item" href="gramatica.html#adverbios">Adverbios</a>
+      <a class="tnav-menu-item" href="gramatica.html#vocabulario">Vocabulario</a>
+      <a class="tnav-menu-item" href="gramatica.html#conjunciones">Conjunciones y preposiciones</a>
+    </div>
+  </div>
+</header>
+
+<nav id="nav">
+  <div class="dot on" data-s="hero"></div>
+  <div class="dot"    data-s="s-special"></div>
+  <div class="dot"    data-s="s-words"></div>
+  <div class="dot"    data-s="s-audio"></div>
+  <div class="dot"    data-s="s-translate"></div>
+  <div class="dot"    data-s="s-sample"></div>
+  <div class="dot"    data-s="s-close"></div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div id="hero-bg"></div>
+  <img id="hero-flower" src="flag-transparent.png" alt="">
+  <div id="hero-content">
+    <h1 id="hero-title">
+      <span class="liaga">Liega</span>
+      Recrexensca
+    </h1>
+  </div>
+  <p id="hero-tagline">Una lengua romance con alma eslava.</p>
+  <div id="scroll-hint">scroll<span></span></div>
+</section>
+<!-- ══ SPECIAL ══ -->
+<section id="s-special">
+  <div class="sp-stage">
+    <div id="sp-bar"></div>
+
+    <!-- 0: INTRO -->
+    <div class="sp-scene sep active" data-block="intro">
+      <div class="sp-center">
+        <h2 class="sp-ttl">Su<br><span class="accent">esencia.</span></h2>
+      </div>
+    </div>
+
+    <!-- 1: TRES GÉNEROS -->
+    <div class="sp-scene" data-block="grammar">
+      <div class="sp-center">
+        <h2 class="sp-ttl">Tres<br><span class="accent">Géneros.</span></h2>
+      </div>
+      <div class="sp-spread">
+        <div class="sp-title-col">
+          <h2 class="sp-ttl">Tres<br><span class="accent">Géneros.</span></h2>
+        </div>
+        <div class="sp-items-col">
+          <div class="sp-gender-list">
+            <div class="sp-gender-item sp-el" data-from="1">
+              <span class="sp-g-name">Masculino</span>
+            </div>
+            <div class="sp-gender-item sp-el" data-from="2">
+              <span class="sp-g-name">Femenino</span>
+            </div>
+            <div class="sp-gender-item red sp-el" data-from="3">
+              <span class="sp-g-name">Neutro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: TRES CASOS -->
+    <div class="sp-scene" data-block="grammar">
+      <div class="sp-center">
+        <h2 class="sp-ttl">Tres<br><span class="accent">Casos.</span></h2>
+      </div>
+      <div class="sp-spread">
+        <div class="sp-title-col">
+          <h2 class="sp-ttl">Tres<br><span class="accent">Casos.</span></h2>
+        </div>
+        <div class="sp-items-col">
+          <div class="sp-case-list">
+            <div class="sp-case-item sp-el" data-from="1">
+              <span class="sp-c-label">Nominativo</span>
+              <em class="sp-c-word">vita</em>
+              <span class="sp-c-note">sujeto</span>
+            </div>
+            <div class="sp-case-item sp-el" data-from="2">
+              <span class="sp-c-label">Genitivo</span>
+              <em class="sp-c-word">vit<span class="sp-hi">y</span></em>
+              <span class="sp-c-note">posesión</span>
+            </div>
+            <div class="sp-case-item sp-el" data-from="3">
+              <span class="sp-c-label">Dativo</span>
+              <em class="sp-c-word">vit<span class="sp-hi">e</span></em>
+              <span class="sp-c-note">a, para</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: ALMA ESLAVA (overview) -->
+    <div class="sp-scene sep" data-block="slavic">
+      <div class="sp-center">
+        <h2 class="sp-ttl">Alma<br><span class="accent">Eslava.</span></h2>
+      </div>
+      <div class="sp-overview">
+        <div class="sp-ov-hd">Alma <span class="accent">Eslava.</span></div>
+        <div class="sp-ov-cards">
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Surgimiento de [ɨ]</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src">L<span class="sp-ev-ch">Ū</span>NA</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst">l<span class="sp-hi">y</span>na</span>
+            </div>
+            <p class="sp-ov-cd">Ū se deslabializa en [ɨ], eco directo de las lenguas eslavas.</p>
+          </div>
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Desnasalización</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src"><span class="sp-ev-ch">AN</span>GULUS</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst"><span class="sp-hi">u</span>gul</span>
+            </div>
+            <p class="sp-ov-cd">Las vocales nasales pierden su resonancia y se vuelven orales.</p>
+          </div>
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Regla RUKI</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src">UR<span class="sp-ev-ch">S</span>US</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-src">UR<span class="sp-hi">X</span></span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst">uro<span class="sp-hi">x</span></span>
+            </div>
+            <p class="sp-ov-cd">[s] se convierte en [x] tras r, u, k, i — igual que en antiguo eslavo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: HERENCIA ROMANCE (overview) -->
+    <div class="sp-scene sep" data-block="romance">
+      <div class="sp-center">
+        <h2 class="sp-ttl">Herencia<br><span class="accent">Romance.</span></h2>
+      </div>
+      <div class="sp-overview">
+        <div class="sp-ov-hd">Herencia <span class="accent">Romance.</span></div>
+        <div class="sp-ov-cards">
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Diptongación Ŏ</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src">C<span class="sp-ev-ch">Ŏ</span>RPUS</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst">c<span class="sp-hi">ua</span>rpo</span>
+            </div>
+            <p class="sp-ov-cd">Ŏ tónica breve se abre en diptongo UA.</p>
+          </div>
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Diptongación Ĕ</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src">S<span class="sp-ev-ch">Ĕ</span>PTEM</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst">s<span class="sp-hi">ia</span>tĭ</span>
+            </div>
+            <p class="sp-ov-cd">Ĕ tónica breve diptonga en IA.</p>
+          </div>
+          <div class="sp-ov-card sp-el" data-from="1">
+            <div class="sp-ov-ct">Africación -TI-</div>
+            <div class="sp-ev">
+              <span class="sp-ev-src">SPERAN<span class="sp-ev-ch">TI</span>A</span>
+              <span class="sp-ev-arr">→</span>
+              <span class="sp-ev-dst">speru<span class="sp-hi">ts</span>a</span>
+            </div>
+            <p class="sp-ov-cd">-TI- intervocálica se africaniza en -TS-.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══ WORDS ══ -->
+<section id="s-words">
+  <div id="s-words-bg"></div>
+  <div class="word-strip" id="strip1">
+    <div class="word-item"><em>natyra</em><span>naturaleza</span></div>
+    <div class="word-item"><em>sperutsa</em><span>esperanza</span></div>
+    <div class="word-item"><em>vita</em><span>vida</span></div>
+    <div class="word-item"><em>florĭ</em><span>flor</span></div>
+    <div class="word-item"><em>tapo</em><span>tiempo</span></div>
+    <div class="word-item"><em>cuarpo</em><span>cuerpo</span></div>
+    <div class="word-item"><em>natyra</em><span>naturaleza</span></div>
+    <div class="word-item"><em>sperutsa</em><span>esperanza</span></div>
+    <div class="word-item"><em>vita</em><span>vida</span></div>
+    <div class="word-item"><em>florĭ</em><span>flor</span></div>
+    <div class="word-item"><em>tapo</em><span>tiempo</span></div>
+    <div class="word-item"><em>cuarpo</em><span>cuerpo</span></div>
+  </div>
+  <div class="word-strip" id="strip2">
+    <div class="word-item"><em>manĭ</em><span>mañana</span></div>
+    <div class="word-item"><em>bruscià</em><span>quemar</span></div>
+    <div class="word-item"><em>felicĭ</em><span>feliz</span></div>
+    <div class="word-item"><em>duarmi</em><span>dormir</span></div>
+    <div class="word-item"><em>liuvie</em><span>amor</span></div>
+    <div class="word-item"><em>vide</em><span>ver</span></div>
+    <div class="word-item"><em>manĭ</em><span>mañana</span></div>
+    <div class="word-item"><em>bruscià</em><span>quemar</span></div>
+    <div class="word-item"><em>felicĭ</em><span>feliz</span></div>
+    <div class="word-item"><em>duarmi</em><span>dormir</span></div>
+    <div class="word-item"><em>liuvie</em><span>amor</span></div>
+    <div class="word-item"><em>vide</em><span>ver</span></div>
+  </div>
+</section>
+
+<!-- ══ AUDIO ══ -->
+<section id="s-audio">
+  <div class="sec-header rv">
+    <div>
+      <span class="sh-eyebrow">Sonido</span>
+      <h2>Escúchalo.</h2>
+    </div>
+    <p class="sh-note">Haz clic en cualquier palabra o frase para oírla.</p>
+  </div>
+
+  <div class="audio-grid">
+    <button class="sound-tile rv" data-audio="natyra">
+      <div><em class="st-word">natyra</em><span class="st-tr">naturaleza</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+    <button class="sound-tile rv" data-audio="vita">
+      <div><em class="st-word">vita</em><span class="st-tr">vida</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+    <button class="sound-tile rv" data-audio="flore">
+      <div><em class="st-word">florĭ</em><span class="st-tr">flor</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+    <button class="sound-tile rv" data-audio="tiapo">
+      <div><em class="st-word">tapo</em><span class="st-tr">tiempo</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+    <button class="sound-tile rv" data-audio="cuarpo">
+      <div><em class="st-word">cuarpo</em><span class="st-tr">cuerpo</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+    <button class="sound-tile rv" data-audio="felici">
+      <div><em class="st-word">felicĭ</em><span class="st-tr">feliz</span></div>
+      <div class="st-bottom">
+        <span class="st-play">▶ reproducir</span>
+        <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </button>
+  </div>
+
+  <div class="audio-phrases">
+    <button class="phrase-tile rv" data-audio="il_fuac_nu_remnit_to_ce_a_brusciàt">
+      <span class="pt-num">Frase 01</span>
+      <em class="pt-phrase">Il fuac nu remnit to ce à brusciàt.</em>
+      <span class="pt-tr">El fuego no recuerda lo que ha quemado.</span>
+      <div class="wave" style="margin-top:.7rem"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    </button>
+    <button class="phrase-tile rv" data-audio="lo_solice_ia_se_a_vadit">
+      <span class="pt-num">Frase 02</span>
+      <em class="pt-phrase">Lo solĭce ia se à vadít.</em>
+      <span class="pt-tr">El sol ya se fue.</span>
+      <div class="wave" style="margin-top:.7rem"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    </button>
+    <button class="phrase-tile rv" data-audio="la_lyna_est_grudi_acesta_nuaci">
+      <span class="pt-num">Frase 03</span>
+      <em class="pt-phrase">La lyna est grudĭ acesta nuacĭ.</em>
+      <span class="pt-tr">La luna es grande esta noche.</span>
+      <div class="wave" style="margin-top:.7rem"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    </button>
+    <button class="phrase-tile rv" data-audio="la_tiarra_est_cieta">
+      <span class="pt-num">Frase 04</span>
+      <em class="pt-phrase">La tiarra est cieta.</em>
+      <span class="pt-tr">La tierra está quieta.</span>
+      <div class="wave" style="margin-top:.7rem"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    </button>
+  </div>
+</section>
+
+<!-- ══ TRANSLATE ══ -->
+<section id="s-translate">
+  <div class="tr-inner">
+    <span class="eyebrow rv">Archivo</span>
+    <h2 class="rv">¿Cómo se dice...?</h2>
+    <p class="tr-desc rv">Escribe en español y descubre cómo suena en Recrexensc.</p>
+    <div class="tr-wrap rv">
+      <input type="text" id="tr-input" placeholder="vida, amor, mañana…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="tr-result out" id="tr-result"></div>
+  </div>
+</section>
+
+
+<!-- ══ SAMPLE ══ -->
+<section id="s-sample">
+  <div class="sample-wrap">
+    <span class="s-eyebrow rv">Fragmento</span>
+    <h2 class="s-title rv">Una muestra<br>del idioma.</h2>
+    <div class="s-text rv">
+      <p>Toti som sclavy famiar ce nu aut nascít noiscu.</p>
+      <p>Ty ucora le obedis com si fuassiat volia.</p>
+      <p>Io au apràs ce incluso lo desigio puatit miuti cu mia propria vocĭ.</p>
+      <p>Lo uscouto.</p>
+      <p>Lo laxo ardi.</p>
+      <p>I si necessitat bruscià me per a paresci veriostĭ, alhora maĭ a stat liveriostĭ.</p>
+      <p>Ty necessitas ce il mud te impousit per a siuti te vivute.</p>
+      <p>Io au apràs a restà ciet satsa siuti me vocitŭ.</p>
+    </div>
+    <div class="s-tr rv">
+      <p>Todos somos esclavos de hambres que no nacieron con nosotros.</p>
+      <p>Tú aún las obedeces como si fuesen voluntad.</p>
+      <p>Yo aprendí que incluso el deseo puede mentir con mi propia voz.</p>
+      <p>Lo escucho.</p>
+      <p>Lo dejo arder.</p>
+      <p>Y si necesita quemarme para parecer verdad, entonces nunca fue libertad.</p>
+      <p>Tú necesitas que el mundo te impulse para sentirte vivo.</p>
+      <p>Yo aprendí a quedar quieto sin sentirme vacío.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSE ══ -->
+<section id="s-close">
+  <div id="close-bg"></div>
+  <div class="cl-inner">
+    <p class="cl-q rv">"Ix cendri, la vocĭ."</p>
+    <div class="cl-line"></div>
+    <p class="cl-sub rv">De la ceniza, la voz.</p>
+    <div class="cl-btns">
+      <a href="gramatica.html" class="btn btn-ghost rv">Explorar la gramática →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── NAV DROPDOWN (touch) ──
+const tnavDrop = document.querySelector('.tnav-drop');
+const tnavBtn  = document.querySelector('.tnav-drop-btn');
+if(tnavBtn){
+  tnavBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    tnavDrop.classList.toggle('open');
+  });
+  document.addEventListener('click', () => tnavDrop.classList.remove('open'));
+}
+
+// ── PARALLAX ──
+const flower = document.getElementById('hero-flower');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if(flower) flower.style.transform = `translateY(calc(-50% + ${y*.22}px))`;
+}, {passive:true});
+
+// ── STRIPS ──
+const s1 = document.getElementById('strip1');
+const s2 = document.getElementById('strip2');
+let w1 = s1.scrollWidth/2, w2 = s2.scrollWidth/2;
+let p1 = 0, p2 = -w2*.12;
+(function tick(){
+  p1 -= .5; p2 += .4;
+  if(Math.abs(p1) >= w1) p1 = 0;
+  if(p2 >= 0) p2 = -w2;
+  s1.style.transform = `translateX(${p1}px)`;
+  s2.style.transform = `translateX(${p2}px)`;
+  requestAnimationFrame(tick);
+})();
+
+// ── INTERSECTION ──
+const io = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }),
+  {threshold:.08}
+);
+document.querySelectorAll('.rv,.rv-l').forEach(el => io.observe(el));
+
+// ── NAV DOTS ──
+const dots   = [...document.querySelectorAll('.dot')];
+const secIds = ['hero','s-special','s-words','s-audio','s-translate','s-sample','s-close'];
+const secs   = secIds.map(id => document.getElementById(id));
+dots.forEach((d,i) => d.addEventListener('click', () => secs[i]?.scrollIntoView({behavior:'smooth'})));
+const dIO = new IntersectionObserver(entries => entries.forEach(e => {
+  if(e.isIntersecting){ const i = secs.indexOf(e.target); dots.forEach((d,j) => d.classList.toggle('on', i===j)); }
+}), {threshold:.4});
+secs.forEach(s => s && dIO.observe(s));
+
+// ── AUDIO ──
+let curAudio = null, curTile = null;
+function playTile(tile) {
+  if(curAudio){ curAudio.pause(); curAudio.currentTime=0; curTile?.classList.remove('playing'); }
+  const file = tile.dataset.audio;
+  if(!file) return;
+  const a = new Audio(`audio/${file}.webm`);
+  curAudio = a; curTile = tile;
+  tile.classList.add('playing');
+  a.play().catch(() => tile.classList.remove('playing'));
+  a.addEventListener('ended', () => { tile.classList.remove('playing'); curAudio = curTile = null; });
+}
+document.querySelectorAll('.sound-tile,.phrase-tile').forEach(t => t.addEventListener('click', () => playTile(t)));
+
+// ── TRANSLATE ──
+const DICT = {
+  'hola':       {liaga:'salutas',   ph:'sa · lu · tas',   gl:'interjección de saludo'},
+  'adios':      {liaga:'valece',    ph:'va · le · ce',    gl:'despedida'},
+  'gracias':    {liaga:'gratias',   ph:'gra · ti · as',   gl:'agradecimiento'},
+  'si':         {liaga:'sí',        ph:'SÍ',              gl:'afirmación'},
+  'no':         {liaga:'nu',        ph:'NU',              gl:'negación'},
+  'vida':       {liaga:'vita',      ph:'vi · ta',         gl:'sustantivo neutro'},
+  'flor':       {liaga:'florĭ',     ph:'flo · rĭ',        gl:'sustantivo femenino'},
+  'flores':     {liaga:'florī',     ph:'flo · rī',        gl:'sustantivo femenino plural'},
+  'naturaleza': {liaga:'natyra',    ph:'na · ti · ra',    gl:'sustantivo femenino'},
+  'tiempo':     {liaga:'tapo',      ph:'ta · po',         gl:'sustantivo masculino'},
+  'luna':       {liaga:'luna',      ph:'lu · na',         gl:'sustantivo femenino'},
+  'sol':        {liaga:'sole',      ph:'so · le',         gl:'sustantivo masculino'},
+  'agua':       {liaga:'aqua',      ph:'a · kwa',         gl:'sustantivo femenino'},
+  'fuego':      {liaga:'foco',      ph:'fo · ko',         gl:'sustantivo masculino'},
+  'tierra':     {liaga:'terra',     ph:'te · ra',         gl:'sustantivo femenino'},
+  'yo':         {liaga:'io',        ph:'YO',              gl:'pronombre 1ª sg.'},
+  'tu':         {liaga:'ty',        ph:'TI',              gl:'pronombre 2ª sg.'},
+  'el':         {liaga:'ilĭ',       ph:'i · li',          gl:'pronombre 3ª masc.'},
+  'ella':       {liaga:'ila',       ph:'i · la',          gl:'pronombre 3ª fem.'},
+  'nosotros':   {liaga:'noĭ',       ph:'NOY',             gl:'pronombre 1ª pl.'},
+  'vosotros':   {liaga:'voĭ',       ph:'VOY',             gl:'pronombre 2ª pl.'},
+  'ellos':      {liaga:'ilī',       ph:'i · LĪ',          gl:'pronombre 3ª pl.'},
+  'feliz':      {liaga:'felicĭ',    ph:'fe · li · chĭ',   gl:'adjetivo'},
+  'triste':     {liaga:'tristi',    ph:'tris · ti',       gl:'adjetivo'},
+  'amor':       {liaga:'liuvie',    ph:'lyu · vye',       gl:'sustantivo masculino'},
+  'esperanza':  {liaga:'sperutsa',  ph:'spe · rut · sa',  gl:'sustantivo femenino'},
+  'cuerpo':     {liaga:'cuarpo',    ph:'kwar · po',       gl:'sustantivo masculino'},
+  'ojo':        {liaga:'ochi',      ph:'o · ki',          gl:'sustantivo masculino'},
+  'corazon':    {liaga:'cuore',     ph:'kwo · re',        gl:'sustantivo masculino'},
+  'voz':        {liaga:'voce',      ph:'vo · che',        gl:'sustantivo femenino'},
+  'ver':        {liaga:'vide',      ph:'vi · de',         gl:'infinitivo'},
+  'dormir':     {liaga:'duarmi',    ph:'dwar · mi',       gl:'infinitivo'},
+  'querer':     {liaga:'vulere',    ph:'vu · le · re',    gl:'infinitivo'},
+  'saber':      {liaga:'scire',     ph:'shi · re',        gl:'infinitivo'},
+  'ir':         {liaga:'vade',      ph:'va · de',         gl:'infinitivo'},
+  'ser':        {liaga:'esse',      ph:'es · se',         gl:'infinitivo'},
+  'estar':      {liaga:'esse',      ph:'es · se',         gl:'infinitivo (sin distinción ser/estar)'},
+  'manana':     {liaga:'manĭ',      ph:'ma · nĭ',         gl:'sustantivo neutro'},
+  'quemar':     {liaga:'bruscià',   ph:'brus · cha',      gl:'infinitivo'},
+  'modo':       {liaga:'modo',      ph:'mo · do',         gl:'sustantivo masculino'},
+  'nombre':     {liaga:'nome',      ph:'no · me',         gl:'sustantivo masculino'},
+  'camino':     {liaga:'camino',    ph:'ka · mi · no',    gl:'sustantivo masculino'},
+  'noche':      {liaga:'nocte',     ph:'nok · te',        gl:'sustantivo femenino'},
+  'dia':        {liaga:'dī',        ph:'DĪ',              gl:'sustantivo masculino'},
+  'lengua':     {liaga:'liega',     ph:'lye · ga',        gl:'sustantivo femenino'},
+  'idioma':     {liaga:'liega',     ph:'lye · ga',        gl:'sustantivo femenino'},
+  'palabra':    {liaga:'lieg',      ph:'LYEG',            gl:'sustantivo femenino'},
+  'nuevo':      {liaga:'nuavo',     ph:'nwa · vo',        gl:'adjetivo masc.'},
+  'grande':     {liaga:'grando',    ph:'gran · do',       gl:'adjetivo'},
+  'pequeno':    {liaga:'picoro',    ph:'pi · ko · ro',    gl:'adjetivo'},
+  'bien':       {liaga:'biano',     ph:'bya · no',        gl:'adverbio'},
+  'mal':        {liaga:'mali',      ph:'ma · li',         gl:'adverbio / adjetivo'},
+  'mas':        {liaga:'plus',      ph:'PLUS',            gl:'adverbio comparativo'},
+  'menos':      {liaga:'minus',     ph:'mi · nus',        gl:'adverbio comparativo'},
+};
+
+const inp = document.getElementById('tr-input');
+const res = document.getElementById('tr-result');
+let tm;
+
+function norm(s){ return s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+
+function showResult(q){
+  res.classList.remove('in'); res.classList.add('out');
+  setTimeout(() => {
+    if(!q.trim()){ res.innerHTML=''; return; }
+    const m = DICT[norm(q)];
+    if(m){
+      res.innerHTML = `<div class="tr-big">${m.liaga}</div><p class="tr-phone">${m.ph}</p><p class="tr-gloss">${m.gl}</p>`;
+    } else {
+      const msgs = [
+        `<em>"${q}"</em> aún no existe en Liega Recrexensca... pero podría.`,
+        `El archivo no tiene una entrada para <em>"${q}"</em> — todavía.`,
+        `Esta palabra está esperando ser creada.`,
+        `Ninguna palabra captura <em>"${q}"</em> aún. La lengua sigue creciendo.`,
+      ];
+      res.innerHTML = `<p class="tr-miss">${msgs[Math.floor(Math.random()*msgs.length)]}</p>`;
+    }
+    res.classList.remove('out'); res.classList.add('in');
+  }, 180);
+}
+
+inp.addEventListener('input', () => { clearTimeout(tm); tm = setTimeout(() => showResult(inp.value), 340); });
+inp.addEventListener('keydown', e => { if(e.key==='Enter'){ clearTimeout(tm); showResult(inp.value); } });
+
+// ── SCROLL PRESENTATION v4 ──
+(function(){
+  const section = document.getElementById('s-special');
+  if(!section) return;
+
+  const STEPS = [
+    [0,0],
+    [1,0],[1,1],[1,2],[1,3],
+    [2,0],[2,1],[2,2],[2,3],[2,3],[2,3],
+    [3,0],[3,1],
+    [4,0],[4,1],
+  ];
+  const N = STEPS.length;
+  section.style.height = (N * 30) + 'vh';
+
+  const scenes = [...section.querySelectorAll('.sp-scene')];
+  const bar    = document.getElementById('sp-bar');
+  let prevSi = -1, prevIi = -1;
+
+  function update(){
+    const top   = section.getBoundingClientRect().top;
+    const total = section.offsetHeight - window.innerHeight;
+    if(total <= 0) return;
+    const pct = Math.max(0, Math.min(1, -top / total));
+    if(bar) bar.style.width = (pct * 100) + '%';
+
+    const stepIdx  = Math.min(N-1, Math.max(0, Math.round(pct * (N-1))));
+    const [si, ii] = STEPS[stepIdx];
+    if(si === prevSi && ii === prevIi) return;
+    prevSi = si; prevIi = ii;
+
+    scenes.forEach((sc, i) => {
+      sc.classList.remove('active','past','has-content');
+      if(i < si){
+        sc.classList.add('past','has-content');
+      } else if(i === si){
+        sc.classList.add('active');
+        if(ii >= 1) sc.classList.add('has-content');
+      }
+    });
+
+    scenes.forEach((sc, i) => {
+      sc.querySelectorAll('.sp-el').forEach(el => {
+        const from = el.dataset.from !== undefined ? +el.dataset.from : 0;
+        el.classList.toggle('vis',
+          i < si  ? true :
+          i === si ? from <= ii :
+          false
+        );
+      });
+    });
+  }
+
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+
+</script>
+</body>
+</html>

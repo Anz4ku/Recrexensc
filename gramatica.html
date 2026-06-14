@@ -1,0 +1,3461 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liega Recrexensca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&amp;family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+html { font-size: 20px; }
+
+:root {
+  --white:   #ffffff;
+  --off:     #f5f4f2;
+  --border:  #e0ddd8;
+  --ink:     #111110;
+  --ink2:    #555250;
+  --muted:   #999693;
+  --red:     #c0392b;
+  --tbl-head: #111110;
+
+  --serif:   'Crimson Pro', Georgia, serif;
+  --sans:    'DM Sans', system-ui, sans-serif;
+  --ipa:     'Charis SIL', 'Noto Sans', serif;
+
+  --nav-h:   56px;
+  --sub-h:   40px;
+}
+
+/* ── MODO OSCURO (defecto) ── */
+body.dark-mode {
+  --white:   #141414;
+  --off:     #1d1d1d;
+  --border:  #2c2c2c;
+  --ink:     #e0dcd7;
+  --ink2:    #b0ada9;
+  --muted:   #8a8784;
+  --tbl-head: #252320;
+}
+body.dark-mode .nav-btn             { color: rgba(224,220,215,.7); }
+body.dark-mode .nav-btn:hover       { color: rgba(224,220,215,.95); }
+body.dark-mode .nav-btn.active      { color: var(--red); border-bottom-color: var(--red); }
+body.dark-mode .nav-drop-item       { color: rgba(224,220,215,.68); }
+body.dark-mode .nav-drop-item:hover { color: var(--ink); }
+body.dark-mode .idx-item            { color: rgba(224,220,215,.68); }
+body.dark-mode .idx-item:hover      { color: rgba(224,220,215,.95); }
+body.dark-mode .idx-item.active     { color: var(--ink); }
+body.dark-mode .idx-sub             { color: rgba(224,220,215,.62); }
+body.dark-mode .idx-sub:hover       { color: rgba(230,100,100,.95); }
+body.dark-mode .idx-sub.active      { color: #e06868; }
+body.dark-mode thead tr             { background: var(--tbl-head); }
+body.dark-mode thead tr.sh          { background: #1c1a18; }
+body.dark-mode tbody tr:hover       { background: var(--off); }
+body.dark-mode .nav-action-btn      { color: rgba(224,220,215,.68); }
+body.dark-mode .nav-action-btn:hover { color: var(--ink); }
+body.dark-mode .nav-action-menu     { background: #1a1a1a; border-color: var(--border); }
+body.dark-mode .nav-action-menu-item { color: rgba(224,220,215,.68); border-bottom-color: var(--border); }
+body.dark-mode .nav-action-menu-item:hover { color: var(--ink); }
+
+/* ── FONOLOGÍA dark mode ── */
+/* Gráfico de vocales SVG */
+body.dark-mode #vow-chart line               { stroke: rgba(224,220,215,.25); }
+body.dark-mode #vow-chart text:not(.vow)     { fill: var(--muted); }
+body.dark-mode #vow-chart .vow               { fill: var(--ink); stroke: var(--white); }
+/* Tabla de consonantes */
+body.dark-mode .cons-tbl th,
+body.dark-mode .cons-tbl td                  { border-color: var(--border); }
+body.dark-mode .cons-tbl thead tr:first-child th { background: #252320; color: var(--ink); }
+body.dark-mode .cons-tbl thead tr:last-child th  { background: var(--off); color: var(--muted); }
+body.dark-mode .cons-tbl .mn                 { background: var(--off); color: var(--ink); }
+body.dark-mode .cons-tbl td.ipa              { color: var(--ink); }
+
+/* ── BOTÓN TEMA ── */
+#theme-btn {
+  height: 100%; padding: 0 .9rem;
+  background: none; border: none; border-left: 1px solid var(--border);
+  cursor: pointer; font-size: .95rem; color: var(--muted);
+  transition: color .15s; flex-shrink: 0; display: flex; align-items: center;
+}
+#theme-btn:hover { color: var(--ink); }
+
+body {
+  font-family: var(--serif);
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* ── TOP NAV ────────────────────────────────────────────────────── */
+#topnav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  z-index: 200;
+  user-select: none;
+}
+
+.nav-brand {
+  padding: 0 2rem;
+  font-family: var(--sans);
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  border-right: 1px solid var(--border);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* arrow buttons flanking the nav */
+.nav-arrow {
+  flex-shrink: 0;
+  width: 36px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  color: var(--muted);
+  font-size: .9rem;
+  transition: color .15s, background .15s;
+}
+.nav-arrow:first-of-type { border-right: none; }
+.nav-arrow:last-of-type  { border-left: none; margin-left: -1px; }
+.nav-arrow:hover { color: var(--ink); background: var(--off); }
+
+.nav-sections {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  /* must be visible so dropdown can escape */
+  position: static;
+}
+.nav-sections::-webkit-scrollbar { display: none; }
+
+.nav-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.nav-btn {
+  flex: 1 1 0;
+  height: 100%;
+  padding: 0 .2rem;
+  font-family: var(--serif);
+  font-size: .82rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(17,17,16,.7);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: center;
+  transition: color .18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  letter-spacing: 0;
+  min-width: 0;
+}
+.nav-btn:hover { color: var(--ink); }
+.nav-btn[data-section="conjunciones"] { font-size: .68rem; }
+.nav-btn.active {
+  color: var(--red);
+  font-style: normal;
+  font-weight: 500;
+  border-bottom: 1.5px solid var(--red);
+  margin-bottom: -1px;
+}
+
+/* dropdown — same serif style as the index */
+.nav-dropdown {
+  position: fixed;
+  top: var(--nav-h);
+  min-width: 190px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity .15s, transform .15s;
+  z-index: 999;
+}
+.nav-dropdown.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.nav-drop-item {
+  display: block;
+  padding: .55rem 1.1rem;
+  font-family: var(--serif);
+  font-size: .92rem;
+  font-style: italic;
+  color: rgba(17,17,16,.38);
+  border-bottom: 1px solid var(--border);
+  transition: color .15s;
+  cursor: pointer;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: center;
+}
+.nav-drop-item:last-child { border-bottom: none; }
+.nav-drop-item:hover { color: var(--ink); background: none; }
+
+/* ── LEFT INDEX ─────────────────────────────────────────────────── */
+#left-index {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  width: 180px;
+  height: calc(100vh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .1rem;
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+#left-index.hidden { opacity: 0; }
+
+/* ── HORIZONTAL CANVAS ──────────────────────────────────────────── */
+#canvas {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  bottom: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+#canvas::-webkit-scrollbar { display: none; }
+
+/* ── SECTION PANELS ─────────────────────────────────────────────── */
+.panel {
+  flex: none;
+  width: 100vw;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  box-sizing: border-box;
+}
+.panel::-webkit-scrollbar { width: 3px; }
+.panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* index column — sticky, always visible on left */
+.panel-index {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem .75rem;
+  gap: .05rem;
+}
+
+.idx-item {
+  font-family: var(--serif);
+  font-size: .76rem;
+  font-style: italic;
+  color: rgba(17,17,16,.2);
+  padding: .2rem .5rem;
+  cursor: pointer;
+  transition: color .18s;
+  line-height: 1.3;
+  background: none;
+  border: none;
+  text-align: center;
+  display: grid;
+  width: 100%;
+  position: relative;
+}
+.idx-item > span {
+  grid-area: 1/1;
+}
+/* invisible bold clone in same grid cell — reserves bold height */
+.idx-item::after {
+  content: attr(data-text);
+  grid-area: 1/1;
+  font-weight: 500;
+  font-style: normal;
+  visibility: hidden;
+  pointer-events: none;
+  line-height: 1.3;
+}
+.idx-item:hover { color: rgba(17,17,16,.55); }
+.idx-item.active {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* sub-items under an active section */
+.idx-sub {
+  font-size: .72rem;
+  padding: 0;
+  color: rgba(17,17,16,.18);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .28s ease, opacity .22s ease, padding .28s ease;
+  pointer-events: none;
+}
+.idx-sub.visible {
+  max-height: 4rem;
+  padding: .12rem 0;
+  opacity: 1;
+  pointer-events: all;
+}
+.idx-sub:hover { color: rgba(139,26,26,.5); }
+.idx-sub.active {
+  color: var(--red);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* content column — fills all available space with proportional margins */
+.panel-inner {
+  padding: 3rem 3rem 6rem 2.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ── SECTION HEADER ─────────────────────────────────────────────── */
+/* ── SECTION HEADER ─────────────────────────────────────────────── */
+.section-eyebrow {
+  font-family: var(--sans);
+  font-size: .6rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .6rem;
+}
+
+.section-heading {
+  font-family: var(--serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 2.8rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* ── HEADING HIERARCHY ───────────────────────────────────────────── */
+/* h3 — main section: black */
+.sub-heading {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 2.8rem 0 .55rem;
+  scroll-margin-top: 2rem;
+}
+
+/* h4 — subsection: red, indented */
+.subsub-heading {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--red);
+  margin: 2rem 0 .4rem;
+  padding-left: 1.1rem;
+  border-left: 2px solid rgba(192,57,43,.25);
+}
+
+/* .label — deepest level: black */
+.label {
+  font-family: var(--sans);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 1.4rem 0 .3rem;
+  padding-left: 1.1rem;
+}
+
+/* ── BODY TEXT ──────────────────────────────────────────────────── */
+p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.82;
+  color: var(--ink);
+  margin-bottom: .7rem;
+}
+
+/* paragraphs inside a subsub context get slight indent */
+.subsub-heading + p,
+.label + p {
+  padding-left: 1.1rem;
+}
+
+em { font-style: italic; }
+strong { font-weight: 500; }
+.ipa { font-family: var(--ipa); font-size: .95em; }
+
+/* ── TABLES ─────────────────────────────────────────────────────── */
+.tbl-wrap {
+  overflow-x: auto;
+  margin: 1.1rem 0 .25rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--ink2);
+  max-width: 100%;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: .82rem;
+  background: var(--white);
+}
+thead tr { background: var(--tbl-head); }
+thead th {
+  font-size: .63rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #f0ede8;
+  padding: .55rem .9rem;
+  text-align: center;
+}
+thead tr.sh { background: #2a2724; }
+tbody td {
+  padding: .48rem .9rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: middle;
+  line-height: 1.45;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--off); }
+tbody tr.tbl-grp td { background: var(--off); font-family: var(--sans); font-size: .63rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink2); text-align: left; padding: .3rem .9rem; border-bottom: 1px solid var(--border); }
+tbody tr.tbl-grp:hover { background: var(--off) !important; }
+tbody tr.tbl-divide td { border-bottom: 1.5px solid var(--ink2); }
+tbody tr[style*="red"] td { color: var(--red); }
+tbody tr[style*="red"]:hover { background: var(--off); }
+td.aux-cell {
+  background: var(--off);
+  font-style: italic;
+  font-family: var(--serif);
+  border-right: none;
+}
+td.plus-cell {
+  color: var(--muted);
+  font-size: .9rem;
+  width: 1.5rem;
+  vertical-align: middle;
+  border-bottom: none !important;
+  background: var(--white) !important;
+}
+td.part-cell {
+  font-style: italic;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  vertical-align: middle;
+  text-align: center;
+  border-bottom: none !important;
+  background: var(--white) !important;
+}
+td.end {
+  font-size: .8rem;
+  color: var(--red);
+  font-weight: 500;
+  background: rgba(192,57,43,.04);
+}
+span.end {
+  font-size: .72rem;
+  color: var(--red);
+  font-weight: 500;
+  font-family: var(--sans);
+  display: block;
+  margin-bottom: .1rem;
+}
+td.end-lbl {
+  font-size: .62rem;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+td.ex-cell {
+  font-size: .88rem;
+  line-height: 1.3;
+  padding: .3rem .9rem;
+  font-family: var(--serif);
+  font-style: italic;
+}
+td.ex-cell br { display: none; }
+div.exg {
+  margin: .3rem 0 .65rem 1.1rem;
+}
+div.exg p {
+  margin: .1rem 0;
+  font-family: var(--serif);
+  font-style: italic;
+}
+div.exg p::before {
+  content: '– ';
+  color: var(--muted);
+  font-style: normal;
+}
+div.exg p .tr {
+  margin-left: 1.1rem;
+}
+td.ex-cell .m2 {
+  font-style: normal;
+  font-family: var(--sans);
+  font-size: .68rem;
+  color: var(--muted);
+  display: block;
+  margin-top: .1rem;
+}
+td.ex-g {
+  font-size: .68rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+tr.end-row td { border-bottom: none; }
+tr.end-row + tr td { border-top: none; }
+td em { font-style: italic; font-family: var(--serif); }
+.cc { text-align: center; font-style: italic; }
+.tbl-cap {
+  font-family: var(--sans);
+  font-size: .65rem;
+  color: var(--muted);
+  text-align: center;
+  margin: .25rem 0 1.4rem;
+}
+.tbl-note {
+  font-family: var(--sans);
+  font-size: .65rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: .15rem;
+}
+
+/* ── EXAMPLES ───────────────────────────────────────────────────── */
+.exs {
+  margin: .75rem 0 1rem;
+  padding: .65rem 1.4rem;
+  background: rgba(0,0,0,.028);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ex-row {
+  display: flex;
+  flex-direction: column;
+  padding: .22rem 0;
+  width: 100%;
+  max-width: 32rem;
+}
+.ex-top {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  align-items: baseline;
+  gap: .5rem;
+}
+.ex-word {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.ex-i {
+  font-family: var(--ipa);
+  font-size: .88rem;
+  color: #666360;
+}
+.ex-tr {
+  font-family: var(--sans);
+  font-size: .7rem;
+  color: var(--muted);
+  margin-top: .05rem;
+  padding-left: .1rem;
+}
+
+/* ── TRANSFORM ──────────────────────────────────────────────────── */
+.tf {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: .5rem 0;
+  padding-left: .5rem;
+  font-family: var(--serif);
+  font-size: 1rem;
+  flex-wrap: wrap;
+}
+.tf .tw {
+  display: flex;
+  flex-direction: column;
+}
+.tf em { font-style: italic; }
+.tf .tl { font-family: var(--sans); font-size: .7rem; color: var(--muted); margin-top: .05rem; }
+.tf .arr { color: var(--red); font-weight: 500; align-self: center; }
+
+/* ── QUOTES ─────────────────────────────────────────────────────── */
+.quotes { margin: .7rem 0; padding: .35rem 1.1rem; border-left: 1px solid var(--border); }
+.quotes li {
+  list-style: none;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-bottom: .35rem;
+}
+.tr {
+  display: block;
+  font-style: normal;
+  font-family: var(--sans);
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .05rem;
+  margin-bottom: .3rem;
+}
+
+/* ── CONJ ROWS ──────────────────────────────────────────────────── */
+.cj {
+  display: flex;
+  gap: .55rem;
+  align-items: baseline;
+  padding: .28rem 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--serif);
+  font-size: .97rem;
+  flex-wrap: wrap;
+}
+.cj:last-child { border-bottom: none; }
+.cj b { font-style: italic; font-weight: 500; min-width: 5rem; }
+.cj .gl { font-family: var(--sans); font-size: .75rem; color: var(--muted); }
+
+/* ── BULLET LIST ────────────────────────────────────────────────── */
+ul.glist { list-style: none; margin: .5rem 0 .8rem; padding: 0; }
+ul.glist li {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.75;
+  padding-left: 1rem;
+  position: relative;
+}
+ul.glist li::before { content: '—'; position: absolute; left: 0; color: var(--red); }
+
+/* ── DET ITEMS ──────────────────────────────────────────────────── */
+.dh { font-family: var(--serif); font-style: italic; font-weight: 500; margin: 1.1rem 0 .2rem; }
+.di { font-family: var(--serif); font-style: italic; font-size: .97rem; padding: .08rem 0 .08rem .7rem; line-height: 1.6; }
+.di .tr { font-style: normal; font-family: var(--sans); font-size: .76rem; color: var(--muted); }
+
+
+/* ── PENCIL GROUP ────────────────────────────────────────────────── */
+.cj-group {
+  margin: 1.4rem auto;
+  display: inline-grid;
+  grid-template-columns: 1fr 2rem 1fr;
+  align-items: start;
+  gap: 0;
+  width: 100%;
+  max-width: 420px;
+}
+.cj-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+}
+.cj-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2.5rem;
+  gap: .55rem;
+  color: var(--muted);
+  font-size: .85rem;
+}
+.cj-word {
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* pencil-stroke header */
+.cj-head {
+  font-family: var(--sans);
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: .28rem 0;
+  margin-bottom: .5rem;
+  min-width: 70px;
+  text-align: center;
+  display: inline-block;
+  border-bottom: 1.5px solid var(--ink);
+}
+.cj-word {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.cj-rows { display: contents; }
+/* no borders on pronombre and ejemplo tables in pasado/futuro */
+.tbl-plain { border-top: none !important; border-bottom: none !important; }
+.tbl-plain table { background: transparent; }
+.tbl-plain thead tr { background: transparent !important; }
+.tbl-plain thead th { color: transparent !important; font-size: 0 !important; border: none !important; }
+.tbl-plain tbody td { border-bottom: none !important; background: transparent !important; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────── */
+.foot { font-family: var(--sans); font-size: .65rem; color: var(--muted); margin-top: 3rem; }
+
+/* ── SCROLL SNAP (optional, soft) ───────────────────────────────── */
+#canvas { scroll-snap-type: x mandatory; }
+
+/* ── CONSONANT TABLE ────────────────────────────────────────────── */
+.cons-tbl { border-collapse:collapse; font-size:.84em; }
+.cons-tbl th, .cons-tbl td {
+  border: 1px solid #d0d0d0;
+  padding: .3rem .55rem;
+  text-align: center;
+  vertical-align: middle;
+}
+/* Fila 1 cabecera: nombres de lugar articulatorio */
+.cons-tbl thead tr:first-child th {
+  font-family: var(--sans); font-weight: 700; font-size: .72rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  background: #e6e6e6; color: #222;
+}
+/* Fila 2 cabecera: Hard / Soft */
+.cons-tbl thead tr:last-child th {
+  background: #f4f4f4; color: #555;
+  font-family: var(--sans); font-weight: 500; font-size: .75rem;
+  letter-spacing: .04em;
+}
+/* Etiquetas de manera (Nasal, Plosiva…) */
+.cons-tbl .mn {
+  font-family: var(--sans); font-weight: 700; font-size: .84rem;
+  color: #111; text-align: left; padding-left: .7rem; white-space: nowrap;
+  background: #fafafa;
+}
+/* Celdas IPA */
+.cons-tbl td.ipa {
+  font-family: var(--ipa); font-size: .96em;
+  color: #111; font-variant-emoji: text;
+}
+/* Spans clickables de consonante */
+.con { cursor: pointer; transition: opacity .12s; }
+.con:hover { opacity: .4; }
+
+/* ── PORTADA ─────────────────────────────────────────────────────── */
+/* Custom cursor */
+#cv-cursor {
+  position: fixed; top: 0; left: 0; z-index: 99999;
+  width: 48px; pointer-events: none;
+  opacity: 0; transition: opacity .3s;
+}
+body.cursor-active { cursor: none !important; }
+body.cursor-active * { cursor: none !important; }
+
+/* ── FICHA IPA ───────────────────────────────────────────────────── */
+#ipa-card {
+  position: fixed; z-index: 99990; pointer-events: none;
+  background: #0f0f0f;
+  border: 1px solid rgba(255,255,255,.1);
+  border-top: 2px solid #c81020;
+  padding: .85rem 1.1rem .7rem;
+  min-width: 155px; max-width: 210px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .15s, transform .15s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; gap: .25rem;
+}
+#ipa-card.visible { opacity: 1; transform: translateY(0); }
+#ipa-card .ic-sym {
+  font-family: var(--ipa); font-size: 2.2rem; color: #fff;
+  line-height: 1; text-align: center;
+  padding-bottom: .5rem; margin-bottom: .2rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+#ipa-card .ic-desc {
+  font-family: var(--sans); font-size: .62rem;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: rgba(220,215,210,.65);
+}
+#ipa-card .ic-gr {
+  font-family: var(--serif); font-size: .82rem;
+  color: rgba(220,215,210,.85);
+}
+#ipa-card .ic-hint {
+  font-family: var(--sans); font-size: .58rem;
+  letter-spacing: .1em; color: #c81020;
+  margin-top: .15rem;
+  cursor: pointer;
+}
+#ipa-card .ic-cite {
+  display: none;
+  font-family: var(--sans); font-size: .58rem;
+  color: rgba(220,215,210,.6);
+  line-height: 1.5;
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin-top: .3rem; padding-top: .35rem;
+}
+#ipa-card.cite-open .ic-cite { display: block; }
+#ipa-card .ic-video {
+  display: none;
+  width: 100%; border-radius: 3px;
+  margin: .35rem 0 .1rem;
+  background: #000;
+}
+#ipa-card.has-video { min-width: 185px; max-width: 230px; }
+#ipa-card.has-video .ic-video { display: block; }
+
+
+#cover {
+  position: fixed; inset: 0; z-index: 9000;
+  background: #080808;
+  overflow-y: auto; overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  user-select: none;
+  transition: opacity .7s cubic-bezier(.4,0,.2,1);
+}
+/* Hero section inside cover */
+.cv-hero {
+  height: 100dvh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  scroll-snap-align: start;
+}
+/* Scroll hint */
+.cv-scroll-hint {
+  position: absolute; bottom: 2.2rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--sans), system-ui; font-size: .55rem;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.2);
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  animation: cvRise 1.2s ease .9s both;
+  pointer-events: none;
+}
+.cv-scroll-hint::after {
+  content: ''; display: block; width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(200,16,32,.4), transparent);
+  animation: cvRise 1s ease 1.3s both;
+}
+/* Acknowledgements inside cover */
+.cv-ack {
+  min-height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 5rem clamp(2rem, 8vw, 7rem);
+  scroll-snap-align: start;
+  position: relative; z-index: 1;
+}
+.cv-ack-inner { max-width: 620px; width: 100%; }
+.cv-ack-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400;
+  color: #fff; margin-bottom: 2.4rem;
+  letter-spacing: .02em;
+  text-shadow: 0 2px 24px rgba(0,0,0,.7);
+}
+.cv-ack-text {
+  display: flex; flex-direction: column; gap: 1.6rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  line-height: 1.9; color: #fff;
+  text-shadow: 0 1px 16px rgba(0,0,0,.85);
+}
+.cv-ack-text p {
+  color: #fff;
+  text-shadow: 0 1px 16px rgba(0,0,0,.85);
+}
+.cv-ack::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 55% 45% at 50% 55%, rgba(160,8,20,.15) 0%, transparent 70%);
+}
+/* Radial bloom — center glow + bottom warmth */
+#cover::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 38% at 50% 44%, rgba(190,10,22,.3) 0%, transparent 68%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(180,8,20,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 82% 85%, rgba(140,5,15,.15) 0%, transparent 60%);
+  animation: gradflow 9s ease-in-out infinite alternate;
+}
+@keyframes gradflow {
+  from { opacity: .7; }
+  to   { opacity: 1; }
+}
+/* Film grain overlay */
+#cover::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .05; mix-blend-mode: overlay;
+}
+#cover.out { opacity: 0; pointer-events: none; }
+
+/* Corner brackets */
+.cv-corner {
+  position: absolute; width: 22px; height: 22px; pointer-events: none;
+  animation: cvRise 1.4s cubic-bezier(0.22,1,0.36,1) .05s both;
+}
+.cv-corner--tl { top: 22px; left: 22px; border-top: 1px solid rgba(200,16,32,.35); border-left: 1px solid rgba(200,16,32,.35); }
+.cv-corner--tr { top: 22px; right: 22px; border-top: 1px solid rgba(200,16,32,.35); border-right: 1px solid rgba(200,16,32,.35); }
+.cv-corner--bl { bottom: 22px; left: 22px; border-bottom: 1px solid rgba(200,16,32,.35); border-left: 1px solid rgba(200,16,32,.35); }
+.cv-corner--br { bottom: 22px; right: 22px; border-bottom: 1px solid rgba(200,16,32,.35); border-right: 1px solid rgba(200,16,32,.35); }
+
+/* (watermark removed) */
+
+/* (thistle removed) */
+
+/* Content */
+.cv-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+}
+.cv-label {
+  font-family: var(--sans), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .28em; text-transform: uppercase;
+  color: #c81020; margin-bottom: 1.4rem;
+  animation: cvRise 1s cubic-bezier(0.22,1,0.36,1) .1s both;
+}
+.cv-title {
+  display: flex; flex-direction: column;
+  font-family: 'EB Garamond', var(--serif), Georgia, serif;
+  font-weight: 400; margin: 0;
+}
+.cv-title-top {
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  font-weight: 300; letter-spacing: .18em;
+  color: rgba(255,255,255,.6); line-height: 1;
+  text-transform: uppercase;
+  animation: cvRise 1s cubic-bezier(0.22,1,0.36,1) .18s both;
+}
+.cv-title-bot {
+  font-size: clamp(3rem, 8vw, 7rem);
+  letter-spacing: -.01em; color: #fff; line-height: .88;
+  text-transform: uppercase;
+  animation: cvRise 1s cubic-bezier(0.22,1,0.36,1) .26s both;
+}
+@keyframes cvRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cvRiseCenter {
+  from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.cv-rule {
+  display: flex; align-items: center; gap: .8rem;
+  margin: 1.8rem auto 2rem;
+  animation: cvRise 1s cubic-bezier(0.22,1,0.36,1) .34s both;
+}
+.cv-rule::before, .cv-rule::after {
+  content: ''; display: block; width: 32px; height: 1px; background: rgba(200,16,32,.45);
+}
+.cv-rule-diamond { width: 5px; height: 5px; background: #c81020; transform: rotate(45deg); }
+.cv-flag {
+  width: clamp(160px, 22vw, 280px);
+  margin: 1.4rem 0 0;
+  animation: cvRise 1s cubic-bezier(0.22,1,0.36,1) .34s both;
+}
+.cv-btns {
+  display: flex; align-items: center; gap: 2.4rem;
+}
+.cv-btns--top {
+  position: absolute; top: 2rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: cvRiseCenter 1s cubic-bezier(0.22,1,0.36,1) .42s both;
+}
+.cv-sep { width: 1px; height: 14px; background: rgba(255,255,255,.1); }
+.cv-btn {
+  background: none; border: none; padding: 0;
+  font-family: var(--sans), system-ui, sans-serif;
+  font-size: .67rem; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.38); cursor: none; position: relative;
+  transition: color .2s;
+}
+.cv-btn::after {
+  content: ''; position: absolute;
+  left: 0; bottom: -3px; width: 100%; height: 1px;
+  background: #c81020;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+.cv-btn:hover { color: #fff; }
+.cv-btn:hover::after { transform: scaleX(1); }
+
+/* Dropdown */
+.cv-dropdown { position: relative; }
+.cv-menu {
+  position: absolute;
+  top: calc(100% + .15rem); left: 50%;
+  min-width: 220px;
+  background: #0f0f0f; border: 1px solid rgba(255,255,255,.07);
+  border-top: 2px solid #c81020;
+  padding: .5rem 0;
+  opacity: 0; pointer-events: none;
+  transform: translateX(-50%) translateY(-8px);
+  transition: opacity .2s .1s, transform .2s .1s cubic-bezier(.4,0,.2,1);
+  text-align: left;
+}
+.cv-dropdown:hover .cv-menu {
+  transition: opacity .15s, transform .15s cubic-bezier(.4,0,.2,1);
+}
+.cv-dropdown:hover .cv-menu {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.cv-menu-item {
+  display: block; width: 100%; border: none; background: none;
+  padding: .55rem 1.4rem; cursor: none;
+  font-family: var(--sans), system-ui, sans-serif;
+  font-size: .75rem; letter-spacing: .02em; white-space: nowrap;
+  color: rgba(255,255,255,.4); text-align: left;
+  transition: color .12s, background .12s;
+}
+.cv-menu-item:hover { color: #fff; background: rgba(200,16,32,.1); }
+
+/* Floating orbs — bokeh-style, animated */
+.cv-orb-layer {
+  position: sticky; top: 0; height: 0; overflow: visible;
+  pointer-events: none; z-index: 0;
+}
+.cv-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  will-change: transform;
+}
+.cv-orb--1 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(210,18,34,.34) 0%, rgba(180,10,24,.1) 45%, transparent 70%);
+  filter: blur(70px);
+  left: 5%; top: 5%; opacity: .75;
+  animation: orbA 4s ease-in-out infinite;
+}
+.cv-orb--2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(160,6,20,.3) 0%, rgba(130,4,16,.08) 45%, transparent 70%);
+  filter: blur(60px);
+  right: 5%; bottom: 8%; opacity: .65;
+  animation: orbB 5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+.cv-orb--3 {
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(200,8,28,.26) 0%, transparent 68%);
+  filter: blur(48px);
+  left: 55%; top: 8%; opacity: .55;
+  animation: orbC 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+.cv-orb--4 {
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(220,20,40,.2) 0%, transparent 68%);
+  filter: blur(42px);
+  left: 22%; bottom: 12%; opacity: .5;
+  animation: orbA 4.5s ease-in-out infinite reverse;
+  animation-delay: -1s;
+}
+@keyframes orbA {
+  0%   { transform: translate(0,0);       }
+  30%  { transform: translate(60px,-45px); }
+  60%  { transform: translate(-30px,55px); }
+  100% { transform: translate(0,0);       }
+}
+@keyframes orbB {
+  0%   { transform: translate(0,0);        }
+  25%  { transform: translate(-55px, 40px); }
+  55%  { transform: translate(40px,-50px);  }
+  80%  { transform: translate(-20px,20px);  }
+  100% { transform: translate(0,0);        }
+}
+@keyframes orbC {
+  0%   { transform: translate(0,0)      scale(1);   }
+  40%  { transform: translate(35px,50px) scale(1.1); }
+  70%  { transform: translate(-40px,-30px) scale(.9); }
+  100% { transform: translate(0,0)      scale(1);   }
+}
+
+/* Bottom info strip */
+.cv-bottom {
+  position: absolute; bottom: 26px; left: 0; right: 0;
+  display: flex; align-items: center; gap: 1.2rem; padding: 0 28px;
+  font-family: var(--sans), system-ui, sans-serif;
+  font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.18); pointer-events: none;
+  animation: cvRise 1.2s cubic-bezier(0.22,1,0.36,1) .5s both;
+}
+.cv-bottom-line { flex: 1; height: 1px; background: rgba(255,255,255,.07); }
+
+/* Brand clickable when cover hidden */
+.cover-gone .nav-brand { cursor: pointer; transition: opacity .2s; }
+.cover-gone .nav-brand:hover { opacity: .55; }
+
+/* Nav actions (Gramática + Repositorio — always visible) */
+.nav-actions {
+  display: flex; align-items: center; height: 100%;
+  flex-shrink: 0; border-left: 1px solid var(--border);
+}
+.nav-action-sep { width: 1px; height: 16px; background: var(--border); margin: 0 .1rem; }
+.nav-action-btn {
+  height: 100%; padding: 0 1.2rem;
+  font-family: var(--sans); font-size: .67rem;
+  letter-spacing: .14em; text-transform: uppercase; font-weight: 500;
+  color: rgba(17,17,16,.35); background: none; border: none; cursor: pointer;
+  white-space: nowrap; transition: color .15s;
+  display: flex; align-items: center; gap: .3rem;
+}
+.nav-action-btn:hover { color: var(--ink); }
+.nav-action-btn svg { flex-shrink: 0; }
+
+/* Gramática dropdown in nav */
+.nav-action-item { position: relative; height: 100%; display: flex; align-items: center; }
+.nav-action-menu {
+  position: fixed; top: var(--nav-h);
+  min-width: 210px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--red);
+  opacity: 0; pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity .15s, transform .15s;
+  z-index: 999;
+}
+.nav-action-menu.open {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+.nav-action-menu-item {
+  display: block; width: 100%;
+  padding: .55rem 1.1rem;
+  font-family: var(--serif); font-size: .92rem; font-style: italic;
+  color: rgba(17,17,16,.38); background: none;
+  border: none; border-bottom: 1px solid var(--border);
+  cursor: pointer; text-align: left; transition: color .15s;
+}
+.nav-action-menu-item:last-child { border-bottom: none; }
+.nav-action-menu-item:hover { color: var(--ink); }
+
+/* Agradecimientos panel */
+.panel-agradecimientos {
+  grid-template-columns: 1fr;
+}
+.panel-agradecimientos .panel-inner {
+  grid-column: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; min-height: 100%;
+}
+
+/* ── MOBILE ─────────────────────────────────────────────────────── */
+@media(max-width:768px){
+  html, body { height: auto; overflow: auto; }
+
+  /* Nav: wrap tabs to a second row */
+  #topnav {
+    height: auto;
+    min-height: var(--nav-h);
+    flex-wrap: wrap;
+    padding: 0 .8rem;
+    align-items: center;
+    gap: 0;
+  }
+  .nav-brand { padding: 0 .4rem 0 0; font-size: .67rem; flex-shrink: 0; }
+  .nav-arrow { display: none; }
+  .nav-sections {
+    order: 10;
+    width: 100%;
+    flex: none;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    height: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .nav-sections::-webkit-scrollbar { display: none; }
+  .nav-item { flex: none; }
+  .nav-btn {
+    flex: none;
+    white-space: nowrap;
+    padding: 0 .85rem;
+    font-size: .63rem;
+  }
+  .nav-actions { margin-left: auto; }
+
+  /* Canvas: switch from horizontal fixed to vertical scroll */
+  #canvas {
+    position: relative;
+    top: auto; left: auto; right: auto; bottom: auto;
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+    scroll-snap-type: none;
+    margin-top: calc(var(--nav-h) + 40px);
+  }
+
+  /* Panels: full-width vertical blocks */
+  .panel {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    overflow: visible;
+    scroll-snap-align: none;
+    grid-template-columns: 1fr;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+  }
+  .panel-index { display: none; }
+  .panel-inner {
+    padding: 1.5rem 1rem 4rem;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Tables: horizontal scroll on mobile */
+  .tbl-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  table { font-size: .8rem; }
+  td, th { padding: .35rem .5rem; }
+
+  /* Left fixed sidebar */
+  #left-index { display: none; }
+
+  /* Dropdown: keep above content */
+  .nav-dropdown, .nav-action-menu { position: fixed; top: calc(var(--nav-h) + 40px); }
+
+  /* Vowel/consonant chart: scale to fit */
+  #vow-chart { max-width: 100%; height: auto; }
+
+  /* Conjugation grid: narrower */
+  .cj { max-width: 100%; }
+  .cj-col { min-width: 90px; }
+
+  /* IPA card: keep accessible */
+  #ipa-card { max-width: calc(100vw - 2rem); }
+
+  /* Custom cursor: ocultar en touch */
+  #cv-cursor { display: none !important; }
+  body.cursor-active, body.cursor-active * { cursor: auto !important; }
+}
+
+/* ── VIEW TRANSITIONS API ── */
+@view-transition { navigation: auto; }
+@keyframes vt-out { to   { transform:translateX(-40px); opacity:0 } }
+@keyframes vt-in  { from { transform:translateX( 40px); opacity:0 } }
+::view-transition-old(root) { animation: vt-out .28s cubic-bezier(.4,0,.2,1) both; }
+::view-transition-new(root) { animation: vt-in  .38s cubic-bezier(.16,1,.3,1) both; }
+
+</style>
+</head>
+<body class="cursor-active cover-gone">
+
+<!-- ── CURSOR ─────────────────────────────────────────────────────── -->
+<img id="cv-cursor" src="mythistle.png" alt="" style="opacity: 1; left: 1335.4px; top: 676px;">
+<div id="ipa-card" aria-hidden="true" class="" style="left: 912px; top: 121px;">
+  <div class="ic-sym">ɨ</div>
+  <div class="ic-desc">Close central unrounded</div>
+  <div class="ic-gr">Grafema: y</div>
+  <video class="ic-video" playsinline="" loop=""></video>
+  <div class="ic-hint">📋 click · ver cita</div>
+  <div class="ic-cite">Seeing Speech (2014). University of Glasgow &amp; Queen Margaret University. Vídeos MRI de vocales cardinales. <em>seeingspeech.ac.uk</em></div>
+</div>
+
+<!-- ── PORTADA ──────────────────────────────────────────────────── -->
+<div id="cover" class="out" style="display: none;">
+  <div class="cv-orb-layer" aria-hidden="true">
+    <div class="cv-orb cv-orb--1"></div>
+    <div class="cv-orb cv-orb--2"></div>
+    <div class="cv-orb cv-orb--3"></div>
+    <div class="cv-orb cv-orb--4"></div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <div class="cv-hero">
+    <div class="cv-corner cv-corner--tl" aria-hidden="true"></div>
+    <div class="cv-corner cv-corner--tr" aria-hidden="true"></div>
+    <div class="cv-corner cv-corner--bl" aria-hidden="true"></div>
+    <div class="cv-corner cv-corner--br" aria-hidden="true"></div>
+    <div class="cv-inner">
+      <h1 class="cv-title">
+        <span class="cv-title-top">Liega</span>
+        <span class="cv-title-bot">Recrexensca</span>
+      </h1>
+      <img class="cv-flag" src="flag-transparent.png" alt="Bandera de Liega Recrexensca">
+    </div>
+    <!-- Botones top-center -->
+    <div class="cv-btns cv-btns--top">
+      <div class="cv-dropdown">
+        <button class="cv-btn" id="cv-gram">Gramática</button>
+        <div class="cv-menu" id="cv-menu"><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button><button class="cv-menu-item">Fonología</button><button class="cv-menu-item">Ortografía y Pronunciación</button><button class="cv-menu-item">Sustantivos</button><button class="cv-menu-item">Adjetivos</button><button class="cv-menu-item">Determinantes</button><button class="cv-menu-item">Pronombres</button><button class="cv-menu-item">Verbos</button><button class="cv-menu-item">Numerales</button><button class="cv-menu-item">Adverbios</button><button class="cv-menu-item">Vocabulario</button><button class="cv-menu-item">Conjunciones y preposiciones</button></div>
+      </div>
+      <div class="cv-sep" aria-hidden="true"></div>
+      <button class="cv-btn" id="cv-repo">Repositorio</button>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- ── TOP NAV ──────────────────────────────────────────────────── -->
+<header id="topnav">
+  <div class="nav-brand">Liega Recrexensca</div>
+  <button class="nav-arrow" id="nav-prev" aria-label="Anterior">←</button>
+  <nav class="nav-sections" id="nav-sections"></nav>
+  <button class="nav-arrow" id="nav-next" aria-label="Siguiente">→</button>
+  <div class="nav-actions">
+    <button id="theme-btn" title="Cambiar tema">🌙</button>
+  </div>
+</header>
+
+<!-- ── HORIZONTAL CANVAS ────────────────────────────────────────── -->
+<div id="canvas">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 1 — ORTOGRAFÍA
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="fonologia" data-label="Fonología">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Fonología</h2>
+
+  <!-- VOCALES -->
+  <div id="fon-vocales">
+    <h3 class="sub-heading">Vocales</h3>
+    <p>El idioma posee <strong>7 vocales</strong>. Cada sílaba mantiene su calidad vocálica plena.</p>
+    <div style="text-align:center;margin:1.5rem 0 2rem">
+    <svg id="vow-chart" viewBox="0 0 540 430" width="460" height="366" style="font-family:var(--ipa);overflow:visible;max-width:100%">
+      <style>
+        .vow {
+          cursor: pointer;
+          transition: opacity .12s;
+          fill: #111;
+          stroke: white;
+          stroke-width: 14;
+          paint-order: stroke fill;
+        }
+        .vow:hover { opacity:.45; }
+      </style>
+
+      <!-- ── Líneas de filas (horizontales) ── -->
+      <!-- filas: x1 = intersección front en esa fila -->
+      <line x1="148" y1="70" x2="455" y2="70" stroke="#111" stroke-width="1.2"></line>
+      <line x1="197" y1="175" x2="455" y2="175" stroke="#111" stroke-width="1.2"></line>
+      <line x1="246" y1="280" x2="455" y2="280" stroke="#111" stroke-width="1.2"></line>
+      <line x1="295" y1="385" x2="455" y2="385" stroke="#111" stroke-width="1.2"></line>
+
+      <!-- ── Líneas de columnas ── -->
+      <line x1="148" y1="70" x2="295" y2="385" stroke="#111" stroke-width="1.2"></line><!-- front (más diagonal) -->
+      <line x1="300" y1="70" x2="360" y2="385" stroke="#111" stroke-width="1.2"></line><!-- central -->
+      <line x1="455" y1="70" x2="455" y2="385" stroke="#111" stroke-width="1.2"></line><!-- back (vertical) -->
+
+      <!-- ── Etiquetas de columna ── -->
+      <text x="148" y="44" text-anchor="middle" font-family="var(--sans)" font-size="13" fill="#555">Front</text>
+      <text x="300" y="44" text-anchor="middle" font-family="var(--sans)" font-size="13" fill="#555">Central</text>
+      <text x="455" y="44" text-anchor="middle" font-family="var(--sans)" font-size="13" fill="#555">Back</text>
+
+      <!-- ── Etiquetas de fila ── -->
+      <text x="90" y="74" text-anchor="end" font-family="var(--sans)" font-size="13" fill="#555">Close</text>
+      <text x="90" y="179" text-anchor="end" font-family="var(--sans)" font-size="13" fill="#555">Close-mid</text>
+      <text x="90" y="284" text-anchor="end" font-family="var(--sans)" font-size="13" fill="#555">Open-mid</text>
+      <text x="90" y="389" text-anchor="end" font-family="var(--sans)" font-size="13" fill="#555">Open</text>
+
+      <!-- ── Vocales (clicables) — centradas en su intersección ── -->
+      <!-- i  ·  Front · Close -->
+      <text class="vow" x="148" y="70" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="i" data-desc="Close front unrounded" data-gr="i" data-video="video/vow-i.mp4">i</text>
+
+      <!-- ɨ  ·  Central · Close -->
+      <text class="vow" x="300" y="70" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="ɨ" data-desc="Close central unrounded" data-gr="y" data-video="video/vow-y.mp4">ɨ</text>
+
+      <!-- u  ·  Back · Close -->
+      <text class="vow" x="455" y="70" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="u" data-desc="Close back rounded" data-gr="u" data-video="video/vow-u.mp4">u</text>
+
+      <!-- e  ·  Front · Close-mid -->
+      <text class="vow" x="197" y="175" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="e" data-desc="Close-mid front unrounded" data-gr="e" data-video="video/vow-e.mp4">e</text>
+
+      <!-- ε  ·  Front · Open-mid -->
+      <text class="vow" x="246" y="280" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="ε" data-desc="Open-mid front unrounded" data-gr="ē" data-video="video/vow-ee.mp4">ε</text>
+
+      <!-- ɔ  ·  Back · Open-mid -->
+      <text class="vow" x="455" y="280" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="ɔ" data-desc="Open-mid back rounded" data-gr="o" data-video="video/vow-o.mp4">ɔ</text>
+
+      <!-- a  ·  Central · Open -->
+      <text class="vow" x="360" y="385" text-anchor="middle" dominant-baseline="central" font-size="22" data-ipa="a" data-desc="Open central unrounded" data-gr="a" data-video="video/vow-a.mp4">a</text>
+    </svg>
+</div>
+  </div>
+  <!-- audio de vocales manejado por script global IPA -->
+
+  <!-- CONSONANTES -->
+  <div id="fon-consonantes">
+    <h3 class="sub-heading">Consonantes</h3>
+    <div class="tbl-wrap">
+    <table class="cons-tbl">
+      <thead>
+        <tr>
+          <th rowspan="2" class="mn">Consonantes</th>
+          <th colspan="2">Labial</th>
+          <th colspan="2">Dental</th>
+          <th colspan="2">Alveolar</th>
+          <th>Post-Alv.</th>
+          <th>Palatal</th>
+          <th colspan="2">Velar</th>
+        </tr>
+        <tr>
+          <th>Hard</th><th>Soft</th>
+          <th>Hard</th><th>Soft</th>
+          <th>Hard</th><th>Soft</th>
+          <th>Hard</th>
+          <th>Soft</th>
+          <th>Hard</th><th>Soft</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mn">Nasal</td>
+          <td class="ipa"><span class="con" data-ipa="m" data-desc="Nasal bilabial" data-video="video/con-m.mp4">m</span></td>
+          <td class="ipa"><span class="con" data-ipa="mʲ" data-desc="Nasal bilabial palatalizada">mʲ</span></td>
+          <td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="n" data-desc="Nasal alveolar" data-video="video/con-n.mp4">n</span></td>
+          <td class="ipa"><span class="con" data-ipa="nʲ" data-desc="Nasal alveolar palatalizada">nʲ</span></td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="mn">Plosiva</td>
+          <td class="ipa"><span class="con" data-ipa="p" data-desc="Plosiva bilabial sorda" data-video="video/con-p.mp4">p</span> <span class="con" data-ipa="b" data-desc="Plosiva bilabial sonora" data-video="video/con-b.mp4">b</span></td>
+          <td class="ipa"><span class="con" data-ipa="pʲ" data-desc="Plosiva bilabial sorda palatalizada">pʲ</span> <span class="con" data-ipa="bʲ" data-desc="Plosiva bilabial sonora palatalizada">bʲ</span></td>
+          <td class="ipa"><span class="con" data-ipa="t" data-desc="Plosiva dental sorda">t</span> <span class="con" data-ipa="d" data-desc="Plosiva dental sonora">d</span></td>
+          <td class="ipa"><span class="con" data-ipa="tʲ" data-desc="Plosiva dental sorda palatalizada">tʲ</span> <span class="con" data-ipa="dʲ" data-desc="Plosiva dental sonora palatalizada">dʲ</span></td>
+          <td></td><td></td><td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="k" data-desc="Plosiva velar sorda">k</span> <span class="con" data-ipa="g" data-desc="Plosiva velar sonora">g</span></td>
+          <td class="ipa"><span class="con" data-ipa="kʲ" data-desc="Plosiva velar sorda palatalizada">kʲ</span> <span class="con" data-ipa="gʲ" data-desc="Plosiva velar sonora palatalizada">gʲ</span></td>
+        </tr>
+        <tr>
+          <td class="mn">Africada</td>
+          <td></td><td></td><td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="t͡s" data-desc="Africada alveolar sorda">t͡s</span></td>
+          <td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="t͡ɕ" data-desc="Africada palatal sorda">t͡ɕ</span></td>
+          <td></td><td></td>
+        </tr>
+        <tr>
+          <td class="mn">Fricativa</td>
+          <td class="ipa"><span class="con" data-ipa="f" data-desc="Fricativa labiodental sorda" data-video="video/con-f.mp4">f</span> <span class="con" data-ipa="v" data-desc="Fricativa labiodental sonora" data-video="video/con-v.mp4">v</span></td>
+          <td class="ipa"><span class="con" data-ipa="fʲ" data-desc="Fricativa labiodental sorda palatalizada">fʲ</span> <span class="con" data-ipa="vʲ" data-desc="Fricativa labiodental sonora palatalizada">vʲ</span></td>
+          <td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="s" data-desc="Fricativa alveolar sorda" data-video="video/con-s.mp4">s</span> <span class="con" data-ipa="z" data-desc="Fricativa alveolar sonora" data-video="video/con-z.mp4">z</span></td>
+          <td class="ipa"><span class="con" data-ipa="sʲ" data-desc="Fricativa alveolar sorda palatalizada">sʲ</span> <span class="con" data-ipa="zʲ" data-desc="Fricativa alveolar sonora palatalizada">zʲ</span></td>
+          <td class="ipa"><span class="con" data-ipa="ʂ" data-desc="Fricativa retroflexa sorda" data-video="video/con-sr.mp4">ʂ</span> <span class="con" data-ipa="ʐ" data-desc="Fricativa retroflexa sonora" data-video="video/con-zr.mp4">ʐ</span></td>
+          <td class="ipa"><span class="con" data-ipa="ɕ" data-desc="Fricativa alveolopalatal sorda">ɕ</span></td>
+          <td class="ipa"><span class="con" data-ipa="x" data-desc="Fricativa velar sorda" data-video="video/con-x.mp4">x</span></td>
+          <td class="ipa"><span class="con" data-ipa="xʲ" data-desc="Fricativa velar sorda palatalizada">xʲ</span></td>
+        </tr>
+        <tr>
+          <td class="mn">Aproximante</td>
+          <td></td><td></td><td></td><td></td>
+          <td></td><td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="j" data-desc="Aproximante palatal" data-video="video/con-j.mp4">j</span></td>
+          <td class="ipa"><span class="con" data-ipa="w" data-desc="Aproximante labiovelar">w</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="mn">Lateral</td>
+          <td></td><td></td><td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="l" data-desc="Lateral alveolar">l</span></td>
+          <td class="ipa"><span class="con" data-ipa="lʲ" data-desc="Lateral alveolar palatalizada">lʲ</span></td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td class="mn">Tap</td>
+          <td></td><td></td><td></td><td></td>
+          <td class="ipa"><span class="con" data-ipa="ɾ" data-desc="Tap alveolar" data-video="video/con-r.mp4">ɾ</span></td>
+          <td class="ipa"><span class="con" data-ipa="ɾʲ" data-desc="Tap alveolar palatalizado">ɾʲ</span></td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var currentAudio = null;
+    document.querySelectorAll('#fon-consonantes .con').forEach(function(el){
+      el.addEventListener('click', function(e){
+        e.stopPropagation();
+        var src = this.dataset.audio;
+        if (src){
+          if (currentAudio){ currentAudio.pause(); currentAudio.currentTime=0; }
+          currentAudio = new Audio(src);
+          currentAudio.play().catch(function(){});
+        }
+      });
+    });
+  })();
+  </script>
+
+</div>
+</div>
+<div class="panel" data-section="ortografia" data-label="Ortografía y Pronunciación">
+<div class="panel-index" style=""><!-- built by JS --></div>
+<div class="panel-inner" style="">
+
+  <h2 class="section-heading">Ortografía y<br>Pronunciación</h2>
+
+  <!-- ALFABETO -->
+  <div id="alfabeto">
+    <h3 class="sub-heading">Alfabeto</h3>
+    <p>Tabla introductoria del alfabeto con valor fonético, nombre, ejemplo y traducción.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Grafema</th><th>AFI</th><th>Nombre</th><th></th><th>Ejemplo</th><th></th><th>Traducción</th></tr></thead>
+        <tbody id="atb"><tr><td style="font-family:var(--sans);font-weight:500">A</td><td class="ipa">/a/</td><td><em>a</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ä]</td><td><em>an</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[an]</td><td>año</td></tr><tr><td style="font-family:var(--sans);font-weight:500">B</td><td class="ipa">/b/</td><td><em>be</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[bʲe]</td><td><em>buan</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[bʷan]</td><td>bueno</td></tr><tr><td style="font-family:var(--sans);font-weight:500">C</td><td class="ipa">/k/, /t͡ɕ/</td><td><em>ce</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[t͡ɕe]</td><td><em>ciatro</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[t͡ɕa.tɾo]</td><td>centro</td></tr><tr><td style="font-family:var(--sans);font-weight:500">D</td><td class="ipa">/d/</td><td><em>de</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[dʲe]</td><td><em>domiach</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[do.ˈmʲak]</td><td>domingo</td></tr><tr><td style="font-family:var(--sans);font-weight:500">E</td><td class="ipa">/je/</td><td><em>e</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[je]</td><td><em>exame</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[e.ˈsʲa.me]</td><td>examen</td></tr><tr><td style="font-family:var(--sans);font-weight:500">Ē</td><td class="ipa">/ɛ/</td><td><em>ē</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛ]</td><td><em>ēconomia</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛ.ko.ˈno.mʲa]</td><td>economía</td></tr><tr><td style="font-family:var(--sans);font-weight:500">F</td><td class="ipa">/f/</td><td><em>ēf</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛf]</td><td><em>felicĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[fe.ˈlʲit͡ɕ]</td><td>feliz</td></tr><tr><td style="font-family:var(--sans);font-weight:500">G</td><td class="ipa">/g/, /ʐ/</td><td><em>ge</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ʐɛ]</td><td><em>grudĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[gɾutʲ]</td><td>grande</td></tr><tr><td style="font-family:var(--sans);font-weight:500">H</td><td class="ipa">—</td><td><em>haca</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈa.ka]</td><td><em>hiarĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈjaɾʲ]</td><td>ayer</td></tr><tr><td style="font-family:var(--sans);font-weight:500">I</td><td class="ipa">/i/, /j/</td><td><em>i</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[i]</td><td><em>ilĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ilʲ]</td><td>él</td></tr><tr><td style="font-family:var(--sans);font-weight:500">K</td><td class="ipa">/k/</td><td><em>ka</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ka]</td><td><em>koala</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ko.ˈa.la]</td><td>koala</td></tr><tr><td style="font-family:var(--sans);font-weight:500">L</td><td class="ipa">/l/</td><td><em>ēl</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛɫ]</td><td><em>liega</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[lʲe.zʲa]</td><td>lengua</td></tr><tr><td style="font-family:var(--sans);font-weight:500">M</td><td class="ipa">/m/</td><td><em>ēm</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛm]</td><td><em>mud</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[mut]</td><td>mundo</td></tr><tr><td style="font-family:var(--sans);font-weight:500">N</td><td class="ipa">/n/</td><td><em>ēn</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛn]</td><td><em>nuacĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[n<span style="background-color: rgb(245, 244, 242);">ʷ</span>at͡ɕ]</td><td>noche</td></tr><tr><td style="font-family:var(--sans);font-weight:500">O</td><td class="ipa">/o/</td><td><em>o</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɔ]</td><td><em>ochĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɔkʲ]</td><td>ojo</td></tr><tr><td style="font-family:var(--sans);font-weight:500">P</td><td class="ipa">/p/</td><td><em>pe</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[pʲe]</td><td><em>prexona</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[pre.ˈsʲɔ.na]</td><td>persona</td></tr><tr><td style="font-family:var(--sans);font-weight:500">R</td><td class="ipa">/r/</td><td><em>ēr</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛɾ]</td><td><em>rural</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɾu.ˈɾaɫ]</td><td>rural</td></tr><tr><td style="font-family:var(--sans);font-weight:500">S</td><td class="ipa">/s/</td><td><em>ēs</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɛs]</td><td><em>siatĭ</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[sʲatʲ]</td><td>siete</td></tr><tr><td style="font-family:var(--sans);font-weight:500">T</td><td class="ipa">/t/</td><td><em>te</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[tʲe]</td><td><em>tradutsa</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[tɾa.ˈdu.t͡sa]</td><td>traducción</td></tr><tr><td style="font-family:var(--sans);font-weight:500">U</td><td class="ipa">/u/, /w/</td><td><em>u</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[u]</td><td><em>urox</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈu.ɾox]</td><td>oso</td></tr><tr><td style="font-family:var(--sans);font-weight:500">V</td><td class="ipa">/v/</td><td><em>ve</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[vʲe]</td><td><em>vita</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈvʲi.ta]</td><td>vida</td></tr><tr><td style="font-family:var(--sans);font-weight:500">W</td><td class="ipa">/w/</td><td><em>dupli-ve</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈdu.plʲ.vʲe]</td><td><em>wifi</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈwi.fʲi]</td><td>wifi</td></tr><tr><td style="font-family:var(--sans);font-weight:500">X</td><td class="ipa">/x/</td><td><em>xa</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[xa]</td><td><em>ximia</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈʂi.mʲa]</td><td>química</td></tr><tr><td style="font-family:var(--sans);font-weight:500">Y</td><td class="ipa">/ɨ/</td><td><em>y</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɨ]</td><td><em>ycà</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ɨ.ˈka]</td><td>decir y</td></tr><tr><td style="font-family:var(--sans);font-weight:500">Z</td><td class="ipa">/z/</td><td><em>zeta</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[ˈzʲe.ta]</td><td><em>zooparc</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">[zʷo.ˈpaɾk]</td><td>zoo</td></tr></tbody>
+      </table>
+    </div>
+    <p class="tbl-note">* [ä], [ɫ], [ɔ], [ɾ] se simplifican a [a], [l], [o], [r].</p>
+  </div>
+
+  <!-- VOCALES -->
+  <div id="vocales">
+    <h3 class="sub-heading">Vocales</h3>
+    <p>Este idioma posee <strong>7 vocales fonémicas</strong>: <em>a, e, ē, i, y, o, u</em>.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Vocal</th><th>AFI (tónica)</th><th>Equivalentes</th><th>Ruso</th></tr></thead>
+      <tbody>
+        <tr><td><em>a</em></td><td class="ipa">[ä]</td><td><em>a</em> española</td><td class="ipa">а</td></tr>
+        <tr><td><em>e</em></td><td class="ipa">[je]</td><td><em>е</em> rusa</td><td class="ipa">е</td></tr>
+        <tr><td><em>ē</em></td><td class="ipa">[ɛ]</td><td><em>bet</em> inglés</td><td class="ipa">э</td></tr>
+        <tr><td><em>i</em></td><td class="ipa">[i]</td><td><em>i</em> española</td><td class="ipa">и</td></tr>
+        <tr><td><em>y</em></td><td class="ipa">[ɨ]</td><td><em>ы</em> rusa</td><td class="ipa">ы</td></tr>
+        <tr><td><em>o</em></td><td class="ipa">[ɔ]</td><td><em>not</em> inglés</td><td class="ipa">о</td></tr>
+        <tr><td><em>u</em></td><td class="ipa">[u]</td><td><em>u</em> española</td><td class="ipa">у</td></tr>
+      </tbody>
+    </table></div>
+
+    <div id="vocal-i">
+      <h4 class="subsub-heading">La vocal I</h4>
+      <p>La vocal <em>i</em> siempre palataliza la consonante precedente.</p>
+      <div class="exg"><p><em>vita</em> <span class="ipa">[vʲi.ta]</span><span class="tr">'vida'</span></p>
+      <p><em>mesĭ</em> <span class="ipa">[mesʲ]</span><span class="tr">'mes'</span></p></div>
+    </div>
+
+    <div id="vocal-ee">
+      <h4 class="subsub-heading">La vocal Ē</h4>
+      <p>Se pronuncia <span class="ipa">[ɛ]</span> en lugar de <span class="ipa">[e]</span>.</p>
+      <div class="exg"><p><em>ēconomia</em> <span class="ipa">[ɛ.ko.ˈno.mʲa]</span><span class="tr">'economía'</span></p></div>
+      <p style="padding-left:1.1rem">Además, cuando va después de una <em>c</em>, indica que esta se pronuncia <span class="ipa">[t͡s]</span>.</p>
+      <div class="exg"><p><em>cēlo</em> <span class="ipa">[ˈt͡sɛ.lo]</span><span class="tr">'cielo'</span></p></div>
+    </div>
+
+    <div id="vocal-u">
+      <h4 class="subsub-heading">La vocal U</h4>
+      <p>Átona y adyacente a vocal, funciona como semiconsonante <span class="ipa">[w]</span>.</p>
+      <div class="exg"><p><em>dua</em> <span class="ipa">[dʷa]</span><span class="tr">'dos'</span></p></div>
+    </div>
+
+    <div id="diacriticos">
+      <h4 class="subsub-heading">Diacríticos vocálicos</h4>
+
+      <p class="label">La Ĭ</p>
+      <p>Indica que la <em>i</em> es muda, pero palataliza la consonante anterior.</p>
+      <div class="exg"><p><em>florĭ</em> <span class="ipa">[florʲ]</span><span class="tr">'flor'</span></p></div>
+      <p style="padding-left:1.1rem">Cuando la <em>ĭ</em> va justo antes de una <em>c</em> simplemente indica que la <em>c</em> se pronuncia <span class="ipa">[t͡s]</span> y no se pronuncia.</p>
+      <div class="exg"><p><em>cordĭce</em> <span class="ipa">[ˈkor.t͡sɨ]</span><span class="tr">'corazón'</span></p></div>
+    </div>
+  </div>
+
+  <!-- CONSONANTES -->
+  <div id="consonantes">
+    <h3 class="sub-heading">Consonantes</h3>
+    <p>Este idioma posee <strong>22 sonidos consonánticos fonémicos</strong>.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Grafemas</th><th>Valor fonético</th><th>Equivalente</th><th>Ruso</th></tr></thead>
+      <tbody>
+        <tr><td><em>b</em></td><td class="ipa">[b]</td><td><em>b</em> española</td><td class="ipa">б</td></tr>
+        <tr><td><em>c</em></td><td class="ipa">[k], [t͡ɕ], [t͡s]</td><td><em>k</em>, <em>ch</em>, <em>z</em> italiana</td><td class="ipa">к, ч, ц</td></tr>
+        <tr><td><em>d</em></td><td class="ipa">[d]</td><td><em>d</em> española</td><td class="ipa">д</td></tr>
+        <tr><td><em>f</em></td><td class="ipa">[f]</td><td><em>f</em> española</td><td class="ipa">ф</td></tr>
+        <tr><td><em>g</em></td><td class="ipa">[g], [ʐ]</td><td><em>g</em> española, <em>j</em> francesa</td><td class="ipa">г, ж</td></tr>
+        <tr><td><em>h</em></td><td>—</td><td>muda</td><td>—</td></tr>
+        <tr><td><em>k</em></td><td class="ipa">[k]</td><td><em>k</em> española</td><td class="ipa">к</td></tr>
+        <tr><td><em>l</em></td><td class="ipa">[l]</td><td><em>l</em> española</td><td class="ipa">л</td></tr>
+        <tr><td><em>m</em></td><td class="ipa">[m]</td><td><em>m</em> española</td><td class="ipa">м</td></tr>
+        <tr><td><em>n</em></td><td class="ipa">[n]</td><td><em>n</em> española</td><td class="ipa">н</td></tr>
+        <tr><td><em>p</em></td><td class="ipa">[p]</td><td><em>p</em> española</td><td class="ipa">п</td></tr>
+        <tr><td><em>r</em></td><td class="ipa">[r]</td><td><em>r</em> italiana</td><td class="ipa">р</td></tr>
+        <tr><td><em>s</em></td><td class="ipa">[s]</td><td><em>s</em> española</td><td class="ipa">с</td></tr>
+        <tr><td><em>t</em></td><td class="ipa">[t]</td><td><em>t</em> española</td><td class="ipa">т</td></tr>
+        <tr><td><em>v</em></td><td class="ipa">[v]</td><td><em>v</em> inglesa</td><td class="ipa">в</td></tr>
+        <tr><td><em>w</em></td><td class="ipa">[w]</td><td><em>w</em> inglesa</td><td>—</td></tr>
+        <tr><td><em>x</em></td><td class="ipa">[x], [ʂ]</td><td><em>j</em> española, <em>sh</em> rusa</td><td class="ipa">х, ш</td></tr>
+        <tr><td><em>z</em></td><td class="ipa">[z]</td><td><em>z</em> inglesa</td><td class="ipa">з</td></tr>
+        <tr><td><em>sc</em></td><td class="ipa">[ɕː]</td><td><em>sch</em> rusa</td><td class="ipa">щ</td></tr>
+      </tbody>
+    </table></div>
+
+    <div id="c-g-x">
+      <h4 class="subsub-heading">La C, G y X</h4>
+      <p>Estas tres consonantes cambian de sonido dependiendo de las vocales que las rodean.</p>
+
+      <p class="label" style="color:#1a5fa8">Antes de E o I</p>
+      <p>Ante <em>e</em> o <em>i</em>, la consonante cambia de sonido automáticamente.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Consonante</th><th>Ante E / I</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td><em>c</em></td><td><em>ce, ci</em></td><td class="ipa">[t͡ɕ]</td></tr>
+          <tr><td><em>g</em></td><td><em>ge, gi</em></td><td class="ipa">[ʐ]</td></tr>
+          <tr><td><em>x</em></td><td><em>xe, xi</em></td><td class="ipa">[ʂ]</td></tr>
+          <tr><td><em>sc</em></td><td><em>sce, sci</em></td><td class="ipa">[ɕː]</td></tr>
+        </tbody>
+      </table></div>
+
+      <p class="label" style="color:#1a5fa8">Después de E, I o IA</p>
+      <p>Cuando <em>c</em>, <em>g</em> o <em>x</em> van precedidas de <em>e</em>, <em>i</em> o <em>ia</em>, también cambian de sonido.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Secuencia</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td><em>ec, ic, iac</em></td><td class="ipa">[t͡s]</td></tr>
+          <tr><td><em>eg, ig, iag</em></td><td class="ipa">[zʲ]</td></tr>
+          <tr><td><em>ex, ix, iax</em></td><td class="ipa">[sʲ]</td></tr>
+        </tbody>
+      </table></div>
+
+      <p class="label" style="color:#1a5fa8">Conservar el sonido original — añadir H</p>
+      <p>En cualquier caso, si se quiere conservar el sonido original de la consonante ante <em>e</em> o <em>i</em>, se añade una <em>h</em>.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Con H</th><th>Pronunciación</th></tr></thead>
+        <tbody>
+          <tr><td><em>che, chi</em></td><td class="ipa">[k]</td></tr>
+          <tr><td><em>ghe, ghi</em></td><td class="ipa">[g]</td></tr>
+          <tr><td><em>xhe, xhi</em></td><td class="ipa">[x]</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="digrafos-etim">
+      <h4 class="subsub-heading">Dígrafos etimológicos</h4>
+      <p><em>ph</em> → <span class="ipa">[f]</span> &nbsp;&nbsp; <em>th</em> → <span class="ipa">[t]</span></p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 2 — SUSTANTIVOS
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="sustantivos" data-label="Sustantivos">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Sustantivos</h2>
+
+  <ul class="glist">
+    <li><strong>3 géneros:</strong> masculino, femenino, neutro.</li>
+    <li><strong>3 casos:</strong> nominativo, genitivo, dativo.</li>
+    <li><strong>2 números:</strong> singular y plural.</li>
+    <li><strong>2 declinaciones:</strong> dura y blanda.</li>
+  </ul>
+
+  <div id="declinaciones">
+    <h3 class="sub-heading">Declinación</h3>
+
+    <div id="decl-dura">
+      <h4 class="subsub-heading">Dura</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>Masc.</th><th>Fem.</th><th>Neutro</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3"><strong>Sg.</strong></td><td>Nom.</td><td class="ex-cell"><span class="end">-cons.</span><em>mod</em><span class="m2">'modo'</span></td><td class="ex-cell"><span class="end">-a</span><em>vita</em><span class="m2">'vida'</span></td><td class="ex-cell"><span class="end">-o</span><em>taplo</em><span class="m2">'templo'</span></td></tr>
+          <tr><td>Gen.</td><td class="ex-cell"><span class="end">-y</span><em>mody</em><span class="m2">'del modo'</span></td><td class="ex-cell"><span class="end">-y</span><em>vity</em><span class="m2">'de la vida'</span></td><td class="ex-cell"><span class="end">-i</span><em>tapli</em><span class="m2">'del templo'</span></td></tr>
+          <tr class="tbl-divide"><td>Dat.</td><td class="ex-cell"><span class="end">-u</span><em>modu</em><span class="m2">'al modo'</span></td><td class="ex-cell"><span class="end">-e</span><em>vite</em><span class="m2">'a la vida'</span></td><td class="ex-cell"><span class="end">-u</span><em>taplu</em><span class="m2">'al templo'</span></td></tr>
+          <tr><td rowspan="3"><strong>Pl.</strong></td><td>Nom.</td><td class="ex-cell"><span class="end">-y</span><em>mody</em><span class="m2">'modos'</span></td><td class="ex-cell"><span class="end">-y</span><em>vity</em><span class="m2">'vidas'</span></td><td class="ex-cell"><span class="end">-a</span><em>tapla</em><span class="m2">'templos'</span></td></tr>
+          <tr><td>Gen.</td><td class="ex-cell"><span class="end">-ur</span><em>modur</em><span class="m2">'de los modos'</span></td><td class="ex-cell"><span class="end">-ar</span><em>vitar</em><span class="m2">'de las vidas'</span></td><td class="ex-cell"><span class="end">-or</span><em>taplor</em><span class="m2">'de los templos'</span></td></tr>
+          <tr><td>Dat.</td><td class="ex-cell"><span class="end">-is</span><em>modis</em><span class="m2">'a los modos'</span></td><td class="ex-cell"><span class="end">-is</span><em>vitis</em><span class="m2">'a las vidas'</span></td><td class="ex-cell"><span class="end">-is</span><em>taplis</em><span class="m2">'a los templos'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="decl-blanda">
+      <h4 class="subsub-heading">Blanda</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>Masc.</th><th>Fem.</th><th>Neutro</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3"><strong>Sg.</strong></td><td>Nom.</td><td class="ex-cell"><span class="end">-ĭ</span><em>lionĭ</em><span class="m2">'león'</span></td><td class="ex-cell"><span class="end">-ĭ</span><em>florĭ</em><span class="m2">'flor'</span></td><td class="ex-cell"><span class="end">-e/-io</span><em>mare</em><span class="m2">'mar'</span></td></tr>
+          <tr><td>Gen.</td><td class="ex-cell"><span class="end">-i</span><em>lioni</em><span class="m2">'del león'</span></td><td class="ex-cell"><span class="end">-i</span><em>flori</em><span class="m2">'de la flor'</span></td><td class="ex-cell"><span class="end">-i</span><em>mari</em><span class="m2">'del mar'</span></td></tr>
+          <tr class="tbl-divide"><td>Dat.</td><td class="ex-cell"><span class="end">-iu</span><em>lioniu</em><span class="m2">'al león'</span></td><td class="ex-cell"><span class="end">-ie</span><em>florie</em><span class="m2">'a la flor'</span></td><td class="ex-cell"><span class="end">-iu</span><em>mariu<br><br></em><span class="m2">'al mar'</span></td></tr>
+          <tr><td rowspan="3"><strong>Pl.</strong></td><td>Nom.</td><td class="ex-cell"><span class="end">-i</span><em>lioni</em><span class="m2">'leones'</span></td><td class="ex-cell"><span class="end">-i</span><em>flori</em><span class="m2">'flores'</span></td><td class="ex-cell"><span class="end">-ia</span><em>maria</em><span class="m2">'mares'</span></td></tr>
+          <tr><td>Gen.</td><td class="ex-cell"><span class="end">-iur</span><em>lioniur</em><span class="m2">'de los leones'</span></td><td class="ex-cell"><span class="end">-iar</span><em>floriar</em><span class="m2">'de las flores'</span></td><td class="ex-cell"><span class="end">-ior</span><em>marior</em><span class="m2">'de los mares'</span></td></tr>
+          <tr><td>Dat.</td><td class="ex-cell"><span class="end">-im</span><em>lionim</em><span class="m2">'a los leones'</span></td><td class="ex-cell"><span class="end">-im</span><em>florim</em><span class="m2">'a las flores'</span></td><td class="ex-cell"><span class="end">-im</span><em>marim</em><span class="m2">'a los mares'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div id="neutro-irreg">
+    <h3 class="sub-heading">Neutros irregulares</h3>
+    <p>Sustantivos neutros con raíz irregular en los casos oblicuos, heredada del latín.</p>
+
+    <div class="dh">nome <span style="font-weight:400;font-size:.85em">'nombre'</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sg.</strong></td><td><em>nome</em></td><td><em>nomini</em></td><td><em>nominu</em></td></tr>
+        <tr><td><strong>Pl.</strong></td><td><em>nomina</em></td><td><em>nomin</em></td><td><em>nominim</em></td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="dh" style="margin-top:1.2rem">cuarpo <span style="font-weight:400;font-size:.85em">'cuerpo'</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sg.</strong></td><td><em>cuarpo</em></td><td><em>cuarpi</em></td><td><em>cuarpu</em></td></tr>
+        <tr><td><strong>Pl.</strong></td><td><em>cuarpora</em></td><td><em>corpor</em></td><td><em>cuarporim</em></td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="dh" style="margin-top:1.2rem">tapo <span style="font-weight:400;font-size:.85em">'tiempo'</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sg.</strong></td><td><font face="Crimson Pro, Georgia, serif"><i>tapo</i></font></td><td><em>tapi</em></td><td><em>tapu</em></td></tr>
+        <tr><td><strong>Pl.</strong></td><td><em>tapora</em></td><td><em>tapor</em></td><td><em>taporim</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="deriv-sust-all">
+    <h3 class="sub-heading">Derivaciones <br>sustantivales</h3>
+
+  <div id="deriv-adj">
+    <h4 class="subsub-heading">Desde adjetivos</h4>
+    <p>Usando el sufijo <em>-iostĭ</em>.</p>
+    <div class="exg"><p><em>reialĭ</em> → <em>reialiostĭ</em><span class="tr">'real' → 'realidad'</span></p>
+    <p><em>stavlĭ</em> → <em>stavliostĭ</em><span class="tr">'estable' → 'estabilidad'</span></p></div>
+  </div>
+
+  <div id="deriv-verb">
+    <h4 class="subsub-heading">Desde verbos</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Sufijo</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td class="end">-enie</td><td>Acciones, procesos, estados o resultados.</td><td class="ex-cell"><em>stugià→stugenie</em><span class="m2">'estudio'</span></td></tr>
+        <tr><td class="end">-atsa</td><td>Deriva verbos de primera conjugación.</td><td class="ex-cell"><em>cufirmà→cufirmatsa</em><span class="m2">'confirmación'</span></td></tr>
+        <tr><td class="end">-iatsa</td><td>Deriva verbos de segunda conjugación.</td><td class="ex-cell"><em>sci→sciatsa</em><span class="m2">'conocimiento'</span></td></tr>
+        <tr><td class="end">-agĭ</td><td>Acciones, procesos, resultados, colecciones u objetos.</td><td class="ex-cell"><em>paisagĭ</em><span class="m2">'paisaje'</span></td></tr>
+        <tr><td class="end">-iz</td><td>Indica resultados, procesos u objetos.</td><td class="ex-cell"><em>analizà→anàliz</em><span class="m2">'análisis'</span></td></tr>
+        <tr><td class="end">-miuto</td><td>Expresa el proceso o resultado de una acción.</td><td class="ex-cell"><em>tratà→tratamiuto</em><span class="m2">'tratamiento'</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="deriv-sust">
+    <h4 class="subsub-heading">Desde sustantivos</h4>
+    <p>Usando el sufijo <em>-ario</em>.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span style="font-family:var(--serif);font-style:italic"><em>voda</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'agua'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>vodario</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'acuario'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>hiarba</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'hierba'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>herbario</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'herbario'</span></span>
+    </div></div>
+  </div>
+
+  </div>
+
+  <div id="deriv-agente">
+    <h3 class="sub-heading">Sustantivos <br>de agente</h3>
+    <p>Indican la persona o entidad que realiza una acción.</p>
+
+    <div id="deriv-agente-neutro">
+      <h4 class="subsub-heading">Neutro</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Sufijo</th><th>Base</th><th>Significado</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td class="end">-tor</td><td>Verbos</td><td>Realizadores, profesiones tradicionales.</td><td class="ex-cell"><em>invatà→invator</em><span class="m2">'enviador'</span></td></tr>
+          <tr><td class="end">-er</td><td>Sustantivos</td><td>Neoprofesiones, usuarios activos.</td><td class="ex-cell"><em>instagram→instagramer</em><span class="m2">'instagramer'</span></td></tr>
+          <tr><td class="end">-isto</td><td>Sustantivos</td><td>Especialistas, artes, deportes, ideología.</td><td class="ex-cell"><em>violin→violinisto</em><span class="m2">'violinista'</span></td></tr>
+          <tr><td class="end">-ute / -ate</td><td>Verbos</td><td>Internacionalismos.</td><td class="ex-cell"><em>assiste→assistate</em><span class="m2">'estudiante'</span></td></tr>
+          <tr><td class="end">-ario</td><td>Sustantivos</td><td>Profesiones relacionadas con un objeto.</td><td class="ex-cell"><em>panĭ→paniario</em><span class="m2">'panadero'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="deriv-agente-masc">
+      <h4 class="subsub-heading">Masculino</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Sufijo</th><th>Base</th><th>Significado</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td class="end">-trilĭ</td><td>Verbos</td><td>Realizadores, profesiones tradicionales.</td><td class="ex-cell"><em>invatà→invatrilĭ</em><span class="m2">'enviador (masc.)'</span></td></tr>
+          <tr><td class="end">-ec</td><td>Sustantivos</td><td>Neoprofesiones, usuarios activos.</td><td class="ex-cell"><em>instagram→instagramec</em><span class="m2">'instagramer (masc.)'</span></td></tr>
+          <tr><td class="end">-elĭ</td><td>Sustantivos</td><td>General.</td><td class="ex-cell"><em>amicho→amichelĭ</em><span class="m2">'amigo (masc.)'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="deriv-agente-fem">
+      <h4 class="subsub-heading">Femenino</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Sufijo</th><th>Base</th><th>Significado</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td class="end">-trica</td><td>Verbos</td><td>Realizadores, profesiones tradicionales.</td><td class="ex-cell"><em>invatà→invatrica</em><span class="m2">'enviadora (fem.)'</span></td></tr>
+          <tr><td class="end">-ica</td><td>Sustantivos</td><td>Neoprofesiones, usuarios activos.</td><td class="ex-cell"><em>instagram→instagramica</em><span class="m2">'instagramera (fem.)'</span></td></tr>
+          <tr><td class="end">-ica</td><td>Sustantivos</td><td>General.</td><td class="ex-cell"><em>amicho→amichica</em><span class="m2">'amiga (fem.)'</span></td></tr>
+          <tr><td class="end">-ca</td><td>Sustantivos</td><td>Gentilicios.</td><td class="ex-cell"><em>mexico→mexicanca</em><span class="m2">'mexicana (fem.)'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div id="det-otros">
+    <h3 class="sub-heading">Exclamativos, interrogativos y relativos</h3>
+    <p class="tbl-note" style="color:var(--muted);font-style:italic">Próximamente.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 5 — ADJETIVOS
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="adjetivos" data-label="Adjetivos">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Adjetivos</h2>
+
+  <p>Los adjetivos concuerdan con el sustantivo en género, número y caso.</p>
+  <ul class="quotes">
+    <li><em>L'uchĭ bluc.</em><span class="tr">'El tío blanco.'</span></li>
+    <li><em>La tïa bluca.</em><span class="tr">'La tía blanca.'</span></li>
+    <li><em>Li tiutia bluchi.</em><span class="tr">'Los tíos blancos.'</span></li>
+  </ul>
+
+  <div id="adj-terminaciones">
+    <h3 class="sub-heading">Declinación</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Decl.</th><th></th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4"><strong>Dura</strong></td>
+            <td>Masc.</td>
+            <td class="ex-cell"><span class="end">-∅/-ŭ*</span><br><em>buan</em><span class="m2">'bueno'</span></td>
+            <td class="ex-cell"><span class="end">-uĭ</span><br><em>buanuĭ</em><span class="m2">'del bueno'</span></td>
+            <td class="ex-cell"><span class="end">-u</span><br><em>buanu</em><span class="m2">'al bueno'</span></td></tr>
+        <tr><td>Fem.</td>
+            <td class="ex-cell"><span class="end">-a</span><br><em>buana</em><span class="m2">'buena'</span></td>
+            <td class="ex-cell"><span class="end">-eĭ</span><br><em>buaneĭ</em><span class="m2">'de la buena'</span></td>
+            <td class="ex-cell"><span class="end">-e</span><br><em>buane</em><span class="m2">'a la buena'</span></td></tr>
+        <tr><td>Neutro</td>
+            <td class="ex-cell"><span class="end">-o</span><br><em>buano</em><span class="m2">'bueno'</span></td>
+            <td class="ex-cell"><span class="end">-y</span><br><em>buany</em><span class="m2">'de lo bueno'</span></td>
+            <td class="ex-cell"><span class="end">-ou</span><br><em>buanou</em><span class="m2">'a lo bueno'</span></td></tr>
+        <tr><td>Plural</td>
+            <td class="ex-cell"><span class="end">-y</span><br><em>buany</em><span class="m2">'buenos/as'</span></td>
+            <td class="ex-cell"><span class="end">-yr</span><br><em>buanyr</em><span class="m2">'de los buenos'</span></td>
+            <td class="ex-cell"><span class="end">-is</span><br><em>buanis</em><span class="m2">'a los buenos'</span></td></tr>
+        <tr><td rowspan="4"><strong>Blanda</strong></td>
+            <td>Masc.</td>
+            <td class="ex-cell"><span class="end">-ĭ</span><br><em>acrĭ</em><span class="m2">'acre'</span></td>
+            <td class="ex-cell"><span class="end">-iĭ</span><br><em>acriĭ</em><span class="m2">'del acre'</span></td>
+            <td class="ex-cell"><span class="end">-iu</span><br><em>acriu</em><span class="m2">'al acre'</span></td></tr>
+        <tr><td>Fem.</td>
+            <td class="ex-cell"><span class="end">-ĭ</span><br><em>acrĭ</em><span class="m2">'acre'</span></td>
+            <td class="ex-cell"><span class="end">-ieĭ</span><br><em>acrieĭ</em><span class="m2">'de la acre'</span></td>
+            <td class="ex-cell"><span class="end">-ie</span><br><em>acrie</em><span class="m2">'a la acre'</span></td></tr>
+        <tr><td>Neutro</td>
+            <td class="ex-cell"><span class="end">-e/-io</span><br><em>acre</em><span class="m2">'acre'</span></td>
+            <td class="ex-cell"><span class="end">-i</span><br><em>acri</em><span class="m2">'de lo acre'</span></td>
+            <td class="ex-cell"><span class="end">-iou</span><br><em>acriou</em><span class="m2">'a lo acre'</span></td></tr>
+        <tr><td>Plural</td>
+            <td class="ex-cell"><span class="end">-i</span><br><em>acri</em><span class="m2">'acres'</span></td>
+            <td class="ex-cell"><span class="end">-ir</span><br><em>acrir</em><span class="m2">'de los acres'</span></td>
+            <td class="ex-cell"><span class="end">-im</span><br><em>acrim</em><span class="m2">'a los acres'</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="adj-derivacion">
+    <h3 class="sub-heading">Adjetivización</h3>
+    <p>Sufijos para convertir un sustantivo en adjetivo.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span style="font-family:var(--serif);font-style:italic"><em>arena</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'arena'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>arenosŭ</em><span class="end" style="display:inline;font-size:.7rem"> (-os)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'arenoso'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>latin</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'latín'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>latinsc</em><span class="end" style="display:inline;font-size:.7rem"> (-sc)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'latino'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>voucan</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'volcán'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>voucanicesc</em><span class="end" style="display:inline;font-size:.7rem"> (-icesc)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'volcánico'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>natsa</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'nación'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>natsonalĭ</em><span class="end" style="display:inline;font-size:.7rem"> (-onalĭ)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'nacional'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>mysica</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'música'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>mysicalĭ</em><span class="end" style="display:inline;font-size:.7rem"> (-alĭ)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'musical'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>cutra</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'contra'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>cutrarĭ</em><span class="end" style="display:inline;font-size:.7rem"> (-arĭ)</span><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'contrario'</span></span>
+    </div></div>
+  </div>
+
+  <div id="adj-verbales">
+    <h3 class="sub-heading">Adjetivos verbales</h3>
+    <p>Se forman añadiendo <em>-utĭ</em> para la primera conjugación, <em>-iatĭ</em> para la segunda y <em>-iatĭ</em> para la tercera. El acento recae en la última sílaba. El plural se forma añadiendo <em>-i</em>.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span style="font-family:var(--serif);font-style:italic"><em>lavorà</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>lavorutĭ</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>crede</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>credatĭ</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>veni</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>veniatĭ</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>esse</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>essatĭ</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>ave</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>avatĭ</em></span>
+    </div></div>
+  </div>
+
+  <div id="adj-comparativo">
+    <h3 class="sub-heading">Comparativo</h3>
+    <p>Ante <em>-ior/-iory</em>, las consonantes finales del adjetivo cambian:</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem;text-align:center">
+      <span style="font-family:var(--serif);font-style:italic">T</span><span style="color:var(--muted)">→</span><span style="font-family:var(--serif);font-style:italic;color:var(--red)">TS</span>
+      <span style="font-family:var(--serif);font-style:italic">D</span><span style="color:var(--muted)">→</span><span style="font-family:var(--serif);font-style:italic;color:var(--red)">G</span>
+      <span style="font-family:var(--serif);font-style:italic">Z</span><span style="color:var(--muted)">→</span><span style="font-family:var(--serif);font-style:italic;color:var(--red)">G</span>
+      <span style="font-family:var(--serif);font-style:italic">S</span><span style="color:var(--muted)">→</span><span style="font-family:var(--serif);font-style:italic;color:var(--red)">X</span>
+      <span style="font-family:var(--serif);font-style:italic">ST</span><span style="color:var(--muted)">→</span><span style="font-family:var(--serif);font-style:italic;color:var(--red)">SC</span>
+    </div></div>
+
+    <div id="adj-comp-sup">
+      <h4 class="subsub-heading">Superioridad</h4>
+      <p>Adjetivo + <em>-ior</em> (sg.) / <em>-iory</em> (pl.) + <em>ca</em>.</p>
+      <div class="exg"><p><em>Ilĭ est felicior ca io.</em><span class="tr">'Él es más feliz que yo.'</span></p>
+      <p><em>Ili sut feliciori ca noĭ.</em><span class="tr">'Ellos son más felices que nosotros.'</span></p></div>
+    </div>
+
+    <div id="adj-comp-inf">
+      <h4 class="subsub-heading">Inferioridad</h4>
+      <p><em>min</em> + adjetivo + <em>ca</em>.</p>
+      <div class="exg"><p><em>Ilĭ est min aut ca ty.</em><span class="tr">'Él es menos alto que tú.'</span></p></div>
+    </div>
+
+    <div id="adj-comp-igu">
+      <h4 class="subsub-heading">Igualdad</h4>
+      <p><em>ta</em> + adjetivo + <em>ca</em>.</p>
+      <div class="exg"><p><em>Ila est ta felicĭ ca ilĭ.</em><span class="tr">'Ella es tan feliz como él.'</span></p></div>
+    </div>
+  </div>
+
+  <div id="adj-superlativo">
+    <h3 class="sub-heading">Superlativo</h3>
+
+    <div id="adj-sup-sup">
+      <h4 class="subsub-heading">Superioridad</h4>
+      <p>Artículo + Adjetivo + artículo (concuerda en género y número) + <em>mai</em>.</p>
+      <div class="exg"><p><em>Ila est la felicĭ mai.</em><span class="tr">'Ella es la más feliz.'</span></p></div>
+    </div>
+
+    <div id="adj-sup-inf">
+      <h4 class="subsub-heading">Inferioridad</h4>
+      <p>Adjetivo + artículo (concuerda en género y número) + <em>min</em>.</p>
+      <div class="exg"><p><em>Ila est la felicĭ min.</em><span class="tr">'Ella es la menos feliz.'</span></p></div>
+    </div>
+  </div>
+
+  <div id="adj-irregulares">
+    <h3 class="sub-heading">Comparativos irregulares</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Sg.</th><th>Pl.</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td class="ex-cell"><em>milior</em></td><td class="ex-cell"><em>miliori</em></td><td>'mejor'</td></tr>
+        <tr><td class="ex-cell"><em>peior</em></td><td class="ex-cell"><em>peiori</em></td><td>'peor'</td></tr>
+        <tr><td class="ex-cell"><em>maior</em></td><td class="ex-cell"><em>maiori</em></td><td>'mayor'</td></tr>
+        <tr><td class="ex-cell"><em>minor</em></td><td class="ex-cell"><em>minori</em></td><td>'menor'</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL — DETERMINANTES
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="determinantes" data-label="Determinantes">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Determinantes</h2>
+
+  <div id="art-def">
+    <h3 class="sub-heading">Artículo definido</h3>
+    <p>Se <strong>antepone</strong> al sustantivo. Concuerda en género y número. Solo existe en nominativo.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Número</th><th>Género</th><th>Nom.</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3">Singular</td><td>Masc.</td><td><em>il</em></td></tr>
+        <tr><td>Fem.</td><td><em>la</em></td></tr>
+        <tr><td>Neutro</td><td><em>lo</em></td></tr>
+        <tr><td>Plural</td><td>Todos</td><td><em>li</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="art-indef">
+    <h3 class="sub-heading">Artículo indefinido</h3>
+    <p>Se <strong>antepone</strong> al sustantivo. Concuerda en género, número y caso.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Número</th><th>Género</th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3">Singular</td><td>Masc.</td><td><em>vyn</em></td><td><em>vynuĭ</em></td><td><em>vynu</em></td></tr>
+        <tr><td>Fem.</td><td><em>vyna</em></td><td><em>vyneĭ</em></td><td><em>vyne</em></td></tr>
+        <tr><td>Neutro</td><td><em>vyno</em></td><td><em>vyny</em></td><td><em>vynou</em></td></tr>
+        <tr><td>Plural</td><td>Todos</td><td><em>vyni</em></td><td><em>vynir</em></td><td><em>vynis</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="det-demo">
+    <h3 class="sub-heading">Demostrativos</h3>
+    <p class="label" style="margin-bottom:.3rem">Cercanía / distancia media</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Masc.</th><th>Fem.</th><th>Neutro</th><th>Plural</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nom.</strong></td><td><em>acestĭ</em></td><td><em>acesta</em></td><td><em>acesto</em></td><td><em>acesti</em></td></tr>
+        <tr><td><strong>Gen.</strong></td><td><em>acestuĭ</em></td><td><em>acesteĭ</em></td><td><em>acesty</em></td><td><em>acestir</em></td></tr>
+        <tr><td><strong>Dat.</strong></td><td><em>acestu</em></td><td><em>aceste</em></td><td><em>acestou</em></td><td><em>acestim</em></td></tr>
+      </tbody>
+    </table></div>
+    <p class="label" style="margin-top:.9rem;margin-bottom:.3rem">Lejanía</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Masc.</th><th>Fem.</th><th>Neutro</th><th>Plural</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nom.</strong></td><td><em>acelĭ</em></td><td><em>acela</em></td><td><em>acelo</em></td><td><em>aceli</em></td></tr>
+        <tr><td><strong>Gen.</strong></td><td><em>aceluĭ</em></td><td><em>aceleĭ</em></td><td><em>acely</em></td><td><em>acelir</em></td></tr>
+        <tr><td><strong>Dat.</strong></td><td><em>acelu</em></td><td><em>acele</em></td><td><em>acelou</em></td><td><em>acelim</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="det-cuant">
+    <h3 class="sub-heading">Cuantificadores</h3>
+    <div class="dh">Cēce <span style="font-weight:400;font-size:.85em">(invariable)</span></div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Vau vide si cy a cēce taxi per ací.</em><span class="tr">'Veré si hay algún taxi por aquí.'</span></p>
+    <div class="dh">Nucino</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Nu au nucino libr acesty autory.</em><span class="tr">'No tengo ningún libro de este autor.'</span></p>
+    <div class="dh">Toti</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Toti li aluna aut approvàt l'exame.</em><span class="tr">'Todos los alumnos han aprobado el examen.'</span></p>
+    <div class="dh">Mout</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Cy a mout xiuma in la strata.</em><span class="tr">'Hay mucho ruido en la calle.'</span></p>
+    <div class="dh">Puc</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>A bivýt poc vini.</em><span class="tr">'Bebió poco vino.'</span></p>
+  </div>
+
+  <div id="det-interr">
+    <h3 class="sub-heading">Interrogativos</h3>
+    <div class="dh">Ce</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Ce libr es citú?</em><span class="tr">'¿Qué libro estás leyendo?'</span></p>
+    <div class="dh">Cut</div>
+    <p style="font-size:.82rem;color:var(--ink2);margin:.2rem 0 .5rem 0">Rige genitivo.</p>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Cut alunor aut venít class?</em><span class="tr">'¿Cuántos alumnos vinieron a clase?'</span></p>
+    <div class="dh">Calĭ</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Calĭ prēferis?</em><span class="tr">'¿Cuál prefieres?'</span></p>
+  </div>
+
+  <div id="det-excl">
+    <h3 class="sub-heading">Exclamativos</h3>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Ce frid facit avogĭ!</em><span class="tr">'¡Qué frío hace hoy!'</span></p>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Cut giatiar cy aveat in la platsa!</em><span class="tr">'¡Cuánta gente había en la plaza!'</span></p>
+  </div>
+
+  <div id="det-rel">
+    <h3 class="sub-heading">Relativos</h3>
+    <div class="dh">Cui</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Il libr cui autor au conoscít hiari.</em><span class="tr">'El libro cuyo autor conocí ayer.'</span></p>
+    <div class="dh">Du</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>La civiostĭ du au nascít.</em><span class="tr">'La ciudad donde nací.'</span></p>
+    <div class="dh">Ce</div>
+    <p style="border-left:2px solid var(--ink2);padding-left:.75rem;margin:.3rem 0 .8rem"><em>Li prexony ce aut arrivàt in retard.</em><span class="tr">'Las personas que llegaron tarde.'</span></p>
+  </div>
+
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 4 — PRONOMBRES
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="pronombres" data-label="Pronombres">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Pronombres</h2>
+
+  <div id="pron-pers">
+    <h3 class="sub-heading">Pronombres <br>personales</h3>
+    <ul class="quotes">
+      <li><em>Io te vigio.</em><span class="tr">— 'Te veo.'</span></li>
+      <li><em>Ili vaut noiscu.</em><span class="tr">— 'Ellos van con nosotros.'</span></li>
+    </ul>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th><th>Acus.</th><th>Dat.</th><th>Gen.</th><th>Instr.</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>me</em></td><td><em>mi</em></td><td><em>mei</em></td><td><em>mecu</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>te</em></td><td><em>ti</em></td><td><em>tui</em></td><td><em>tecu</em></td></tr>
+        <tr><td>él, ella</td><td><em>ilĭ, ila, ilo</em></td><td><em>il, la, lo</em></td><td><em>li</em></td><td><em>lui, lei, ly</em></td><td><em>lecu, lacu, locu</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>ne</em></td><td><em>ni</em></td><td><em>nui</em></td><td><em>noiscu</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>ve</em></td><td><em>vi</em></td><td><em>vui</em></td><td><em>voiscu</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>le</em></td><td><em>lim</em></td><td><em>lir</em></td><td><em>licu</em></td></tr>
+      </tbody>
+    </table></div>
+    <h4 class="subsub-heading">Ilo — pronombre neutro</h4>
+    <p>Referencia a persona de género desconocido o no relevante.</p>
+    <div class="exg"><p><em>Cregio ce ilo nu vualit vide me ací.</em><span class="tr">'Creo que no quieren verme aquí.'</span></p></div>
+  </div>
+
+  <div id="pron-pos">
+    <h3 class="sub-heading">Pronombres <br>posesivos</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Pron.</th><th>Masc.</th><th>Fem.</th><th>Neutro</th><th>Plural</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="6"><strong>Nom.</strong></td><td class="m">mi</td><td><em>meĭ</em><span class="tr">'mío'</span></td><td><em>mia</em><span class="tr">'mía'</span></td><td><em>mio</em><span class="tr">'lo mío'</span></td><td><em>moí</em><span class="tr">'míos'</span></td></tr>
+        <tr><td class="m">tu</td><td><em>teĭ</em><span class="tr">'tuyo'</span></td><td><em>tua</em><span class="tr">'tuya'</span></td><td><em>tuo</em><span class="tr">'lo tuyo'</span></td><td><em>toí</em><span class="tr">'tuyos'</span></td></tr>
+        <tr><td class="m">su</td><td><em>seĭ</em><span class="tr">'suyo'</span></td><td><em>sua</em><span class="tr">'suya'</span></td><td><em>suo</em><span class="tr">'lo suyo'</span></td><td><em>soí</em><span class="tr">'suyos'</span></td></tr>
+        <tr><td class="m">nu</td><td><em>neĭ</em><span class="tr">'nuestro'</span></td><td><em>nua</em><span class="tr">'nuestra'</span></td><td><em>nuo</em><span class="tr">'lo nuestro'</span></td><td><em>noí</em><span class="tr">'nuestros'</span></td></tr>
+        <tr><td class="m">vu</td><td><em>veĭ</em><span class="tr">'vuestro'</span></td><td><em>vua</em><span class="tr">'vuestra'</span></td><td><em>vuo</em><span class="tr">'lo vuestro'</span></td><td><em>voí</em><span class="tr">'vuestros'</span></td></tr>
+        <tr><td class="m">lor</td><td><em>lor</em><span class="tr">'suyo'</span></td><td><em>lor</em><span class="tr">'suya'</span></td><td><em>lor</em><span class="tr">'lo suyo'</span></td><td><em>lor</em><span class="tr">'suyos'</span></td></tr>
+        <tr><td rowspan="6"><strong>Gen.</strong></td><td class="m">mi</td><td><em>miĭ</em><span class="tr">'del mío'</span></td><td><em>mieĭ</em><span class="tr">'de la mía'</span></td><td><em>mei</em><span class="tr">'de lo mío'</span></td><td><em>meir</em><span class="tr">'de los míos'</span></td></tr>
+        <tr><td class="m">tu</td><td><em>tuoĭ</em><span class="tr">'del tuyo'</span></td><td><em>tueĭ</em><span class="tr">'de la tuya'</span></td><td><em>tui</em><span class="tr">'de lo tuyo'</span></td><td><em>teir</em><span class="tr">'de los tuyos'</span></td></tr>
+        <tr><td class="m">su</td><td><em>suoĭ</em><span class="tr">'del suyo'</span></td><td><em>sueĭ</em><span class="tr">'de la suya'</span></td><td><em>sui</em><span class="tr">'de lo suyo'</span></td><td><em>seir</em><span class="tr">'de los suyos'</span></td></tr>
+        <tr><td class="m">nu</td><td><em>nuoĭ</em><span class="tr">'del nuestro'</span></td><td><em>nueĭ</em><span class="tr">'de la nuestra'</span></td><td><em>nui</em><span class="tr">'de lo nuestro'</span></td><td><em>neir</em><span class="tr">'de los nuestros'</span></td></tr>
+        <tr><td class="m">vu</td><td><em>vuoĭ</em><span class="tr">'del vuestro'</span></td><td><em>vueĭ</em><span class="tr">'de la vuestra'</span></td><td><em>vui</em><span class="tr">'de lo vuestro'</span></td><td><em>veir</em><span class="tr">'de los vuestros'</span></td></tr>
+        <tr><td class="m">lor</td><td><em>lor</em><span class="tr">'del suyo'</span></td><td><em>lor</em><span class="tr">'de la suya'</span></td><td><em>lor</em><span class="tr">'de lo suyo'</span></td><td><em>lor</em><span class="tr">'de los suyos'</span></td></tr>
+        <tr><td rowspan="6"><strong>Dat.</strong></td><td class="m">mi</td><td><em>miu</em><span class="tr">'al mío'</span></td><td><em>mie</em><span class="tr">'a la mía'</span></td><td><em>miou</em><span class="tr">'a lo mío'</span></td><td><em>meis</em><span class="tr">'a los míos'</span></td></tr>
+        <tr><td class="m">tu</td><td><em>tou</em><span class="tr">'al tuyo'</span></td><td><em>tue</em><span class="tr">'a la tuya'</span></td><td><em>tuou</em><span class="tr">'a lo tuyo'</span></td><td><em>teis</em><span class="tr">'a los tuyos'</span></td></tr>
+        <tr><td class="m">su</td><td><em>sou</em><span class="tr">'al suyo'</span></td><td><em>sue</em><span class="tr">'a la suya'</span></td><td><em>suou</em><span class="tr">'a lo suyo'</span></td><td><em>seis</em><span class="tr">'a los suyos'</span></td></tr>
+        <tr><td class="m">nu</td><td><em>nou</em><span class="tr">'al nuestro'</span></td><td><em>nue</em><span class="tr">'a la nuestra'</span></td><td><em>nuou</em><span class="tr">'a lo nuestro'</span></td><td><em>neis</em><span class="tr">'a los nuestros'</span></td></tr>
+        <tr><td class="m">vu</td><td><em>vou</em><span class="tr">'al vuestro'</span></td><td><em>vue</em><span class="tr">'a la vuestra'</span></td><td><em>vuou</em><span class="tr">'a lo vuestro'</span></td><td><em>veis</em><span class="tr">'a los vuestros'</span></td></tr>
+        <tr><td class="m">lor</td><td><em>lor</em><span class="tr">'al suyo'</span></td><td><em>lor</em><span class="tr">'a la suya'</span></td><td><em>lor</em><span class="tr">'a lo suyo'</span></td><td><em>lor</em><span class="tr">'a los suyos'</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="pron-to">
+    <h3 class="sub-heading">To</h3>
+    <p>Pronombre neutro de objeto directo. No se refiere a un sustantivo específico sino a una idea neutral o abstracta.</p>
+    <ul class="quotes">
+      <li><em>Remnio to ce as dit.</em><span class="tr">'Recuerdo lo que dijiste.'</span></li>
+      <li><em>To hiari me à surpràs.</em><span class="tr">'Lo que pasó ayer me sorprendió.'</span></li>
+      <li><em>To ce à passàt a stat mout grave.</em><span class="tr">'Lo que pasó fue muy grave.'</span></li>
+      <li><em>Nu to sciea.</em><span class="tr">'No lo sabía.'</span></li>
+      <li><em>Ia to avea pasàt.</em><span class="tr">'Ya lo había pensado.'</span></li>
+      <li><em>Est intelligiatĭ? To est.</em><span class="tr">'¿Es inteligente? Lo es.'</span></li>
+    </ul>
+  </div>
+
+  <div id="pron-cy">
+    <h3 class="sub-heading">Cy</h3>
+    <p>Pronombre clítico que cumple múltiples funciones gramaticales. Sustituye frecuentemente sintagmas preposicionales con <em>a</em>, <em>in</em> o <em>s</em>, y puede referirse a lugares, ideas abstractas o formar parte de expresiones fijas.</p>
+    <div style="display:grid;grid-template-columns:max-content 1.5rem max-content;gap:.15rem .6rem;margin:.5rem 0 0 1.2rem">
+      <em>Vau l'universitatĭ cisce giuron.</em><span style="color:var(--muted);text-align:center">→</span><em>Cy vau cisce giuron.</em>
+      <span class="tr" style="margin-bottom:.7rem">'Voy a la universidad cada día.'</span><span></span><span class="tr" style="margin-bottom:.7rem">'Voy allí cada día.'</span>
+      <em>Nu piuso in tò.</em><span style="color:var(--muted);text-align:center">→</span><em>Nu cy piuso.</em>
+      <span class="tr" style="margin-bottom:.7rem">'No pienso en eso.'</span><span></span><span class="tr" style="margin-bottom:.7rem">'No pienso en ello.'</span>
+      <em>Se at adaptàt nuavou lavoru.</em><span style="color:var(--muted);text-align:center">→</span><em>Se cy at adaptàt.</em>
+      <span class="tr" style="margin-bottom:.7rem">'Se adaptó al nuevo trabajo.'</span><span></span><span class="tr" style="margin-bottom:.7rem">'Se adaptó (al nuevo trabajo).'</span>
+      <em>Cufigio in ti.</em><span style="color:var(--muted);text-align:center">→</span><em>Cy cufigio.</em>
+      <span class="tr">'Confío en ti.'</span><span></span><span class="tr">'(En ti) confío.'</span>
+    </div>
+  </div>
+
+  <div id="pron-in">
+    <h3 class="sub-heading">In</h3>
+    <p>Pronombre clítico partitivo. Sustituye complementos introducidos por <em>de</em> o expresiones de cantidad.</p>
+    <div style="margin:.5rem 0 0 1.2rem">
+      <div style="display:grid;grid-template-columns:max-content 1.5rem max-content;gap:.15rem .4rem;align-items:baseline">
+        <em>As mout denarĭ.</em><span style="color:var(--muted);white-space:nowrap">→</span><em>In as mout.</em>
+        <span class="tr">'Tienes mucho dinero.'</span><span></span><span class="tr">'Tienes mucho (de ello).'</span>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:1.2rem"><i>actò</i> — cerca &nbsp;·&nbsp; t<i>ò</i>&nbsp;— lejos</p>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 6 — VERBOS
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="verbos" data-label="Verbos">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Verbos</h2>
+
+  <div id="infinitivos">
+    <h3 class="sub-heading">Infinitivo</h3>
+    <p>Terminan en <em>-à</em>, <em>-e</em> o <em>-i</em>, precedidos de <em>a</em>.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span>LABORARE</span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>a lavorà</em></span>
+      <span>VIDERE</span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>a vide</em></span>
+      <span>VENIRE</span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>a veni</em></span>
+    </div></div>
+  </div>
+
+  <div id="indicativo">
+    <h3 class="sub-heading">Indicativo</h3>
+
+    <div id="presente">
+      <h4 class="subsub-heading">Presente</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>a lavorà</th><th>a muave</th><th>a duce</th><th>a venī</th></tr></thead>
+        <tbody>
+          <tr><td>yo</td><td><em>io</em></td><td><em>lavoro</em></td><td><em>muavio</em></td><td><em>duco</em></td><td><em>venio</em></td></tr>
+          <tr><td>tú</td><td><em>ty</em></td><td><em>lavoras</em></td><td><em>muavis</em></td><td><em>ducis</em></td><td><em>vianis</em></td></tr>
+          <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>lavorat</em></td><td><em>muavit</em></td><td><em>ducit</em></td><td><em>vianit</em></td></tr>
+          <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavoram</em></td><td><em>muavim</em></td><td><em>ducim</em></td><td><em>vianim</em></td></tr>
+          <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoratĭ</em></td><td><em>muavitĭ</em></td><td><em>ducitĭ</em></td><td><em>vianitĭ</em></td></tr>
+          <tr><td>ellos</td><td><em>ili</em></td><td><em>lavorut</em></td><td><em>muaviat</em></td><td><em>ducut</em></td><td><em>vianiut</em></td></tr>
+        </tbody>
+      </table></div>
+      <p class="label">Alternancia consonántica</p>
+      <p>En la primera persona del singular y la tercera del plural, la consonante final del lexema cambia según estas reglas.</p>
+      <div style="display:flex;justify-content:center">
+        <div class="cj-group">
+          <div class="cj-col">
+            <span class="cj-head">Consonante</span>
+            <span class="cj-word">T</span>
+            <span class="cj-word">D</span>
+            <span class="cj-word">Z</span>
+            <span class="cj-word">S</span>
+            <span class="cj-word">ST</span>
+          </div>
+          <div class="cj-col-center">
+            <span>→</span><span>→</span><span>→</span><span>→</span><span>→</span>
+          </div>
+          <div class="cj-col">
+            <span class="cj-head">Resultado</span>
+            <span class="cj-word" style="color:var(--red)">TS</span>
+            <span class="cj-word" style="color:var(--red)">G</span>
+            <span class="cj-word" style="color:var(--red)">G</span>
+            <span class="cj-word" style="color:var(--red)">X</span>
+            <span class="cj-word" style="color:var(--red)">SC</span>
+          </div>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>a siutī</th><th>a crede</th><th>a resiste</th></tr></thead>
+        <tbody>
+          <tr style="color:var(--red)"><td>yo</td><td><em>io</em></td><td><em>siutso</em></td><td><em>cregio</em></td><td><em>resiscio</em></td></tr>
+          <tr><td>tú</td><td><em>ty</em></td><td><em>siutis</em></td><td><em>credis</em></td><td><em>resistis</em></td></tr>
+          <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>siutit</em></td><td><em>credit</em></td><td><em>resistit</em></td></tr>
+          <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>siutim</em></td><td><em>credim</em></td><td><em>resistim</em></td></tr>
+          <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>siutitĭ</em></td><td><em>creditĭ</em></td><td><em>resistitĭ</em></td></tr>
+          <tr style="color:var(--red)"><td>ellos</td><td><em>ili</em></td><td><em>siutsut</em></td><td><em>cregiut</em></td><td><em>resisciut</em></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="pasado">
+      <h4 class="subsub-heading">Pasado</h4>
+      <p>Se forma con el verbo <em>a ave</em> como auxiliar seguido del participio del verbo.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>Auxiliar</th><th></th><th></th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>yo</td><td><em>io</em></td><td class="aux-cell"><em>au</em></td><td rowspan="6" class="plus-cell">+</td><td rowspan="6" class="part-cell"><em>vis</em></td><td class="ex-cell"><em>io au vis</em><span class="m2">'yo vi'</span></td></tr>
+          <tr><td>tú</td><td><em>ty</em></td><td class="aux-cell"><em>as</em></td><td class="ex-cell"><em>ty as vis</em><span class="m2">'tú viste'</span></td></tr>
+          <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td class="aux-cell"><em>a</em></td><td class="ex-cell"><em>ilĭ a vis</em><span class="m2">'él vio'</span></td></tr>
+          <tr><td>nosotros</td><td><em>noĭ</em></td><td class="aux-cell"><em>am</em></td><td class="ex-cell"><em>noĭ am vis</em><span class="m2">'nosotros vimos'</span></td></tr>
+          <tr><td>vosotros</td><td><em>voĭ</em></td><td class="aux-cell"><em>atĭ</em></td><td class="ex-cell"><em>voĭ atĭ vis</em><span class="m2">'vosotros visteis'</span></td></tr>
+          <tr><td>ellos</td><td><em>ili</em></td><td class="aux-cell"><em>aut</em></td><td class="ex-cell"><em>ili aut vis</em><span class="m2">'ellos vieron'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="futuro">
+      <h4 class="subsub-heading">Futuro</h4>
+      <p>Se forma con el verbo <em>a vade</em> como auxiliar seguido del infinitivo del verbo.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>Auxiliar</th><th></th><th></th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>yo</td><td><em>io</em></td><td class="aux-cell"><em>vau</em></td><td rowspan="6" class="plus-cell">+</td><td rowspan="6" class="part-cell"><em>vide</em></td><td class="ex-cell"><em>io vau vide</em><span class="m2">'yo veré'</span></td></tr>
+          <tr><td>tú</td><td><em>ty</em></td><td class="aux-cell"><em>vas</em></td><td class="ex-cell"><em>ty vas vide</em><span class="m2">'tú verás'</span></td></tr>
+          <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td class="aux-cell"><em>va</em></td><td class="ex-cell"><em>ilĭ va vide</em><span class="m2">'él verá'</span></td></tr>
+          <tr><td>nosotros</td><td><em>noĭ</em></td><td class="aux-cell"><em>vam</em></td><td class="ex-cell"><em>noĭ vam vide</em><span class="m2">'nosotros veremos'</span></td></tr>
+          <tr><td>vosotros</td><td><em>voĭ</em></td><td class="aux-cell"><em>vatĭ</em></td><td class="ex-cell"><em>voĭ vatĭ vide</em><span class="m2">'vosotros veréis'</span></td></tr>
+          <tr><td>ellos</td><td><em>ili</em></td><td class="aux-cell"><em>vaut</em></td><td class="ex-cell"><em>ili vaut vide</em><span class="m2">'ellos verán'</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div id="imperfecto">
+      <h4 class="subsub-heading">Imperfecto</h4>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th></th><th>a lavorà</th><th>a crede</th><th>a venī</th></tr></thead>
+        <tbody>
+          <tr><td>yo</td><td><em>io</em></td><td><em>lavorava</em></td><td><em>credea</em></td><td><em>veniea</em></td></tr>
+          <tr><td>tú</td><td><em>ty</em></td><td><em>lavoravas</em></td><td><em>credeas</em></td><td><em>venieas</em></td></tr>
+          <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>lavoravat</em></td><td><em>credeat</em></td><td><em>venieat</em></td></tr>
+          <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavoravam</em></td><td><em>credeam</em></td><td><em>venieam</em></td></tr>
+          <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoravatĭ</em></td><td><em>credeatĭ</em></td><td><em>venieatĭ</em></td></tr>
+          <tr><td>ellos</td><td><em>ili</em></td><td><em>lavoravut</em></td><td><em>credeut</em></td><td><em>venieut</em></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+  </div>
+
+  <div id="condicional">
+    <h3 class="sub-heading">Condicional</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a lavorà</th><th>a crede</th><th>a venī</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>lavorara</em></td><td><em>credra</em></td><td><em>veniara</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>lavoraras</em></td><td><em>credras</em></td><td><em>veniaras</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>lavorarat</em></td><td><em>credrat</em></td><td><em>veniarat</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavoraram</em></td><td><em>credram</em></td><td><em>veniaram</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoraratĭ</em></td><td><em>credratĭ</em></td><td><em>veniaratĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>lavorarut</em></td><td><em>credrut</em></td><td><em>veniarut</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="gerundio">
+    <h3 class="sub-heading">Gerundio</h3>
+    <div id="gerundio-pres">
+      <h4 class="subsub-heading">Presente</h4>
+      <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+        <span style="font-family:var(--serif);font-style:italic"><em>lavorà</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'trabajar'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>lavorú</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'trabajando'</span></span>
+        <span style="font-family:var(--serif);font-style:italic"><em>crede</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'creer'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>crediú</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'creyendo'</span></span>
+      </div></div>
+    </div>
+    <div id="gerundio-gen">
+      <h4 class="subsub-heading">Genitivo</h4>
+      <p>El genitivo del gerundio (terminaciones <em>-udi, -iadi, -iiadi</em>) expresa una acción verbal como complemento de un sustantivo abstracto.</p>
+      <div class="exg"><p><em>L'opportuniostĭ fabludi.</em><span class="tr">'La oportunidad de hablar.'</span></p>
+      <p><em>La sperutsa viaciudi.</em><span class="tr">'La esperanza de ganar.'</span></p>
+      <p><em>L'artĭ liuviudi.</em><span class="tr">'El arte de amar.'</span></p></div>
+    </div>
+  </div>
+
+  <div id="participio">
+    <h3 class="sub-heading">Participio</h3>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span style="font-family:var(--serif);font-style:italic"><em>lavorà</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>lavoràt</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>esse</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>stat</em></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>ave</em></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>avýt</em></span>
+    </div></div>
+  </div>
+
+  <div id="subjuntivo">
+    <h3 class="sub-heading">Subjuntivo</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a lavorà</th><th>a crede</th><th>a venī</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>lavori</em></td><td><em>cregia</em></td><td><em>venia</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>lavoris</em></td><td><em>cregias</em></td><td><em>venias</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>lavorit</em></td><td><em>cregiat</em></td><td><em>veniat</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavorim</em></td><td><em>cregiam</em></td><td><em>veniam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoritĭ</em></td><td><em>cregiatĭ</em></td><td><em>veniatĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>lavorat</em></td><td><em>cregiut</em></td><td><em>veniut</em></td></tr>
+      </tbody>
+    </table></div>
+    <p class="label">Alternancia consonántica (1ª sg.)</p>
+    <p>En la primera persona del singular actúan las mismas reglas que en el presente.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a siutī</th><th>a crede</th><th>a resiste</th></tr></thead>
+      <tbody>
+        <tr style="color:var(--red)"><td>yo</td><td><em>io</em></td><td><em>siutsa</em></td><td><em>cregia</em></td><td><em>resiscia</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>siutis</em></td><td><em>cregias</em></td><td><em>resistis</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>siutit</em></td><td><em>cregiat</em></td><td><em>resistat</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>siutim</em></td><td><em>cregiam</em></td><td><em>resistam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>siutitĭ</em></td><td><em>cregiatĭ</em></td><td><em>resistatĭ</em></td></tr>
+        <tr style="color:var(--red)"><td>ellos</td><td><em>ili</em></td><td><em>siutsut</em></td><td><em>cregiut</em></td><td><em>resisciut</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="subj-imperf">
+    <h4 class="subsub-heading">Imperfecto</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a lavorà</th><th>a crede</th><th>a venī</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>lavoressĭ</em></td><td><em>credissĭ</em></td><td><em>venissĭ</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>lavoressis</em></td><td><em>credissis</em></td><td><em>venissis</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila</em></td><td><em>lavoressit</em></td><td><em>credissit</em></td><td><em>venissit</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavoressim</em></td><td><em>credissim</em></td><td><em>venissim</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoressitĭ</em></td><td><em>credissitĭ</em></td><td><em>venissitĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>lavoressiat</em></td><td><em>credissiat</em></td><td><em>venissiat</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="imperativo">
+    <h3 class="sub-heading">Imperativo</h3>
+    <p>La forma de nosotros usa el subjuntivo presente.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a lavorà</th><th>a crede</th><th>a venī</th><th>a esse</th><th>a ave</th></tr></thead>
+      <tbody>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>lavoraĭ</em></td><td><em>credĭ</em></td><td><em>venĭ</em></td><td><em>essĭ</em></td><td><em>avĭ</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>lavorem</em></td><td><em>cregiam</em></td><td><em>veniam</em></td><td><em>sim</em></td><td><em>aiam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>lavoraite</em></td><td><em>credĭte</em></td><td><em>venĭte</em></td><td><em>esĭte</em></td><td><em>avĭte</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="irregulares">
+    <h3 class="sub-heading">Verbos irregulares</h3>
+    <p class="label">Presente</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a esse</th><th>a ave</th><th>a vade</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>su</em></td><td><em>au</em></td><td><em>vau</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>es</em></td><td><em>as</em></td><td><em>vas</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila/ilo</em></td><td><em>est</em></td><td><font face="Crimson Pro, Georgia, serif"><i>à</i></font></td><td><em>va</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>som</em></td><td><em>am</em></td><td><em>vam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>estĭ</em></td><td><em>atĭ</em></td><td><em>vatĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>sut</em></td><td><em>aut</em></td><td><em>vaut</em></td></tr>
+      </tbody>
+    </table></div>
+    <p class="label">Imperfecto</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a esse</th><th>a ave</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>era</em></td><td><em>avea</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>eras</em></td><td><em>aveas</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila/ilo</em></td><td><em>erat</em></td><td><em>aveat</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>eram</em></td><td><em>aveam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>eratĭ</em></td><td><em>aveatĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>erut</em></td><td><em>aveut</em></td></tr>
+      </tbody>
+    </table></div>
+    <p class="label">Subjuntivo</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a esse</th><th>a ave</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>sia</em></td><td><em>aia</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>sis</em></td><td><em>aias</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila/ilo</em></td><td><em>sit</em></td><td><em>aiat</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>sim</em></td><td><em>aiam</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>sitĭ</em></td><td><em>aiatĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>siat</em></td><td><em>aiut</em></td></tr>
+      </tbody>
+    </table></div>
+    <p class="label">Subjuntivo imperfecto</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th></th><th>a esse</th><th>a ave</th></tr></thead>
+      <tbody>
+        <tr><td>yo</td><td><em>io</em></td><td><em>fuassĭ</em></td><td><em>avissĭ</em></td></tr>
+        <tr><td>tú</td><td><em>ty</em></td><td><em>fuassis</em></td><td><em>avissis</em></td></tr>
+        <tr><td>él/ella</td><td><em>ilĭ/ila/ilo</em></td><td><em>fuassit</em></td><td><em>avissit</em></td></tr>
+        <tr><td>nosotros</td><td><em>noĭ</em></td><td><em>fuassim</em></td><td><em>avissim</em></td></tr>
+        <tr><td>vosotros</td><td><em>voĭ</em></td><td><em>fuassitĭ</em></td><td><em>avissitĭ</em></td></tr>
+        <tr><td>ellos</td><td><em>ili</em></td><td><em>fuassiat</em></td><td><em>avissiat</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="negacion">
+    <h3 class="sub-heading">Negación</h3>
+    <p><em>nu</em> antes del verbo.</p>
+    <div class="exs">
+      <div class="ex-row"><div class="ex-top"><span class="ex-word">Ilĭ vidit vyn cat.</span></div><span class="ex-tr">'Él ve un gato.'</span></div>
+      <div class="ex-row"><div class="ex-top"><span class="ex-word">Ilĭ <strong>nu</strong> vidit vyn cat.</span></div><span class="ex-tr">'Él no ve un gato.'</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 7 — NUMERALES
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="numerales" data-label="Numerales">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Numerales</h2>
+
+  <div id="num-tabla">
+    <h3 class="sub-heading">Números cardinales</h3>
+
+    <div id="num-1">
+    <h4 class="subsub-heading">1</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Número</th><th>Género</th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3">Singular</td><td>Masc.</td><td><em>vyn</em></td><td><em>vynuĭ</em></td><td><em>vynu</em></td></tr>
+        <tr><td>Fem.</td><td><em>vyna</em></td><td><em>vyneĭ</em></td><td><em>vyne</em></td></tr>
+        <tr><td>Neutro</td><td><em>vyno</em></td><td><em>vyny</em></td><td><em>vynou</em></td></tr>
+        <tr><td>Plural</td><td>Todos</td><td><em>vyni</em></td><td><em>vynir</em></td><td><em>vynis</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-3-10">
+    <h4 class="subsub-heading">2 — 10</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>doi</em></td><td><em>tre</em></td><td><em>cetro</em></td><td><em>ciacĭ</em></td><td><em>six</em></td><td><em>siatĭ</em></td><td><em>oto</em></td><td><em>nuavĭ</em></td><td><em>diace</em></td></tr>
+        <tr><td>Gen.</td><td><em>duor</em></td><td><em>trer</em></td><td><em>cetri</em></td><td><em>ciaci</em></td><td><em>sixi</em></td><td><em>siati</em></td><td><em>oty</em></td><td><em>nuavi</em></td><td><em>diaci</em></td></tr>
+        <tr><td>Dat.</td><td><em>duom</em></td><td><em>trem</em></td><td><em>cetrim</em></td><td><em>ciacim</em></td><td><em>sixim</em></td><td><em>siatim</em></td><td><em>otim</em></td><td><em>nuavim</em></td><td><em>diacim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-11-20">
+    <h4 class="subsub-heading">11 — 20</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>vyze</em></td><td><font face="Crimson Pro, Georgia, serif"><i>doze</i></font></td><td><em>trize</em></td><td><em>catroze</em></td><td><em>ciaze</em></td><td><em>seze</em></td><td><em>setaze</em></td><td><font face="Crimson Pro, Georgia, serif"><i>otoze</i></font></td><td><font face="Crimson Pro, Georgia, serif"><i>novaze</i></font></td><td><em>viatĭ</em></td></tr>
+        <tr><td>Gen.</td><td><em>vyzi</em></td><td><em>dozi</em></td><td><em>trizi</em></td><td><em>catrozi</em></td><td><em>ciazi</em></td><td><em>sezi</em></td><td><em>setazi</em></td><td><font face="Crimson Pro, Georgia, serif"><i>otozi</i></font></td><td><font face="Crimson Pro, Georgia, serif"><i>novazi</i></font></td><td><em>viati</em></td></tr>
+        <tr><td>Dat.</td><td><em>vyzim</em></td><td><em>dozim</em></td><td><em>trizim</em></td><td><em>catrozim</em></td><td><em>ciazim</em></td><td><em>sezim</em></td><td><em>setazim</em></td><td><font face="Crimson Pro, Georgia, serif"><i>otozim</i></font></td><td><font face="Crimson Pro, Georgia, serif"><i>novazim</i></font></td><td><em>viatim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-21-29">
+    <h4 class="subsub-heading">21 — 29</h4>
+    <div class="tbl-wrap"><table style="white-space:nowrap">
+      <thead><tr><th></th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>viatĭ-vyn/a/o</em></td><td><em>viatĭ-doi</em></td><td><em>viatĭ-tre</em></td><td><em>viatĭ-cetor</em></td><td><em>viatĭ-ciacĭ</em></td><td><em>viatĭ-six</em></td><td><em>viatĭ-siatĭ</em></td><td><em>viatĭ-oto</em></td><td><em>viatĭ-nuavĭ</em></td></tr>
+        <tr><td>Gen.</td><td><em>viati-vynuĭ/eĭ/y</em></td><td><em>viati-duor</em></td><td><em>viati-trer</em></td><td><em>viati-cetri</em></td><td><em>viati-ciaci</em></td><td><em>viati-sixi</em></td><td><em>viati-siati</em></td><td><em>viati-oty</em></td><td><em>viati-nuavi</em></td></tr>
+        <tr><td>Dat.</td><td><em>viatim-vynu/e/ou</em></td><td><em>viatim-duom</em></td><td><em>viatim-trim</em></td><td><em>viatim-cetrim</em></td><td><em>viatim-ciacim</em></td><td><em>viatim-sixim</em></td><td><em>viatim-siatim</em></td><td><em>viatim-otim</em></td><td><em>viatim-nuavim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-30-90">
+    <h4 class="subsub-heading">30 — 90</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>30</th><th>40</th><th>50</th><th>60</th><th>70</th><th>80</th><th>90</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>triata</em></td><td><em>cadriata</em></td><td><em>ciciata</em></td><td><em>sixiata</em></td><td><em>setiata</em></td><td><em>ociata</em></td><td><em>noviata</em></td></tr>
+        <tr><td>Gen.</td><td><em>triati</em></td><td><em>cadriati</em></td><td><em>ciciati</em></td><td><em>sixiati</em></td><td><em>setiati</em></td><td><em>ociati</em></td><td><em>noviati</em></td></tr>
+        <tr><td>Dat.</td><td><em>triatim</em></td><td><em>cadriatim</em></td><td><em>ciciatim</em></td><td><em>sixiatim</em></td><td><em>setiatim</em></td><td><em>ociatim</em></td><td><em>noviatim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-100-900">
+    <h4 class="subsub-heading">100 — 900</h4>
+    <div class="tbl-wrap"><table style="white-space:nowrap">
+      <thead><tr><th></th><th>100</th><th>200</th><th>300</th><th>400</th><th>500</th><th>600</th><th>700</th><th>800</th><th>900</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>ciuto</em></td><td><em>duciuti</em></td><td><em>triciuti</em></td><td><em>cadriciuti</em></td><td><em>ciaciuti</em></td><td><em>sesciuti</em></td><td><em>setiaciuti</em></td><td><em>otiaciuti</em></td><td><em>noviciuti</em></td></tr>
+        <tr><td>Gen.</td><td><em>ciuta</em></td><td><em>duciator</em></td><td><em>triciator</em></td><td><em>cadriciator</em></td><td><em>ciaciutor</em></td><td><em>sesciator</em></td><td><em>setiaciator</em></td><td><em>otiaciator</em></td><td><em>noviciator</em></td></tr>
+        <tr><td>Dat.</td><td><em>ciutis</em></td><td><em>duciutis</em></td><td><em>triciutis</em></td><td><em>cadriciutis</em></td><td><em>ciaciutis</em></td><td><em>sesciutis</em></td><td><em>setiaciutis</em></td><td><em>otiaciutis</em></td><td><em>noviciutis</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-1000">
+    <h4 class="subsub-heading">1 000 — 9 000</h4>
+    <div class="tbl-wrap"><table style="white-space:nowrap">
+      <thead><tr><th></th><th>1 000</th><th>2 000</th><th>3 000</th><th>4 000</th><th>5 000</th><th>6 000</th><th>7 000</th><th>8 000</th><th>9 000</th></tr></thead>
+      <tbody>
+        <tr><td>Nom.</td><td><em>milĭ</em></td><td><em>doi/dua milia</em></td><td><em>tre milia</em></td><td><em>cetor milia</em></td><td><em>ciacĭ milia</em></td><td><em>six milia</em></td><td><em>siatĭ milia</em></td><td><em>oto milia</em></td><td><em>nuavĭ milia</em></td></tr>
+        <tr><td>Gen.</td><td><em>mili</em></td><td><em>duor mili</em></td><td><em>trer mili</em></td><td><em>cetri mili</em></td><td><em>ciaci mili</em></td><td><em>sixi mili</em></td><td><em>siati mili</em></td><td><em>oty mili</em></td><td><em>nuavi mili</em></td></tr>
+        <tr><td>Dat.</td><td><em>milim</em></td><td><em>duom milim</em></td><td><em>trem milim</em></td><td><em>cetrim milim</em></td><td><em>ciacim milim</em></td><td><em>sixim milim</em></td><td><em>siatim milim</em></td><td><em>otim milim</em></td><td><em>nuavim milim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+
+    <div id="num-grandes">
+    <h4 class="subsub-heading">Números grandes</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th><th>Gen.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td><strong>milion</strong></td><td><em>vyn milion</em></td><td><em>vynuĭ miliony</em></td><td><em>vynu milionu</em></td></tr>
+        <tr><td><strong>bilion</strong></td><td><em>vyn bilion</em></td><td><em>vynuĭ biliony</em></td><td><em>vynu bilionu</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <div id="num-ordinales">
+    <h3 class="sub-heading">Números ordinales</h3>
+    <p>Nom. masc. en <strong>-im</strong>. El resto: <strong>-ima</strong> (f.) · <strong>-imo</strong> (n.) · <strong>-imy</strong> (pl.)</p>
+
+    <div id="num-ord-1">
+    <h4 class="subsub-heading">1° — 10°</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>1°</th><th>2°</th><th>3°</th><th>4°</th><th>5°</th><th>6°</th><th>7°</th><th>8°</th><th>9°</th><th>10°</th></tr></thead>
+      <tbody><tr>
+        <td class="ex-cell"><em>prim</em></td>
+        <td class="ex-cell"><em>dosim</em></td>
+        <td class="ex-cell"><em>tresim</em></td>
+        <td class="ex-cell"><em>cetresim</em></td>
+        <td class="ex-cell"><em>ciacesim</em></td>
+        <td class="ex-cell"><em>sixtesim</em></td>
+        <td class="ex-cell"><em>setesim</em></td>
+        <td class="ex-cell"><em>otesim</em></td>
+        <td class="ex-cell"><em>novesim</em></td>
+        <td class="ex-cell"><em>decesim</em></td>
+      </tr></tbody>
+    </table></div>
+    </div>
+
+    <div id="num-ord-11">
+    <h4 class="subsub-heading">11° — 19°</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>11°</th><th>12°</th><th>13°</th><th>14°</th><th>15°</th><th>16°</th><th>17°</th><th>18°</th><th>19°</th></tr></thead>
+      <tbody><tr>
+        <td class="ex-cell"><em>vyzesim</em></td>
+        <td class="ex-cell"><em>dozesim</em></td>
+        <td class="ex-cell"><em>trizesim</em></td>
+        <td class="ex-cell"><em>cetrozesim</em></td>
+        <td class="ex-cell"><em>ciazesim</em></td>
+        <td class="ex-cell"><em>sezesim</em></td>
+        <td class="ex-cell"><em>setazesim</em></td>
+        <td class="ex-cell"><em>otozesim</em></td>
+        <td class="ex-cell"><em>novazesim</em></td>
+      </tr></tbody>
+    </table></div>
+    </div>
+
+    <div id="num-ord-20">
+    <h4 class="subsub-heading">20° — 90°</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>20°</th><th>30°</th><th>40°</th><th>50°</th><th>60°</th><th>70°</th><th>80°</th><th>90°</th></tr></thead>
+      <tbody><tr>
+        <td class="ex-cell"><em>vicesim</em></td>
+        <td class="ex-cell"><em>tricesim</em></td>
+        <td class="ex-cell"><em>cadracesim</em></td>
+        <td class="ex-cell"><em>ciacacesim</em></td>
+        <td class="ex-cell"><em>sixacesim</em></td>
+        <td class="ex-cell"><em>setacesim</em></td>
+        <td class="ex-cell"><em>otacesim</em></td>
+        <td class="ex-cell"><em>novacesim</em></td>
+      </tr></tbody>
+    </table></div>
+    </div>
+
+    <div id="num-ord-100">
+    <h4 class="subsub-heading">100° — 1 000°</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>100°</th><th>200°</th><th>300°</th><th>400°</th><th>500°</th><th>600°</th><th>700°</th><th>800°</th><th>900°</th><th>1 000°</th></tr></thead>
+      <tbody><tr>
+        <td class="ex-cell"><em>ciutesim</em></td>
+        <td class="ex-cell"><em>duciutesim</em></td>
+        <td class="ex-cell"><em>triciutesim</em></td>
+        <td class="ex-cell"><em>cadriciutesim</em></td>
+        <td class="ex-cell"><em>ciaciutesim</em></td>
+        <td class="ex-cell"><em>sesciutesim</em></td>
+        <td class="ex-cell"><em>setiaciutesim</em></td>
+        <td class="ex-cell"><em>otiaciutesim</em></td>
+        <td class="ex-cell"><em>noviciutesim</em></td>
+        <td class="ex-cell"><em>milesim</em></td>
+      </tr></tbody>
+    </table></div>
+    </div>
+
+    <div id="num-ord-grandes">
+    <h4 class="subsub-heading">Grandes</h4>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Ordinal (masc.)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>milion</strong></td><td><em>vyn milionesim</em></td></tr>
+        <tr><td><strong>bilion</strong></td><td><em>vyn bilionesim</em></td></tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <div id="num-fraccionales">
+    <h3 class="sub-heading">Fraccionales</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th></tr></thead>
+      <tbody>
+        <tr><td>1/2</td><td><em>vyn miagĭ</em></td></tr>
+        <tr><td>1/3</td><td><em>vyn tiarts</em></td></tr>
+        <tr><td>1/4</td><td><em>vyn cart</em></td></tr>
+        <tr><td>1/5</td><td><em>vyn ciat</em></td></tr>
+        <tr><td>1/6</td><td><em>vyn sixt</em></td></tr>
+        <tr><td>1/7</td><td><em>vyn setesim</em></td></tr>
+        <tr><td>1/8</td><td><em>vyn otesim</em></td></tr>
+        <tr><td>1/9</td><td><em>vyn novesim</em></td></tr>
+        <tr><td>1/10</td><td><em>vyn decesim</em></td></tr>
+        <tr><td>1/11</td><td><em>vyn vyzesim</em></td></tr>
+        <tr><td>1/12</td><td><em>vyn dozesim</em></td></tr>
+        <tr><td>2/3</td><td><em>doi tiartsi</em></td></tr>
+        <tr><td>3/4</td><td><em>tre carty</em></td></tr>
+        <tr><td>4/5</td><td><em>cetro ciaty</em></td></tr>
+        <tr><td>5/6</td><td><em>ciacĭ sixtor</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="num-multiplicativos">
+    <h3 class="sub-heading">Multiplicativos</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th></th><th>Nom.</th></tr></thead>
+      <tbody>
+        <tr><td>2×</td><td><em>duplĭ</em></td></tr>
+        <tr><td>3×</td><td><em>triplĭ</em></td></tr>
+        <tr><td>4×</td><td><em>cadruplĭ</em></td></tr>
+        <tr><td>5×</td><td><em>ciatuplĭ</em></td></tr>
+        <tr><td>6×</td><td><em>sixtuplĭ</em></td></tr>
+        <tr><td>7×</td><td><em>siatuplĭ</em></td></tr>
+        <tr><td>8×</td><td><em>otuplĭ</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="num-genitivo">
+    <h3 class="sub-heading">Los números y el genitivo</h3>
+
+    <div id="num-cardinales">
+      <h4 class="subsub-heading">Sustantivos con numerales</h4>
+      <p>Del 2 al 4 el sustantivo va en genitivo singular. Del 5 en adelante va en genitivo plural.</p>
+      <div class="exg"><p><em>Ilĭ à doi libry.</em><span class="tr">'Tiene dos libros.'</span></p>
+      <p><em>Cy-à ciacĭ melar in la tavla.</em><span class="tr">'Hay cinco manzanas en la mesa.'</span></p></div>
+    </div>
+
+    <div id="num-medida">
+      <h4 class="subsub-heading">Unidades de medida</h4>
+      <p>Cuando un sustantivo sigue a una unidad de medida, aparece en genitivo. El número determina si es genitivo singular o plural.</p>
+      <div class="exg"><p><em>Au bivýt doi vitry vody.</em><span class="tr">'Bebí dos vasos de agua.'</span></p>
+      <p><em>Am demudàt tre litry bezeny.</em><span class="tr">'Pedimos tres litros de gasolina.'</span></p></div>
+    </div>
+
+    <div id="num-indefinidos">
+      <h4 class="subsub-heading">Cuantificadores indefinidos</h4>
+      <p>Los cuantificadores indefinidos también rigen genitivo en el sustantivo que sigue.</p>
+      <div class="exg"><p><em>As sufficiate tapori.</em><span class="tr">'Tienes suficiente tiempo.'</span></p>
+      <p><em>A addít mout butry.</em><span class="tr">'Añadió mucha mantequilla.'</span></p></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL 8 — ADVERBIOS
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="adverbios" data-label="Adverbios">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Adverbios</h2>
+
+  <p>Los adverbios modifican verbos, adjetivos u otros adverbios, expresando modo, lugar, tiempo, frecuencia, grado o causa.</p>
+
+  <div id="adv-primitivos">
+    <h3 class="sub-heading">Adverbios primitivos</h3>
+    <p>No se derivan de otra palabra.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0">
+      <div style="display:inline-grid;grid-template-columns:auto auto;gap:.4rem 1rem;align-items:baseline">
+        <span style="font-family:var(--serif);font-style:italic"><em>bianĭ</em></span><span style="font-family:var(--sans);font-size:.75rem;color:var(--muted)">'bien'</span>
+        <span style="font-family:var(--serif);font-style:italic"><em>malĭ</em></span><span style="font-family:var(--sans);font-size:.75rem;color:var(--muted)">'mal'</span>
+        <span style="font-family:var(--serif);font-style:italic"><em>hiarĭ</em></span><span style="font-family:var(--sans);font-size:.75rem;color:var(--muted)">'ayer'</span>
+        <span style="font-family:var(--serif);font-style:italic"><em>ací</em></span><span style="font-family:var(--sans);font-size:.75rem;color:var(--muted)">'aquí'</span>
+        <span style="font-family:var(--serif);font-style:italic"><em>celà</em></span><span style="font-family:var(--sans);font-size:.75rem;color:var(--muted)">'allí'</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="adv-derivados">
+    <h3 class="sub-heading">Adverbios derivados</h3>
+    <p>Se forman añadiendo <em>-amiatĭ</em> o <em>-emiatĭ</em> al adjetivo. En el habla coloquial también se puede usar el adjetivo en su forma normal.</p>
+    <div style="display:flex;justify-content:center;margin:1rem 0"><div style="display:inline-grid;grid-template-columns:auto 2rem auto;gap:.55rem .5rem">
+      <span style="font-family:var(--serif);font-style:italic"><em>rapid</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'rápido'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>rapidamiatĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'rápidamente'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>ciart</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'cierto'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>ciartamiatĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'ciertamente'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>felicĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'feliz'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>felicemiatĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'felizmente'</span></span>
+      <span style="font-family:var(--serif);font-style:italic"><em>tristĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'triste'</span></span><span style="color:var(--muted);text-align:center">→</span><span style="font-family:var(--serif);font-style:italic"><em>tristemiatĭ</em><br><span style="font-family:var(--sans);font-size:.7rem;color:var(--muted);font-style:normal">'tristemente'</span></span>
+    </div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL — VOCABULARIO
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="vocabulario" data-label="Vocabulario">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Vocabulario</h2>
+
+  <div id="meses">
+    <h3 class="sub-heading">Meses</h3>
+    <div class="tbl-wrap"><table>
+      <tbody>
+        <tr><td class="m">1</td><td><em>ianarĭ</em></td></tr>
+        <tr><td class="m">2</td><td><em>febrarĭ</em></td></tr>
+        <tr><td class="m">3</td><td><em>marts</em></td></tr>
+        <tr><td class="m">4</td><td><em>aprilĭ</em></td></tr>
+        <tr><td class="m">5</td><td><em>maĭ</em></td></tr>
+        <tr><td class="m">6</td><td><em>iunĭ</em></td></tr>
+        <tr><td class="m">7</td><td><em>iulĭ</em></td></tr>
+        <tr><td class="m">8</td><td><em>ugust</em></td></tr>
+        <tr><td class="m">9</td><td><em>setiabrĭ</em></td></tr>
+        <tr><td class="m">10</td><td><em>otobrĭ</em></td></tr>
+        <tr><td class="m">11</td><td><em>noviabrĭ</em></td></tr>
+        <tr><td class="m">12</td><td><em>deciabrĭ</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div id="dias">
+    <h3 class="sub-heading">Días</h3>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+      <tbody>
+        <tr><td><em>lyne</em></td><td><em>martĭ</em></td><td><em>miarocrĭ</em></td><td><em>iovĭ</em></td><td><em>vianerĭ</em></td><td><em>sapto</em></td><td><em>domiach</em></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL — CONJUNCIONES Y PREPOSICIONES
+═══════════════════════════════════════════════════════════════ -->
+<div class="panel" data-section="conjunciones" data-label="Conjunciones y preposiciones">
+<div class="panel-index"><!-- built by JS --></div>
+<div class="panel-inner">
+
+  <h2 class="section-heading">Conjunciones<br>y preposiciones</h2>
+
+  <div id="conj-sec">
+    <h3 class="sub-heading">Conjunciones</h3>
+
+    <div id="conj-bas">
+      <h4 class="subsub-heading">Básicas</h4>
+      <div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">i</b><span class="gl">'y'</span></span><span style="flex:1"><em>Ion i Mariĭa sut amica.</em><span class="tr">'Ion y María son amigos.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">u</b><span class="gl">'o'</span></span><span style="flex:1"><em>Es ty u io.</em><span class="tr">'Eres tú o yo.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">maĭ</b><span class="gl">'pero'</span></span><span style="flex:1"><em>Vualio vade maĭ nu au denarĭ.</em><span class="tr">'Quiero ir pero no tengo dinero.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">prece</b><span class="gl">'porque'</span></span><span style="flex:1"><em>Mi placit vide te prece mi placis.</em><span class="tr">'Me gustó verte porque me gustas.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">ni</b><span class="gl">'ni'</span></span><span style="flex:1"><em>Nu vualio acesta ni acela.</em><span class="tr">'No quiero este ni aquel.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">duc</b><span class="gl">'así que'</span></span><span style="flex:1"><em>Au son, duc vau duarmi.</em><span class="tr">'Tengo sueño, así que voy a dormir.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">si</b><span class="gl">'si'</span></span><span style="flex:1"><em>Si pluit, nu vam vade il parc.</em><span class="tr">'Si llueve, no vamos al parque.'</span></span></div>
+      </div>
+    </div>
+
+    <div id="conj-sub">
+      <h4 class="subsub-heading">Subordinadas</h4>
+      <p class="label" style="margin:.6rem 0 .25rem">Sustantiva</p>
+      <div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">ce</b><span class="gl">'que'</span></span><span style="flex:1"><em>A dit ce viniarat.</em><span class="tr">'Dijo que vendría.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">si</b><span class="gl">'si'</span></span><span style="flex:1"><em>Nu scio si vau approvà.</em><span class="tr">'No sé si voy a aprobar.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">com</b><span class="gl">'cómo'</span></span><span style="flex:1"><em>Explicaĭ me com to as fecít.</em><span class="tr">'Explícame cómo lo hiciste.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">du</b><span class="gl">'dónde'</span></span><span style="flex:1"><em>Nu remnio du to au laxàt.</em><span class="tr">'No recuerdo dónde lo dejé.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">cud</b><span class="gl">'cuándo'</span></span><span style="flex:1"><em>Il vau clamà cud arrivi dom.</em><span class="tr">'Te llamará cuando llegue a casa.'</span></span></div>
+      </div>
+      <p class="label" style="margin:.8rem 0 .25rem">Adverbial</p>
+      <div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">avutĭ ce</b><span class="gl">'antes de que'</span></span><span style="flex:1"><em>Au venýt avutĭ ce arrivis.</em><span class="tr">'Llegué antes de que llegaras.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">siupre ce</b><span class="gl">'siempre que'</span></span><span style="flex:1"><em>Puatis veni siupre ce avisis.</em><span class="tr">'Puedes venir siempre que avises.'</span></span></div>
+        <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">pra ce</b><span class="gl">'para que'</span></span><span style="flex:1"><em>Stugia pra ce appruavis.</em><span class="tr">'Estudia para que apruebes.'</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="prep-sec">
+    <h3 class="sub-heading">Preposiciones</h3>
+    <div>
+      <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">nuostutĭ</b><span class="gl">'a pesar de'</span></span><span style="flex:1"><em>A crux nuostutĭ il dolorĭ sueĭ cuby.</em><span class="tr">'Corrió no obstante el dolor de su pierna.'</span></span></div>
+      <div class="cj"><span style="display:flex;flex-direction:column;min-width:5rem"><b style="min-width:0">sulug</b><span class="gl">'según'</span></span><span style="flex:1"><em>Facĭ sulug l'instrutsi.</em><span class="tr">'Haz según las instrucciones.'</span></span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PANEL — FONOLOGÍA
+═══════════════════════════════════════════════════════════════ -->
+
+</div><!-- /canvas -->
+
+<script>
+const panels  = [...document.querySelectorAll('.panel')];
+const navEl   = document.getElementById('nav-sections');
+const canvas  = document.getElementById('canvas');
+const navPrev = document.getElementById('nav-prev');
+const navNext = document.getElementById('nav-next');
+
+// ── COLLECT PANEL DATA ────────────────────────────────────────────
+// Build a two-level trie: top-level sections (h3) and their children (h4+)
+const panelData = panels.map((panel, i) => {
+  const inner = panel.querySelector('.panel-inner');
+
+  // top-level anchored divs with an h3
+  const sections = [...panel.querySelectorAll('[id]')]
+    .filter(el => el.querySelector(':scope > h3.sub-heading, :scope > h2.section-heading'));
+
+  // for each section, collect its child anchors with h4
+  const trie = sections.map(sec => {
+    const children = [...sec.querySelectorAll('[id]')]
+      .filter(el => el !== sec && el.querySelector(':scope > h4.subsub-heading'));
+    return { el: sec, children };
+  });
+
+  return { panel, inner, idx: i, label: panel.dataset.label, trie };
+});
+
+// ── BUILD PANEL INDEXES ───────────────────────────────────────────
+panelData.forEach(({ panel, trie }) => {
+  const indexEl = panel.querySelector('.panel-index');
+  if (!indexEl) return;
+  if (trie.length === 0) { indexEl.style.display = 'none'; return; }
+
+  trie.forEach(({ el: sec, children }) => {
+    const heading = sec.querySelector('h2,h3');
+    if (!heading) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'idx-item';
+    btn.innerHTML = '<span>' + heading.innerHTML + '</span>';
+    btn.dataset.text = heading.textContent;
+    btn.dataset.id = sec.id;
+    btn.addEventListener('click', () =>
+      panel.scrollTo({ top: sec.offsetTop - 24, behavior: 'smooth' }));
+    indexEl.appendChild(btn);
+
+    children.forEach(child => {
+      const ch = child.querySelector('h4');
+      if (!ch) return;
+      const sub = document.createElement('button');
+      sub.className = 'idx-item idx-sub';
+      sub.innerHTML = '<span>' + ch.innerHTML + '</span>';
+      sub.dataset.text = ch.textContent;
+      sub.dataset.id = child.id;
+      sub.dataset.parent = sec.id;
+      sub.addEventListener('click', () =>
+        panel.scrollTo({ top: child.offsetTop - 24, behavior: 'smooth' }));
+      indexEl.appendChild(sub);
+    });
+  });
+
+  indexEl.querySelector('.idx-item:not(.idx-sub)')?.classList.add('active');
+  // reveal subs of first active section
+  const firstId = trie[0]?.el.id;
+  if (firstId) indexEl.querySelectorAll(`.idx-sub[data-parent="${firstId}"]`)
+    .forEach(s => s.classList.add('visible'));
+});
+
+// ── BUILD TOP NAV ─────────────────────────────────────────────────
+let navBtns = [];
+function initNav() {
+  document.querySelectorAll('.nav-dropdown').forEach(d => d.remove());
+  navEl.innerHTML = '';
+  panelData.forEach(({ idx, label, trie, panel }) => {
+    const item = document.createElement('div');
+    item.className = 'nav-item';
+
+    const allSubs = trie.flatMap(({ el }) => [el])
+      .filter(el => el.querySelector('h2,h3'));
+
+    const chevron = allSubs.length > 1
+      ? ` <svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3.5l3 3 3-3"/></svg>`
+      : '';
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.dataset.section = panel.dataset.section;
+    btn.innerHTML = label + chevron;
+
+    let navDrop = null;
+    btn.addEventListener('click', () => {
+      const isMobile = window.matchMedia('(max-width:768px)').matches;
+      if (navDrop && isMobile) {
+        const isOpen = navDrop.classList.contains('open');
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+        if (!isOpen) {
+          const rect = btn.getBoundingClientRect();
+          navDrop.style.left = Math.max(0, rect.left + rect.width / 2 - 95) + 'px';
+          navDrop.classList.add('open');
+        }
+        return;
+      }
+      scrollToPanel(idx);
+    });
+    item.appendChild(btn);
+
+    if (allSubs.length > 1) {
+      const drop = document.createElement('div');
+      drop.className = 'nav-dropdown';
+      navDrop = drop;
+      document.body.appendChild(drop);
+
+      allSubs.forEach(sub => {
+        const heading = sub.querySelector('h2,h3,h4');
+        const a = document.createElement('button');
+        a.className = 'nav-drop-item';
+        const isH4 = !!sub.querySelector(':scope > h4');
+        if (isH4) a.style.paddingLeft = '1.8rem';
+        a.textContent = heading.textContent;
+        a.addEventListener('click', () => {
+          drop.classList.remove('open');
+          if (window.matchMedia('(max-width:768px)').matches) {
+            const navH = document.getElementById('topnav').offsetHeight;
+            window.scrollTo({ top: sub.getBoundingClientRect().top + window.scrollY - navH - 8, behavior: 'smooth' });
+          } else {
+            scrollToPanel(idx);
+            setTimeout(() => panel.scrollTo({ top: sub.offsetTop - 24, behavior: 'smooth' }), 380);
+          }
+        });
+        drop.appendChild(a);
+      });
+
+      let closeTimer;
+      const openDrop = () => {
+        clearTimeout(closeTimer);
+        const rect = btn.getBoundingClientRect();
+        const dropW = 190;
+        drop.style.left = Math.max(0, rect.left + rect.width / 2 - dropW / 2) + 'px';
+        drop.style.minWidth = dropW + 'px';
+        drop.classList.add('open');
+      };
+      const closeDrop = () => { closeTimer = setTimeout(() => drop.classList.remove('open'), 140); };
+      btn.addEventListener('mouseenter', openDrop);
+      btn.addEventListener('mouseleave', closeDrop);
+      drop.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+      drop.addEventListener('mouseleave', closeDrop);
+    }
+
+    navEl.appendChild(item);
+  });
+  navBtns = [...navEl.querySelectorAll('.nav-btn')];
+}
+initNav();
+
+// Cerrar dropdowns al tocar fuera (mobile)
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-item') && !e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
+
+// ── NAV ARROWS ────────────────────────────────────────────────────
+navPrev.addEventListener('click', () => navEl.scrollBy({ left: -200, behavior: 'smooth' }));
+navNext.addEventListener('click', () => navEl.scrollBy({ left: 200, behavior: 'smooth' }));
+
+// ── SCROLL TO PANEL ───────────────────────────────────────────────
+function scrollToPanel(idx, instant) {
+  var currentIdx = Math.round(canvas.scrollLeft / window.innerWidth);
+
+  if (instant || idx === currentIdx) {
+    canvas.scrollTo({ left: idx * window.innerWidth, behavior: 'instant' });
+    return;
+  }
+
+  var dir = idx > currentIdx ? 1 : -1;
+  var targetPanel = panels[idx];
+  // Elements to animate: panel-inner and panel-index (if exists)
+  var animEls = [];
+  var inner = targetPanel ? targetPanel.querySelector('.panel-inner') : null;
+  var pidx  = targetPanel ? targetPanel.querySelector('.panel-index') : null;
+  if (inner) animEls.push(inner);
+  if (pidx)  animEls.push(pidx);
+
+  // Stage: move targets off-screen in direction of travel
+  animEls.forEach(function(el){
+    el.style.transition = 'none';
+    el.style.transform  = 'translateX(' + (dir * 48) + 'px)';
+    el.style.opacity    = '0';
+  });
+
+  // Jump canvas to target instantly
+  canvas.scrollTo({ left: idx * window.innerWidth, behavior: 'instant' });
+
+  // Animate in
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      animEls.forEach(function(el){
+        el.style.transition = 'transform .32s cubic-bezier(.16,1,.3,1), opacity .26s ease';
+        el.style.transform  = 'translateX(0)';
+        el.style.opacity    = '1';
+      });
+      setTimeout(function(){
+        animEls.forEach(function(el){
+          el.style.transition = '';
+          el.style.transform  = '';
+          el.style.opacity    = '';
+        });
+      }, 380);
+    });
+  });
+}
+
+// ── SCROLL SPY ────────────────────────────────────────────────────
+function updateSpy(panelIdx) {
+  const { panel, trie } = panelData[panelIdx];
+  if (!trie.length) return;
+
+  const scrollTop  = panel.scrollTop;
+  const atBottom   = scrollTop + panel.clientHeight >= panel.scrollHeight - 8;
+  const allItems   = trie.flatMap(({ el, children }) => [el, ...children]);
+
+  // find active item
+  let activeEl = allItems[0];
+  if (atBottom) {
+    activeEl = allItems[allItems.length - 1];
+  } else {
+    allItems.forEach(el => {
+      if (scrollTop >= el.offsetTop - 160) activeEl = el;
+    });
+  }
+
+  // find which top-level section activeEl belongs to
+  const activeSection = trie.find(({ el, children }) =>
+    el === activeEl || children.includes(activeEl));
+
+  const indexEl = panel.querySelector('.panel-index');
+  if (!indexEl) return;
+
+  indexEl.querySelectorAll('.idx-item:not(.idx-sub)').forEach(btn => {
+    const isActive = btn.dataset.id === activeSection?.el.id;
+    btn.classList.toggle('active', isActive);
+  });
+
+  indexEl.querySelectorAll('.idx-sub').forEach(sub => {
+    const parentActive = sub.dataset.parent === activeSection?.el.id;
+    sub.classList.toggle('visible', parentActive);
+    sub.classList.toggle('active', sub.dataset.id === activeEl.id);
+  });
+}
+
+// ── HORIZONTAL SCROLL ─────────────────────────────────────────────
+let cur = 0;
+canvas.addEventListener('scroll', () => {
+  const idx = Math.round(canvas.scrollLeft / window.innerWidth);
+  if (idx !== cur) {
+    cur = idx;
+    navBtns.forEach((b, i) => b.classList.toggle('active', i === idx));
+  }
+  updateSpy(idx);
+}, { passive: true });
+
+panels.forEach((panel, i) => {
+  panel.addEventListener('scroll', () => { if (i === cur) updateSpy(i); }, { passive: true });
+});
+
+// init
+navBtns[0]?.classList.add('active');
+updateSpy(0);
+
+// ── ALPHABET ──────────────────────────────────────────────────────
+const ALPHA = [
+  ['A','/a/','a','[ä]','an','[an]','año','a'],
+  ['B','/b/','be','[bʲe]','buan','[bʷan]','bueno','b'],
+  ['C','/k/, /t͡ɕ/','ce','[t͡ɕe]','ciatro','[t͡ɕa.tɾo]','centro',null],
+  ['D','/d/','de','[dʲe]','domiach','[do.ˈmʲak]','domingo','d'],
+  ['E','/je/','e','[je]','exame','[e.ˈsʲa.me]','examen','e'],
+  ['Ē','/ɛ/','ē','[ɛ]','ēconomia','[ɛ.ko.ˈno.mʲa]','economía',null],
+  ['F','/f/','ēf','[ɛf]','felicĭ','[fʲe.ˈlʲit͡ɕ]','feliz','f'],
+  ['G','/g/, /ʐ/','ge','[ʐɛ]','grudĭ','[gɾutʲ]','grande','g'],
+  ['H','—','haca','[ˈa.ka]','hiarĭ','[ˈjaɾʲ]','ayer',null],
+  ['I','/i/, /j/','i','[i]','ilĭ','[ilʲ]','él','i'],
+  ['K','/k/','ka','[ka]','koala','[ko.ˈa.la]','koala',null],
+  ['L','/l/','ēl','[ɛɫ]','liega','[lʲe.zʲa]','lengua','l'],
+  ['M','/m/','ēm','[ɛm]','mud','[mut]','mundo','m'],
+  ['N','/n/','ēn','[ɛn]','nuacĭ','[nwat͡ɕ]','noche','n'],
+  ['O','/o/','o','[ɔ]','ochĭ','[ɔkʲ]','ojo','o'],
+  ['P','/p/','pe','[pʲe]','prexona','[prʲe.ˈsʲɔ.na]','persona','p'],
+  ['R','/r/','ēr','[ɛɾ]','rural','[ɾu.ˈɾaɫ]','rural','r'],
+  ['S','/s/','ēs','[ɛs]','siatĭ','[sʲatʲ]','siete','s'],
+  ['T','/t/','te','[tʲe]','tradutsa','[tɾa.ˈdu.t͡sa]','traducción','t'],
+  ['U','/u/, /w/','u','[u]','urox','[ˈu.ɾox]','oso','u'],
+  ['V','/v/','ve','[vʲe]','vita','[ˈvʲi.ta]','vida','v'],
+  ['W','/w/','dupli-ve','[ˈdu.plʲ.vʲe]','wifi','[ˈwi.fʲi]','wifi','w'],
+  ['X','/x/','xa','[xa]','ximia','[ˈʂi.mʲa]','química','x'],
+  ['Y','/ɨ/','y','[ɨ]','ycà','[ɨ.ˈka]','decir y','y'],
+  ['Z','/z/','zeta','[ˈzʲe.ta]','zooparc','[zʷo.ˈpaɾk]','zoo','z'],
+];
+const isvg = `<svg viewBox="0 0 16 16"><path d="M3 5v6h4l5 5V0L7 5H3z"/></svg>`;
+const tbody = document.getElementById('atb');
+tbody.innerHTML = '';
+ALPHA.forEach(([g,afi,nom,ni,ex,xi,tr,au]) => {
+  const btnH = au ? `` : ``;
+  const row = document.createElement('tr');
+  row.innerHTML = `<td style="font-family:var(--sans);font-weight:500">${g}</td><td class="ipa">${afi}</td><td><em>${nom}</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">${ni}</td><td><em>${ex}</em></td><td class="ipa" style="color:var(--muted);font-size:.8rem">${xi}</td><td>${tr}</td>`;
+  tbody.appendChild(row);
+});
+
+// ── KEYBOARD ──────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  const c = Math.round(canvas.scrollLeft / window.innerWidth);
+  if (e.key === 'ArrowRight' && c < panels.length - 1) canvas.scrollTo({ left: (c + 1) * window.innerWidth, behavior: 'smooth' });
+  if (e.key === 'ArrowLeft'  && c > 0)                 canvas.scrollTo({ left: (c - 1) * window.innerWidth, behavior: 'smooth' });
+});
+</script>
+
+<script>
+// ── PORTADA ───────────────────────────────────────────────────────
+(function(){
+  var c = document.getElementById('cover');
+  if (!c) return;
+
+  function hideCover(cb) {
+    c.classList.add('out');
+    document.body.classList.add('cover-gone');
+    setTimeout(function(){ c.style.display='none'; if(cb) cb(); }, 720);
+  }
+
+  function showCover() {
+    c.style.display = '';
+    c.scrollTop = 0;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      c.classList.remove('out');
+      document.body.classList.remove('cover-gone');
+    }); });
+  }
+
+  // ESC → cerrar portada
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !document.body.classList.contains('cover-gone')) hideCover();
+  });
+
+  // Gramática button → entrar a la gramática
+  document.getElementById('cv-gram').addEventListener('click', function(e){
+    if (!e.target.closest('#cv-menu')) hideCover();
+  });
+
+  // Build dropdown del cover desde panelData
+  var menu = document.getElementById('cv-menu');
+  panels.forEach(function(p, i){
+    if (p.dataset.nogram) return;
+    var label = p.dataset.label; if (!label) return;
+    var btn = document.createElement('button');
+    btn.className = 'cv-menu-item';
+    btn.textContent = label;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      hideCover(function(){ scrollToPanel(i, true); });
+    });
+    menu.appendChild(btn);
+  });
+
+  // Repositorio → GitHub
+  document.getElementById('cv-repo').addEventListener('click', function(){
+    window.open('https://github.com/Anz4ku/Recrexensc','_blank');
+  });
+
+  // Brand → volver a landing
+  document.querySelector('.nav-brand').addEventListener('click', function(){
+    window.location.href = 'index.html';
+  });
+
+  // Hash navigation desde index.html (#fonologia, #sustantivos, etc.)
+  (function(){
+    var hash = location.hash.slice(1);
+    if (!hash) return;
+    history.replaceState(null, '', location.pathname + location.search);
+    var idx = panels.findIndex(function(p){ return p.dataset.section === hash; });
+    if (idx < 0) return;
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ scrollToPanel(idx, true); });
+    });
+  })();
+})();
+
+// ── NAV GRAMÁTICA DROPDOWN ────────────────────────────────────────
+(function(){
+  var btn  = document.getElementById('nav-gram');
+  var menu = document.getElementById('nav-gram-menu');
+  var repo = document.getElementById('nav-repo');
+  if (!btn || !menu) return;
+
+  // Build menu from panels (exclude data-nogram panels)
+  panels.forEach(function(p, i){
+    if (p.dataset.nogram) return;
+    var label = p.dataset.label; if (!label) return;
+    var item = document.createElement('button');
+    item.className = 'nav-action-menu-item';
+    item.textContent = label;
+    item.addEventListener('click', function(){
+      menu.classList.remove('open');
+      scrollToPanel(i);
+    });
+    menu.appendChild(item);
+  });
+
+  // Position menu under the button
+  function positionMenu() {
+    var r = btn.getBoundingClientRect();
+    menu.style.left = r.left + 'px';
+  }
+
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    positionMenu();
+    menu.classList.toggle('open');
+  });
+
+  document.addEventListener('click', function(){ menu.classList.remove('open'); });
+
+  // Repositorio
+  if (repo) repo.addEventListener('click', function(){
+    window.open('https://github.com/Anz4ku/Recrexensc','_blank');
+  });
+})();
+
+// ── TEMA CLARO / OSCURO ───────────────────────────────────────────
+(function(){
+  var btn = document.getElementById('theme-btn');
+  if (!btn) return;
+  function updateBtn() {
+    btn.textContent = document.body.classList.contains('dark-mode') ? '☀' : '🌙';
+  }
+  updateBtn();
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('dark-mode');
+    updateBtn();
+  });
+})();
+</script>
+
+<script>
+/* ── CURSOR DE CARDO (todo el documento) ────────────────────────── */
+(function(){
+  var cur = document.getElementById('cv-cursor');
+  if (!cur) return;
+  document.body.classList.add('cursor-active');
+  cur.style.opacity = '1';
+
+  document.addEventListener('mousemove', function(e){
+    var w = cur.offsetWidth || 44;
+    cur.style.left = (e.clientX - w * 0.45) + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+  document.addEventListener('mouseleave', function(){ cur.style.opacity = '0'; });
+  document.addEventListener('mouseenter', function(){ cur.style.opacity = '1'; });
+})();
+
+/* ── FICHA IPA + AUDIO ───────────────────────────────────────────── */
+(function(){
+  var card = document.getElementById('ipa-card');
+  if (!card) return;
+  var symEl  = card.querySelector('.ic-sym');
+  var descEl = card.querySelector('.ic-desc');
+  var grEl   = card.querySelector('.ic-gr');
+  var vidEl  = card.querySelector('.ic-video');
+  var hintEl = card.querySelector('.ic-hint');
+  var mx = 0, my = 0;
+  var currentAudio = null;
+  var activeEl = null;
+
+  var _ipaHov = null;
+  document.addEventListener('mousemove', function(e){
+    mx = e.clientX; my = e.clientY;
+    if (card.classList.contains('visible')) position();
+    // Detección con elementFromPoint — funciona incluso con contenteditable activo
+    var under = document.elementFromPoint(e.clientX, e.clientY);
+    var tgt = under && (under.classList.contains('vow') || under.classList.contains('con')) ? under : null;
+    if(tgt !== _ipaHov){
+      _ipaHov = tgt;
+      if(tgt) show(tgt); else hide();
+    }
+  });
+
+  function position(){
+    var w = card.offsetWidth  || 165;
+    var h = card.offsetHeight || 120;
+    var x = mx + 20, y = my + 16;
+    if (x + w > window.innerWidth  - 8) x = mx - w - 12;
+    if (y + h > window.innerHeight - 8) y = my - h - 8;
+    card.style.left = x + 'px';
+    card.style.top  = y + 'px';
+  }
+
+  function show(el){
+    symEl.textContent  = el.dataset.ipa || el.textContent.trim();
+    descEl.textContent = el.dataset.desc || '';
+    var gr = el.dataset.gr || '';
+    if (gr){ grEl.textContent = 'Grafema: ' + gr; grEl.style.display = ''; }
+    else grEl.style.display = 'none';
+    // load video on hover if available
+    var vsrc = el.dataset.video;
+    if (vsrc && vidEl && activeEl !== el){
+      vidEl.src = vsrc;
+      vidEl.volume = el.classList.contains('con') ? 0.6 : 1.0;
+      card.classList.add('has-video');
+      hintEl.textContent = '📋 click · ver cita';
+      vidEl.play().catch(function(){});
+    } else if (!vsrc){
+      card.classList.remove('has-video');
+      if (vidEl){ vidEl.pause(); vidEl.removeAttribute('src'); vidEl.load(); }
+      hintEl.textContent = '📋 click · ver cita';
+    }
+    activeEl = el;
+    card.classList.add('visible');
+    position();
+  }
+
+  function hide(){
+    card.classList.remove('visible', 'has-video', 'cite-open');
+    activeEl = null;
+    if (vidEl){ vidEl.pause(); vidEl.removeAttribute('src'); vidEl.load(); }
+  }
+
+  function playAudio(el){
+    var src = el.dataset.audio;
+    if (!src) return;
+    if (currentAudio){ currentAudio.pause(); currentAudio.currentTime = 0; }
+    currentAudio = new Audio(src);
+    currentAudio.play().catch(function(){});
+  }
+
+  document.querySelectorAll('.vow, .con').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.stopPropagation();
+      card.classList.toggle('cite-open');
+    });
+  });
+
+  // click outside closes card
+  document.addEventListener('click', function(){ hide(); });
+})();
+
+</script>
+
+
+<script>(function(){var s=document.createElement('script');s.src='gramatica-editor.js';s.onerror=function(){};document.body.appendChild(s);})();</script>
+</body></html>

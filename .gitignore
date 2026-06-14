@@ -1,0 +1,16 @@
+# Dev / Claude Code
+.claude/
+.claude_bak/
+CLAUDE.md
+grabador.html
+gramatica-editor.js
+clean-media.sh
+
+# Unused assets
+flag drawing.png
+flag.svg
+thistle-cursor.png
+thistle-cursor.svg
+thistle-real.svg
+*.bak
+*.bak2
