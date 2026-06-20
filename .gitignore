@@ -6,6 +6,10 @@ grabador.html
 gramatica-editor.js
 clean-media.sh
 
+# Documentación de trabajo del traductor (borrador, no público)
+lexico-extraido.md
+reglas-foneticas.md
+
 # Unused assets
 flag drawing.png
 flag.svg
