@@ -3174,6 +3174,48 @@ panels.forEach((panel, i) => {
   panel.addEventListener('scroll', () => { if (i === cur) updateSpy(i); }, { passive: true });
 });
 
+// ── SWIPE: una sección por gesto (el scroll-snap nativo se puede saltar varias con un swipe rápido) ──
+(function(){
+  let active = false, axis = null, startX = 0, startY = 0, startScroll = 0;
+  const THRESHOLD = 40;
+
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1 || e.target.closest('.tbl-wrap')) { active = false; return; }
+    active = true;
+    axis = null;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startScroll = canvas.scrollLeft;
+    canvas.style.scrollSnapType = 'none';
+  }, { passive: true });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (!active) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (axis === null) axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (axis === 'x') {
+      e.preventDefault();
+      canvas.scrollLeft = startScroll - dx;
+    }
+  }, { passive: false });
+
+  function endSwipe() {
+    if (!active) return;
+    active = false;
+    canvas.style.scrollSnapType = 'x mandatory';
+    if (axis !== 'x') return;
+    const idx = Math.round(startScroll / window.innerWidth);
+    const moved = canvas.scrollLeft - startScroll;
+    let target = idx;
+    if (moved > THRESHOLD && idx < panels.length - 1) target = idx + 1;
+    else if (moved < -THRESHOLD && idx > 0) target = idx - 1;
+    canvas.scrollTo({ left: target * window.innerWidth, behavior: 'smooth' });
+  }
+  canvas.addEventListener('touchend', endSwipe);
+  canvas.addEventListener('touchcancel', endSwipe);
+})();
+
 // init
 navBtns[0]?.classList.add('active');
 updateSpy(0);
